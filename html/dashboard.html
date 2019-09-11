@@ -1,0 +1,385 @@
+<!doctype html>
+<html>
+<head>
+<title>Buzzable</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<meta http-equiv="X-UA-Compatible" content="IE=9;IE=10;IE=Edge,chrome=1" />
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/bootstrap.css">
+<link rel="stylesheet" href="assets/css/font-awesome.min.css">
+<link rel="stylesheet" href="assets/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="assets/css/anim.css">
+<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/responsive.css">
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.bundle.js"></script>
+<script src="assets/js/wow.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/loader.js"></script>
+<script src="assets/js/common.js"></script>
+</head>
+<body>
+<div class="dashboard-page">
+  <div class="dashboard-nav">
+    <div class="d-logo"><a href="dashboard.html"><img src="assets/images/logo.png" alt="" class="img-fluid desktop-logo"><img src="assets/images/login-logo.png" alt="" class="img-fluid mobile-logo"></a></div>
+    <div class="m-header">
+    	<div class="user"> <a href="javascript:void(0);"><img src="assets/images/dashboard/user.png" alt=""> Hi, <span class="uname">Vishwas Setia <img src="assets/images/dropdown-arrow.png" alt=""></span></a>
+            <div class="dropuser"><a href="javascript:void(0);">Logout</a></div>
+        </div>
+        <a class="m-menu" href="javascript:void(0);"><img src="assets/images/humberger.png" alt=""></a>
+    </div>
+    <ul class="dashnav">
+      <li><a class="active" href="dashboard.html"><img src="assets/images/dashboard/dash.png" alt="">Dashboard</a></li>
+      <li><a class="" href="dashboard.html"><img src="assets/images/dashboard/sentiment.png" alt="">Sentiment</a></li>
+      <li><a class="" href="dashboard.html"><img src="assets/images/dashboard/influential.png" alt="">Influential</a></li>
+      <li><a class="" href="dashboard.html"><img src="assets/images/dashboard/buzz.png" alt="">Buzz Words</a></li>
+      <li><a class="" href="dashboard.html"><img src="assets/images/dashboard/share-post.png" alt="">Share of Posts</a></li>
+      <li><a class="" href="dashboard.html"><img src="assets/images/dashboard/sources.png" alt="">Top Sources</a></li>
+      <li><a class="" href="dashboard.html"><img src="assets/images/dashboard/sites.png" alt="">Top Sites</a></li>
+      <li><a class="" href="dashboard.html"><img src="assets/images/dashboard/over-time.png" alt="">Sentiment over time</a></li>
+    </ul>
+  </div>
+  <div class="dashboard">
+    <div class="search-section">
+      <div class="container-fluid deshheader">
+      <div class="row">
+        <div class="col-xl-8 col-lg-12">
+        <a class="btnback" href="search.html">Back</a>
+        </div>
+        <div class="col-xl-4 col-lg-0 mhide text-right">
+        <div class="user"> <a href="javascript:void(0);"><img src="assets/images/dashboard/user.png" alt=""> Hi, <span class="uname">Vishwas Setia <img src="assets/images/dropdown-arrow.png" alt=""></span></a>
+            <div class="dropuser"><a href="javascript:void(0);">Logout</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dash-heading">
+          <h2>Your search for <span>#Name</span></h2>
+    </div>
+    <div class="content-area">
+    	<!--<h2>Lorem Ipsum </h2>
+    	<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>-->
+        <div class="dash-counter">
+        	<ul>
+            	<li><span class="number posts"><span class="countposts">97</span></span><span class="caption">posts</span></li>
+            	<li><span class="number reach"><span class="countreach">13829</span></span><span class="caption">Reach</span></li>
+            	<li><span class="number tweets"><span class="counttweet">16.49</span></span><span class="caption">Tweets%</span></li>
+            	<li><span class="number retweets"><span class="countretweet">83.51</span></span><span class="caption">Retweets%</span></li>
+            	<li><span class="number uniuser"><span class="countusers">125</span></span><span class="caption">Unique Users</span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="chart-area">
+    	<div id="chart_div"></div>    
+    </div>
+    <div class="dtablebox">
+    	<table id="example" class="display nowrap cell-border" style="width:100%">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Tweet</th>
+                <th>User</th>
+                <th>Retweet</th>
+                <th>Favourite</th>
+                <th>Location</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>03 Dec 2018</td>
+                <td>Lorem ipsum twweet by user</td>
+                <td>System Architect</td>
+                <td>Lorem ipsum Retwweet by user</td>
+                <td>8</td>
+                <td>Delhi, India</td>
+            </tr>
+            <tr>
+                <td>03 Dec 2018</td>
+                <td>Lorem ipsum twweet by user</td>
+                <td>System Architect</td>
+                <td>Lorem ipsum Retwweet by user</td>
+                <td>8</td>
+                <td>Delhi, India</td>
+            </tr>
+            <tr>
+                <td>03 Dec 2018</td>
+                <td>Lorem ipsum twweet by user</td>
+                <td>System Architect</td>
+                <td>Lorem ipsum Retwweet by user</td>
+                <td>8</td>
+                <td>Delhi, India</td>
+            </tr>
+            <tr>
+                <td>03 Dec 2018</td>
+                <td>Lorem ipsum twweet by user</td>
+                <td>System Architect</td>
+                <td>Lorem ipsum Retwweet by user</td>
+                <td>8</td>
+                <td>Delhi, India</td>
+            </tr>
+            <tr>
+                <td>03 Dec 2018</td>
+                <td>Lorem ipsum twweet by user</td>
+                <td>System Architect</td>
+                <td>Lorem ipsum Retwweet by user</td>
+                <td>8</td>
+                <td>Delhi, India</td>
+            </tr>
+            <tr>
+                <td>03 Dec 2018</td>
+                <td>Lorem ipsum twweet by user</td>
+                <td>System Architect</td>
+                <td>Lorem ipsum Retwweet by user</td>
+                <td>8</td>
+                <td>Delhi, India</td>
+            </tr>
+            <tr>
+                <td>03 Dec 2018</td>
+                <td>Lorem ipsum twweet by user</td>
+                <td>System Architect</td>
+                <td>Lorem ipsum Retwweet by user</td>
+                <td>8</td>
+                <td>Delhi, India</td>
+            </tr>
+            <tr>
+                <td>03 Dec 2018</td>
+                <td>Lorem ipsum twweet by user</td>
+                <td>System Architect</td>
+                <td>Lorem ipsum Retwweet by user</td>
+                <td>8</td>
+                <td>Delhi, India</td>
+            </tr>
+            <tr>
+                <td>03 Dec 2018</td>
+                <td>Lorem ipsum twweet by user</td>
+                <td>System Architect</td>
+                <td>Lorem ipsum Retwweet by user</td>
+                <td>8</td>
+                <td>Delhi, India</td>
+            </tr>
+            <tr>
+                <td>03 Dec 2018</td>
+                <td>Lorem ipsum twweet by user</td>
+                <td>System Architect</td>
+                <td>Lorem ipsum Retwweet by user</td>
+                <td>8</td>
+                <td>Delhi, India</td>
+            </tr>
+            <tr>
+                <td>03 Dec 2018</td>
+                <td>Lorem ipsum twweet by user</td>
+                <td>System Architect</td>
+                <td>Lorem ipsum Retwweet by user</td>
+                <td>8</td>
+                <td>Delhi, India</td>
+            </tr>
+            <tr>
+                <td>03 Dec 2018</td>
+                <td>Lorem ipsum twweet by user</td>
+                <td>System Architect</td>
+                <td>Lorem ipsum Retwweet by user</td>
+                <td>8</td>
+                <td>Delhi, India</td>
+            </tr>
+            <tr>
+                <td>03 Dec 2018</td>
+                <td>Lorem ipsum twweet by user</td>
+                <td>System Architect</td>
+                <td>Lorem ipsum Retwweet by user</td>
+                <td>8</td>
+                <td>Delhi, India</td>
+            </tr>
+            <tr>
+                <td>03 Dec 2018</td>
+                <td>Lorem ipsum twweet by user</td>
+                <td>System Architect</td>
+                <td>Lorem ipsum Retwweet by user</td>
+                <td>8</td>
+                <td>Delhi, India</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    <div class="dash-footer">
+    	<div class="row">
+        	<div class="col-xl-2 col-lg-2 col-md-2">
+                <h3>Quick Access <img src="assets/images/down-arrow.png" alt=""></h3>
+                <ul>
+                    <li>Pricing</li>
+                    <li>Features</li>
+                    <li>About us</li>                
+                </ul>
+            </div>
+        	<div class="col-xl-2 col-lg-2 col-md-2">
+                <h3>Help at Hand <img src="assets/images/down-arrow.png" alt=""></h3>
+                <ul>
+                    <li>Contact us</li>
+                    <li>Careers</li>
+                    <li>Blog</li>                
+                </ul>
+            </div>
+        	<div class="col-xl-2 col-lg-2 col-md-2">
+                <h3>Help at Hand <img src="assets/images/down-arrow.png" alt=""></h3>
+                <ul>
+                    <li>Privacy Policy</li>
+                    <li>Terms and conditions</li>
+                    <li>Blog</li>                
+                </ul>
+            </div>
+        	<div class="col-xl-4 col-lg-4 col-md-4">
+                <h3>Connect <img src="assets/images/down-arrow.png" alt=""></h3>
+                <ul class="social">
+                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                </ul>
+                <p class="dash-copyright"><script> var d = new Date(); var dy = d.getFullYear(); document.write(dy);</script> Social Analysis. All Rights Reserved.</p>
+            </div>
+            <div class="col-xl-2 col-lg-2 col-md-2 textrnl">
+                <!--<p class="bktop"><a href="Javascript:void(0);" class="backtotop">Back to top <img src="assets/images/back-to-top.png" alt=""></a></p>-->
+                <a href="Javascript:void(0);" class="chaticon"><img src="assets/images/chat.png" alt=""></a>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+$(document).ready(function(e) {
+	
+	$({ Counter1: 0 }).animate({
+  Counter1: $('.countposts').text()
+}, {
+  duration: 2000,
+  easing: 'swing',
+  step: function() {
+    $('.countposts').text(Math.ceil(this.Counter1));
+  }
+});
+	$({ Counter2: 0 }).animate({
+  Counter2: $('.countreach').text()
+}, {
+  duration: 2000,
+  easing: 'swing',
+  step: function() {
+    $('.countreach').text(Math.ceil(this.Counter2));
+  }
+});
+	$({ Counter3: 0 }).animate({
+  Counter3: $('.countusers').text()
+}, {
+  duration: 2000,
+  easing: 'swing',
+  step: function() {
+    $('.countusers').text(Math.ceil(this.Counter3));
+  }
+});
+	
+            var ctweet = $('.counttweet').text();
+            //$(this).css('-webkit-transform', 'rotate(' + now + 'deg)');
+            $('.counttweet').prop('Counter', 0).animate({
+                Counter: ctweet
+            }, {
+                duration: 2000,
+                easing: 'linear',
+                step: function(ctweet) {
+                    $('.counttweet').text(Math.round(ctweet * 100) / 100);
+                }
+            });
+            var cretweet = $('.countretweet').text();
+            //$(this).css('-webkit-transform', 'rotate(' + now + 'deg)');
+            $('.countretweet').prop('Counter', 0).animate({
+                Counter: cretweet
+            }, {
+                duration: 2000,
+                easing: 'linear',
+                step: function(cretweet) {
+                    $('.countretweet').text(Math.round(cretweet * 100) / 100);
+                }
+            });
+    $('#example').DataTable( {
+        "scrollX": true, 
+		"info": false,
+		"searching": false,
+		"bLengthChange": false,
+		"ordering": false,
+		"bFilter": false
+    });
+});
+</script>
+<script type="text/javascript">
+     google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('date', 'Day');
+      data.addColumn('number', 'Tweets');
+      data.addColumn('number', 'Retweets');
+      data.addColumn('number', 'Posts');
+
+      data.addRows([
+        [new Date(2015, 0, 1),  37.8, 80.8, 86],
+        [new Date(2015, 0, 2),  30.9, 69.5, 75],
+        [new Date(2015, 0, 3),  25.4,   57, 88],
+        [new Date(2015, 0, 4),  11.7, 18.8, 75],
+        [new Date(2015, 0, 5),  11.9, 17.6, 25],
+        [new Date(2015, 0, 6),   8.8, 13.6, 56],
+        [new Date(2015, 0, 7),   7.6, 12.3, 75],
+        [new Date(2015, 0, 8),  12.3, 29.2, 25],
+        [new Date(2015, 0, 9),  16.9, 42.9, 56],
+        [new Date(2015, 0, 10), 12.8, 30.9, 45],
+        [new Date(2015, 0, 11),  80,  7.9, 52],
+        [new Date(2015, 0, 12),  10,  40, 85],
+        [new Date(2015, 0, 13),  50,  10, 77],
+        [new Date(2015, 0, 14),  40,  90, 45],
+        [new Date(2015, 0, 15),  37.8, 80.8, 64],
+        [new Date(2015, 0, 16),  30.9, 69.5, 46],
+        [new Date(2015, 0, 17),  25.4,   57, 54],
+        [new Date(2015, 0, 18),  11.7, 18.8, 44],
+        [new Date(2015, 0, 19),  11.9, 17.6, 99],
+        [new Date(2015, 0, 20),   8.8, 13.6, 88],
+        [new Date(2015, 0, 21),   7.6, 12.3, 77],
+        [new Date(2015, 0, 22),  12.3, 29.2, 44],
+        [new Date(2015, 0, 23),  16.9, 42.9, 11],
+        [new Date(2015, 0, 24), 12.8, 30.9, 74],
+        [new Date(2015, 0, 25),  80,  7.9, 21],
+        [new Date(2015, 0, 26),  10,  40, 45],
+        [new Date(2015, 0, 27),  50,  10, 32],
+        [new Date(2015, 0, 28),  40,  90, 45],
+        [new Date(2015, 0, 29),   8.8, 13.6, 10],
+        [new Date(2015, 0, 30),   7.6, 12.3, 52]
+      ]);
+        var options = {
+          title: '',
+          hAxis: {
+			  title:'Dates',
+            format: 'M/d/yy',
+            gridlines: {count: 30}
+          },
+          vAxis: {
+			  title:'Numbers',
+            gridlines: {color: 'none'},
+            minValue: 0
+          },
+		    legend: {position: 'top'},
+			series: {
+            0: { color: '#9085da' },
+            1: { color: '#4fadff' },
+            2: { color: '#ff6382' },
+          },
+		  chartArea: {
+		width: '80%'
+		, height: '500px'
+	}
+        };
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+
+
+</body>
+</html>

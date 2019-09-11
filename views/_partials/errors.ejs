@@ -1,0 +1,14 @@
+<% if(typeof errors != null && ( (typeof errors == "object" && errors.length != 0 ) || typeof errors === 'string') ){ %>
+
+<div class="alert alert-danger" role="alert">
+    <% if(typeof errors === 'string') { %>
+    <p class="mb-0"><%= errors %></p>
+
+    <% }else {%>
+    <% errors.forEach(error =>{ %>
+    <p class="mb-0"><%= error.msg %></p>
+    <% }) } %>
+
+</div>
+
+<% } %> 

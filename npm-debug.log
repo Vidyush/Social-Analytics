@@ -1,0 +1,31 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files (x86)\\nodejs\\node.exe',
+1 verbose cli   'C:\\Users\\vidyush.bakshi\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'run',
+1 verbose cli   'dev' ]
+2 info using npm@3.10.10
+3 info using node@v10.13.0
+4 verbose run-script [ 'predev', 'dev', 'postdev' ]
+5 info lifecycle the-brand-plan@1.0.0~predev: the-brand-plan@1.0.0
+6 silly lifecycle the-brand-plan@1.0.0~predev: no script for predev, continuing
+7 info lifecycle the-brand-plan@1.0.0~dev: the-brand-plan@1.0.0
+8 verbose lifecycle the-brand-plan@1.0.0~dev: unsafe-perm in lifecycle true
+9 verbose lifecycle the-brand-plan@1.0.0~dev: PATH: C:\Users\vidyush.bakshi\AppData\Roaming\npm\node_modules\npm\bin\node-gyp-bin;C:\Users\vidyush.bakshi\Desktop\Latest\node_modules\.bin;C:\ProgramData\Boxstarter;C:\Users\vidyush.bakshi\AppData\Local\Programs\Python\Python36-32\Scripts\;C:\Users\vidyush.bakshi\AppData\Local\Programs\Python\Python36-32\;C:\Users\vidyush.bakshi\AppData\Local\Programs\Python\Python36\Scripts\;C:\Users\vidyush.bakshi\AppData\Local\Programs\Python\Python36\;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Users\vidyush.bakshi\AppData\Local\Programs\Python\Python36-32;C:\Users\vidyush.bakshi\AppData\Local\Programs\Python\Python36-32\Scripts;C:\ProgramData\chocolatey\bin;C:\Program Files\Git\cmd;C:\Users\vidyush.bakshi\AppData\Local\Programs\Python\Python36-32\Scripts;C:\Julia-0.7.0\bin;C:\ProgramData\Curl\bin;C:\Program Files\R\R-3.5.1patched\bin;C:\Program Files\PuTTY\;C:\Program Files (x86)\nodejs\;C:\Go\bin;C:\Program Files\R\R-3.5.2\bin;C:\Program Files\MySQL\MySQL Shell 8.0\bin\
+10 verbose lifecycle the-brand-plan@1.0.0~dev: CWD: C:\Users\vidyush.bakshi\Desktop\Latest
+11 silly lifecycle the-brand-plan@1.0.0~dev: Args: [ '/d /s /c', 'nodemon server.js' ]
+12 verbose stack Error: kill ENOSYS
+12 verbose stack     at process.kill (internal/process/per_thread.js:198:13)
+12 verbose stack     at process.listener (C:\Users\vidyush.bakshi\AppData\Roaming\npm\node_modules\npm\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:86:15)
+12 verbose stack     at process.emit (events.js:187:15)
+13 verbose cwd C:\Users\vidyush.bakshi\Desktop\Latest
+14 error Windows_NT 6.1.7601
+15 error argv "C:\\Program Files (x86)\\nodejs\\node.exe" "C:\\Users\\vidyush.bakshi\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js" "run" "dev"
+16 error node v10.13.0
+17 error npm  v3.10.10
+18 error code ENOSYS
+19 error errno ENOSYS
+20 error syscall kill
+21 error kill ENOSYS
+22 error If you need help, you may report this error at:
+22 error     <https://github.com/npm/npm/issues>
+23 verbose exit [ 1, true ]

@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+<head>
+<title>Buzzable</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<meta http-equiv="X-UA-Compatible" content="IE=9;IE=10;IE=Edge,chrome=1" />
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/bootstrap.css">
+<link rel="stylesheet" href="assets/css/font-awesome.min.css">
+<link rel="stylesheet" href="assets/css/anim.css">
+<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/responsive.css">
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.bundle.js"></script>
+<script src="assets/js/wow.min.js"></script>
+<script src="assets/js/common.js"></script>
+</head>
+<body class="search">
+	<h3 class="search-heading">Hi, Vishwas Setia<span>Let’s start analysis your online product.</span></h3>
+    <div class="search-boxes">
+    <div class="search-section">
+      <div class="container-fluid">
+        <form action="#" class="search-form">
+          <div class="search">
+            <input type="text" placeholder="Enter a #hashtag, @acount, keyword and url to track">
+          </div>
+          <div class="filter site">
+          	<a href="#" class="opentool"><img class="filter-icon" src="assets/images/facebook.png" alt=""> Facebook</a>
+              <div class="filter-dropdown tooldropdown">
+                <a href="#"><img class="filter-icon" src="assets/images/facebook.png" alt=""> Facebook</a>
+                <a href="#"><img class="filter-icon" src="assets/images/twitter.png" alt=""> Twitter</a>
+                <a href="#"><img class="filter-icon" src="assets/images/linkedin.png" alt=""> Linkedin</a>
+              </div>
+          </div>
+          <div class="filter">
+          	<a href="#" class="openfilter"><img class="filter-icon" src="assets/images/filter.png" alt=""> Filter</a>
+              <div class="filter-dropdown filterdropdown">
+                <a href="#">Filter 1</a>
+                <a href="#">Filter 2</a>
+                <a href="#">Filter 3</a>
+              </div>
+          </div>
+            
+          <div class="btn-search">
+            <button type="submit"><i class="fa fa-search"></i> Submit</button>
+          </div>
+        </form>
+      </div>
+    </div></div>
+    <div class="searchimg"><img src="assets/images/search-img.png" alt="" class="img-fluid"></div>
+    <div class="searchimg-bg"></div>
+    <a class="pageclose searchcloase" href="index.html">&times;</a>
+
+<script>
+$(document).ready(function(e) {
+	
+	$({ Counter1: 0 }).animate({
+  Counter1: $('.countposts').text()
+}, {
+  duration: 2000,
+  easing: 'swing',
+  step: function() {
+    $('.countposts').text(Math.ceil(this.Counter1));
+  }
+});
+	$({ Counter2: 0 }).animate({
+  Counter2: $('.countreach').text()
+}, {
+  duration: 2000,
+  easing: 'swing',
+  step: function() {
+    $('.countreach').text(Math.ceil(this.Counter2));
+  }
+});
+	$({ Counter3: 0 }).animate({
+  Counter3: $('.countusers').text()
+}, {
+  duration: 2000,
+  easing: 'swing',
+  step: function() {
+    $('.countusers').text(Math.ceil(this.Counter3));
+  }
+});
+	
+            var ctweet = $('.counttweet').text();
+            //$(this).css('-webkit-transform', 'rotate(' + now + 'deg)');
+            $('.counttweet').prop('Counter', 0).animate({
+                Counter: ctweet
+            }, {
+                duration: 2000,
+                easing: 'linear',
+                step: function(ctweet) {
+                    $('.counttweet').text(Math.round(ctweet * 100) / 100);
+                }
+            });
+            var cretweet = $('.countretweet').text();
+            //$(this).css('-webkit-transform', 'rotate(' + now + 'deg)');
+            $('.countretweet').prop('Counter', 0).animate({
+                Counter: cretweet
+            }, {
+                duration: 2000,
+                easing: 'linear',
+                step: function(cretweet) {
+                    $('.countretweet').text(Math.round(cretweet * 100) / 100);
+                }
+            });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!doctype html>
+<html>
+<head>
+<title>Buzzable</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<meta http-equiv="X-UA-Compatible" content="IE=9;IE=10;IE=Edge,chrome=1" />
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/bootstrap.css">
+<link rel="stylesheet" href="assets/css/font-awesome.min.css">
+<link rel="stylesheet" href="assets/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="assets/css/anim.css">
+<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/responsive.css">
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.bundle.js"></script>
+<script src="assets/js/wow.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/loader.js"></script>
+<script src="assets/js/common.js"></script>
+</head>
+<body>
+<div class="dashboard-page">
+  <div class="dashboard-nav">
+    <div class="d-logo"><a href="dashboard.html"><img src="assets/images/logo.png" alt="" class="img-fluid desktop-logo"><img src="assets/images/login-logo.png" alt="" class="img-fluid mobile-logo"></a></div>
+    <div class="m-header">
+      <div class="user"> <a href="javascript:void(0);"><img src="assets/images/dashboard/user.png" alt=""> Hi, <span class="uname">Vishwas Setia <img src="assets/images/dropdown-arrow.png" alt=""></span></a>
+        <div class="dropuser"><a href="javascript:void(0);">Logout</a></div>
+      </div>
+      <a class="m-menu" href="javascript:void(0);"><img src="assets/images/humberger.png" alt=""></a> </div>
+    <ul class="dashnav">
+      <li><a class="" href="dashboard.html"><img src="assets/images/dashboard/dash.png" alt="">Dashboard</a></li>
+      <li><a class="active" href="dashboard.html"><img src="assets/images/dashboard/sentiment.png" alt="">Sentiment</a></li>
+      <li><a class="" href="dashboard.html"><img src="assets/images/dashboard/influential.png" alt="">Influential</a></li>
+      <li><a class="" href="dashboard.html"><img src="assets/images/dashboard/buzz.png" alt="">Buzz Words</a></li>
+      <li><a class="" href="dashboard.html"><img src="assets/images/dashboard/share-post.png" alt="">Share of Posts</a></li>
+      <li><a class="" href="dashboard.html"><img src="assets/images/dashboard/sources.png" alt="">Top Sources</a></li>
+      <li><a class="" href="dashboard.html"><img src="assets/images/dashboard/sites.png" alt="">Top Sites</a></li>
+      <li><a class="" href="dashboard.html"><img src="assets/images/dashboard/over-time.png" alt="">Sentiment over time</a></li>
+    </ul>
+  </div>
+  <div class="dashboard">
+    <div class="search-section">
+      <div class="container-fluid deshheader">
+        <div class="row">
+          <div class="col-xl-8 col-lg-12"> <a class="btnback" href="search.html">Back</a> </div>
+          <div class="col-xl-4 col-lg-0 mhide text-right">
+            <div class="user"> <a href="javascript:void(0);"><img src="assets/images/dashboard/user.png" alt=""> Hi, <span class="uname">Vishwas Setia <img src="assets/images/dropdown-arrow.png" alt=""></span></a>
+              <div class="dropuser"><a href="javascript:void(0);">Logout</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dash-heading">
+      <h2>Your search for <span>#Name</span></h2>
+    </div>
+    <div class="dashtabs">
+      <ul class="nav nav-tabs sentiment-tab" role="tablist">
+        <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#world_cloud">World Cloud</a> </li>
+        <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#associated_hashtage">Associated Hashtage</a> </li>
+      </ul>
+      <div class="tab-content">
+        <div id="world_cloud" class="container tab-pane active">
+          <div class="row world-cloud-tabs">
+            <div class="col-sm-3">
+              <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#overall">Overall</a> </li>
+                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#positive">Positive</a> </li>
+                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#negative">Negative</a> </li>
+                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#neutral">Neutral</a> </li>
+              </ul>
+            </div>
+            <div class="col-sm-9">
+              <div class="tab-content">
+                <div id="overall" class="container tab-pane active"><img src="assets/images/wordcloud-all.png" alt=""></div>
+                <div id="positive" class="container tab-pane fade"> <img src="assets/images/positive.png" alt=""></div>
+                <div id="negative" class="container tab-pane fade"> <img src="assets/images/negative.png" alt=""></div>
+                <div id="neutral" class="container tab-pane fade"> <img src="assets/images/neutral.png" alt=""> </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="associated_hashtage" class="container tab-pane fade">
+        
+         <div class="hashtage-cloud">
+                <img src="assets/images/wordcloud-all.png" alt="">
+              </div>
+      </div>
+    </div>
+    <div class="dtablebox">
+      <table id="example" class="display nowrap cell-border" style="width:100%">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Tweet</th>
+            <th>User</th>
+            <th>Score</th>
+            <th>Location</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>03 Dec 2018</td>
+            <td>Lorem ipsum twweet by user</td>
+            <td>System Architect</td>
+            <td>8</td>
+            <td>Delhi, India</td>
+          </tr>
+          <tr>
+            <td>03 Dec 2018</td>
+            <td>Lorem ipsum twweet by user</td>
+            <td>System Architect</td>
+            <td>8</td>
+            <td>Delhi, India</td>
+          </tr>
+          <tr>
+            <td>03 Dec 2018</td>
+            <td>Lorem ipsum twweet by user</td>
+            <td>System Architect</td>
+            <td>8</td>
+            <td>Delhi, India</td>
+          </tr>
+          <tr>
+            <td>03 Dec 2018</td>
+            <td>Lorem ipsum twweet by user</td>
+            <td>System Architect</td>
+            <td>8</td>
+            <td>Delhi, India</td>
+          </tr>
+          <tr>
+            <td>03 Dec 2018</td>
+            <td>Lorem ipsum twweet by user</td>
+            <td>System Architect</td>
+            <td>8</td>
+            <td>Delhi, India</td>
+          </tr>
+          <tr>
+            <td>03 Dec 2018</td>
+            <td>Lorem ipsum twweet by user</td>
+            <td>System Architect</td>
+            <td>8</td>
+            <td>Delhi, India</td>
+          </tr>
+          <tr>
+            <td>03 Dec 2018</td>
+            <td>Lorem ipsum twweet by user</td>
+            <td>System Architect</td>
+            <td>8</td>
+            <td>Delhi, India</td>
+          </tr>
+          <tr>
+            <td>03 Dec 2018</td>
+            <td>Lorem ipsum twweet by user</td>
+            <td>System Architect</td>
+            <td>8</td>
+            <td>Delhi, India</td>
+          </tr>
+          <tr>
+            <td>03 Dec 2018</td>
+            <td>Lorem ipsum twweet by user</td>
+            <td>System Architect</td>
+            <td>8</td>
+            <td>Delhi, India</td>
+          </tr>
+          <tr>
+            <td>03 Dec 2018</td>
+            <td>Lorem ipsum twweet by user</td>
+            <td>System Architect</td>
+            <td>8</td>
+            <td>Delhi, India</td>
+          </tr>
+          <tr>
+            <td>03 Dec 2018</td>
+            <td>Lorem ipsum twweet by user</td>
+            <td>System Architect</td>
+            <td>8</td>
+            <td>Delhi, India</td>
+          </tr>
+          <tr>
+            <td>03 Dec 2018</td>
+            <td>Lorem ipsum twweet by user</td>
+            <td>System Architect</td>
+            <td>8</td>
+            <td>Delhi, India</td>
+          </tr>
+          <tr>
+            <td>03 Dec 2018</td>
+            <td>Lorem ipsum twweet by user</td>
+            <td>System Architect</td>
+            <td>8</td>
+            <td>Delhi, India</td>
+          </tr>
+          <tr>
+            <td>03 Dec 2018</td>
+            <td>Lorem ipsum twweet by user</td>
+            <td>System Architect</td>
+            <td>8</td>
+            <td>Delhi, India</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="dash-footer">
+      <div class="row">
+        <div class="col-xl-2 col-lg-2 col-md-2">
+          <h3>Quick Access <img src="assets/images/down-arrow.png" alt=""></h3>
+          <ul>
+            <li>Pricing</li>
+            <li>Features</li>
+            <li>About us</li>
+          </ul>
+        </div>
+        <div class="col-xl-2 col-lg-2 col-md-2">
+          <h3>Help at Hand <img src="assets/images/down-arrow.png" alt=""></h3>
+          <ul>
+            <li>Contact us</li>
+            <li>Careers</li>
+            <li>Blog</li>
+          </ul>
+        </div>
+        <div class="col-xl-2 col-lg-2 col-md-2">
+          <h3>Help at Hand <img src="assets/images/down-arrow.png" alt=""></h3>
+          <ul>
+            <li>Privacy Policy</li>
+            <li>Terms and conditions</li>
+            <li>Blog</li>
+          </ul>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4">
+          <h3>Connect <img src="assets/images/down-arrow.png" alt=""></h3>
+          <ul class="social">
+            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+          </ul>
+          <p class="dash-copyright"><script> var d = new Date(); var dy = d.getFullYear(); document.write(dy);</script> Social Analysis. All Rights Reserved.</p>
+        </div>
+        <div class="col-xl-2 col-lg-2 col-md-2 textrnl">
+          <p class="bktop"><a href="Javascript:void(0);" class="backtotop">Back to top <img src="assets/images/back-to-top.png" alt=""></a></p>
+          <a href="Javascript:void(0);" class="chaticon"><img src="assets/images/chat.png" alt=""></a> </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$(document).ready(function(e) {
+    $('#example').DataTable( {
+        "scrollX": true, 
+		"info": false,
+		"searching": false,
+		"bLengthChange": false,
+		"ordering": false,
+		"bFilter": false
+    });
+});
+</script> 
+<script>
+google.charts.load("current", {packages:["corechart"]});
+google.charts.setOnLoadCallback(drawVisualization);
+function drawVisualization() {
+	// Some raw data (not necessarily accurate)
+	var data = google.visualization.arrayToDataTable([
+	 ['Month', '', { role: 'style' }],
+	 ['Natural', 55,'#56d9fe',],
+	 ['Positive', 50,'#5fe3a1',],
+	 ['Negative', 15,'#ff6565',]
+  ]);
+
+var options = {
+  title : '',
+  vAxis: {title: ''},
+  hAxis: {title: ''},
+  seriesType: 'bars',
+  colors: ['#f0f2f8'],
+  legend: {position: 'none'},
+  chartArea: {
+		width: '80%'
+		, height: '200px'
+	}
+};
+
+var chart = new google.visualization.ComboChart(document.getElementById('bar_chart_div'));
+chart.draw(data, options);
+}
+google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('date', 'Day');
+      data.addColumn('number', 'Natural');
+      data.addColumn('number', 'Positive');
+      data.addColumn('number', 'Negative');
+
+      data.addRows([
+        [new Date(2015, 0, 1),  22, 40, 20],
+        [new Date(2015, 0, 2),  15, 35, 18],
+        [new Date(2015, 0, 3),  30, 25, 22],
+        [new Date(2015, 0, 4),  35, 45, 14],
+        [new Date(2015, 0, 5),  22, 30, 18],
+        [new Date(2015, 0, 6),  24, 45, 13],
+        [new Date(2015, 0, 7),  30, 22, 15],
+        [new Date(2015, 0, 8),  20, 14, 12],
+        [new Date(2015, 0, 9),  18, 12, 17],
+        [new Date(2015, 0, 10), 40, 32, 15]
+      ]);
+        var options = {
+          title: '',
+          hAxis: {
+			  title:'Dates',
+            format: 'M/d/yy',
+            gridlines: {count: 30}
+          },
+          vAxis: {
+			  title:'Numbers',
+            gridlines: {color: 'none'},
+            minValue: 0
+          },
+		    legend: {position: 'top'},
+			series: {
+            0: { color: '#56d9fe' },
+            1: { color: '#5fe3a1' },
+            2: { color: '#ff6565' },
+          },
+		  chartArea: {
+		width: '80%'
+		, height: '500px'
+	}
+        };
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+</script>
+</body>
+</html>

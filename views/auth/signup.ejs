@@ -1,0 +1,47 @@
+<%- include("../_includes/head") %>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="left-login col-lg-6 col-xl-6"> <img src="/images/illustration.png" alt=""
+        class="img-fluid illustration"> <span class="copyright-l">Copyright <script>
+          var d = new Date();
+          var dy = d.getFullYear();
+          document.write(dy);
+        </script> Social Media Analysis</span> </div>
+    <div class="login-right col-lg-6 col-xl-6">
+      <div class="access-form">
+        <figure class="text-center"><img src="/images/login-logo.png" alt="">
+          <figcaption>Buzzabl</figcaption>
+        </figure>
+        <form action="/auth/sign-up" method="POST" class="form">
+          <%- include('../_partials/errors') %>
+
+          <div class="form-group">
+            <input type="text" class="form-control envelop" id="name" name="name" placeholder="Name" value="<%= form.name %>" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <input type="email" class="form-control envelop" id="email" name="email"  value="<%= form.email %>" placeholder="Email"
+              autocomplete="off">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control key" id="pwd" name="password" value="" placeholder="Password"
+              autocomplete="off">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control key" id="cpwd" name="confirmPassword"
+              value=""  placeholder="Confirm Password" autocomplete="off">
+          </div>
+            
+          <button type="submit" class="btn">Submit</button>
+        </form>
+        <p class="or">OR</p>
+        <p class="text-center"> Already have account? <a href="/auth/login">Login</a> </p>
+      </div>
+      <div class="terms"> <a href="#">Terms of use.</a> <a href="#">Privacy Policy</a> </div>
+    </div>
+  </div>
+</div>
+<a class="pageclose" href="/">&times;</a>
+
+
+<%- include("../_includes/noFooter") %>

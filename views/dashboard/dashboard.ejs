@@ -1,0 +1,592 @@
+<%- include('../_includes/head') %>
+
+<div class="dashboard-page">
+    <%- include('../_includes/dashboardNavMini') %>
+
+    <div class="dashboard">
+        <div class="search-section">
+            <div class="container-fluid deshheader">
+               <%- include('../_includes/dashboardNav') %>
+            </div>
+            <div class="container-fluid mrtp30">
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="infobox tweet">
+                    <span class="icon"><img src="images/icons/tweet.png" alt=""></span>
+                    <p><strong><%= feedback[0] %></strong>Total Tweets</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="infobox retweet">
+                    <span class="icon"><img src="images/icons/retweet.png" alt=""></span>
+                    <p><strong><%= feedback[1] %></strong>Total Retweets</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="infobox engage">
+                    <span class="icon"><img src="images/icons/engagment.png" alt=""></span>
+                    <p><strong><%= feedback[2] %></strong>Enagagement Level</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="infobox other">
+                    <span class="icon"><img src="images/icons/favourite.png" alt=""></span>
+                    <p><strong><%= feedback[0] %></strong>Other</p>
+                  </div>
+                </div>
+              </div>
+
+              <h3>Timeline</h3>
+              <div class="card">
+                <canvas id="myChart"></canvas>
+              </div>
+              <div class="row d-flex">
+                <div class="col-md-6">
+                    <h3>Top Posts</h3>
+                  <div class="card withheading withexplore">
+                    <ul class="toppostslist">
+                      <% topposts = feedb.slice(0, 3);%>
+                        <% topposts.forEach(elem => { %>
+                          <li>
+                              <div class="userimg"><img class="img-fluid" src=<%= elem.profile_image_url%>> <span class="fromdata"><i class="fa fa-twitter"></i></span></div>
+                              <div class="userdes">
+                                <h3><%= elem.user_name; %> <span><%= elem.date; %></span><span class="tweetdata"><%= elem.retweet_count %> <img class="mrrt10" src="images/icons/user_retweet.png" alt=""> <%= elem.favorite_count %> <img src="images/icons/user_favourite.png" alt=""></span></h3>
+                                <p><%= elem.text %></p>
+                              </div>
+                            </li>
+                      
+                      
+                           <% }) %>
+                    </ul>
+                    <a class="cardfooter" href="/posts">View All Posts <i class="fa fa-chevron-right"></i></a>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                    <h3>Related Topics</h3>
+                    <div class="card withheading withexplore withtabs">
+                      <div class="tablinks">
+                        <a class="customtabs ctab1 active" onclick="opentabcontent(1)" href="javascript:void(0);">Hashtags</a>
+                        <a class="customtabs ctab2" onclick="opentabcontent(2)" href="javascript:void(0);">Keywords</a>
+                      </div>
+                      <div class="tabcontentarea">
+                        <div class="part1 open">
+                            <img  id="rh" alt="Related Hashtags" src=<%=path[0]%> >
+                        </div>
+                        <div class="part2">
+                            <img class="img-fluid" id="wc" alt="wordcloud" src=<%=path[1]%> >
+                          </div>
+                      </div>
+                      <a class="cardfooter" href="/posts">View All Posts <i class="fa fa-chevron-right"></i></a>
+                    </div>
+                </div>
+              </div>
+
+              <div class="row d-flex">
+                <div class="col-md-6">
+                    <h3>Influential Users</h3>
+                  <div class="card withheading withexplore">
+                      <ul class="toppostslist">
+                          <% topinfluencer = feedb.slice(0, 3);%>
+                            <% topinfluencer.forEach(elem => { %>
+                              <li>
+                                  <div class="userimg"><img class="img-fluid" src=<%= elem.profile_image_url%>> <span class="fromdata"><i class="fa fa-twitter"></i></span></div>
+                                  <div class="userdes">
+                                    <h3><%= elem.user_name; %> <span><%= elem.description; %></span><span class="tweetdata"><%= elem.user_name %> rt <%= elem.location %> fv</span></h3>
+                                    <p><%= elem.location %></p>
+                                  </div>
+                                </li>
+                          
+                          
+                               <% }) %>
+                        </ul>
+                        <a class="cardfooter" href="/posts">View All Posts <i class="fa fa-chevron-right"></i></a>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                    <h3>Sentiment</h3>
+                    <div class="card withheading">
+                        <div id="sentiment_chart" style="width:500px; max-width: 100%; height:300px;"></div>
+                    </div>
+                  </div>
+              </div>
+
+              <div class="row d-flex">
+                  <div class="col-md-6">
+                      <h3>Heap Map</h3>
+                      <div class="card withheading">
+                          <div id="chart"></div>
+                      </div>
+                    </div>
+                <div class="col-md-6">
+                    <h3>Top Devices and Apps</h3>
+                    <div class="card withheading">
+                      Top Devices and Apps come here
+                    </div>
+                  </div>
+              </div>
+
+              <h3>World Map</h3>
+              <script src="/js/mapdata.js"></script>
+              <script src="/js/worldmap.js"></script>
+            <div class="card mrtp20">
+                <div id="map"></div>
+              </div>
+             
+                
+              </div>
+
+<!------------------------------------------Heat Map div------------------------------------------------->
+  
+
+
+
+            
+        </div>
+    </div>
+</div>
+<div class="dash-footer">
+  <p class="dash-copyright">
+      <script>
+          var d = new Date();
+          var dy = d.getFullYear();
+          document.write(dy);
+      </script> Social Analysis. All Rights Reserved.
+  </p>
+</div>
+<script>
+    var data1 =  <%- JSON.stringify(feedb1) %>;
+    data1 = data1.reverse();
+</script>
+
+
+<script>
+
+$(document).ready(function(e) {
+	
+	$({ Counter1: 0 }).animate({
+  Counter1: $('.countposts').text()
+}, {
+  duration: 2000,
+  easing: 'swing',
+  step: function() {
+    $('.countposts').text(Math.ceil(this.Counter1));
+  }
+});
+	$({ Counter2: 0 }).animate({
+  Counter2: $('.countreach').text()
+}, {
+  duration: 2000,
+  easing: 'swing',
+  step: function() {
+    $('.countreach').text(Math.ceil(this.Counter2));
+  }
+});
+	$({ Counter3: 0 }).animate({
+  Counter3: $('.countusers').text()
+}, {
+  duration: 2000,
+  easing: 'swing',
+  step: function() {
+    $('.countusers').text(Math.ceil(this.Counter3));
+  }
+});
+	
+            var ctweet = $('.counttweet').text();
+            //$(this).css('-webkit-transform', 'rotate(' + now + 'deg)');
+            $('.counttweet').prop('Counter', 0).animate({
+                Counter: ctweet
+            }, {
+                duration: 2000,
+                easing: 'linear',
+                step: function(ctweet) {
+                    $('.counttweet').text(Math.round(ctweet * 100) / 100);
+                }
+            });
+            var cretweet = $('.countretweet').text();
+            //$(this).css('-webkit-transform', 'rotate(' + now + 'deg)');
+            $('.countretweet').prop('Counter', 0).animate({
+                Counter: cretweet
+            }, {
+                duration: 2000,
+                easing: 'linear',
+                step: function(cretweet) {
+                    $('.countretweet').text(Math.round(cretweet * 100) / 100);
+                }
+            });
+    
+});
+</script>
+
+<script>
+  var ctx = document.getElementById('myChart').getContext('2d');
+function convert(str) {
+  var date = new Date(str),
+    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+    day = ("0" + date.getDate()).slice(-2);
+  return [date.getFullYear(), mnth, day].join("-");
+}
+  var time_Array=[]
+    var tweets = []
+    var retweets = []
+    var favs = []
+    
+    if(data1.length=="1"){
+      for(var i =0;i<data1.length;i++){
+      time_Array.push(convert((new Date( data1[i][1], (data1[i][2] -1), data1[i][3]))))
+      tweets.push(data1[i][4])
+      retweets.push(data1[i][5])
+      favs.push(data1[i][7])  
+    }
+    console.log(time_Array)
+    var myChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: ["",time_Array[0],""],
+    datasets: [{
+      label:"Tweets",
+      backgroundColor: "#22c9ff",
+      fill:false,
+      borderColor:"#22c9ff",
+      data: [null,tweets[0],null]
+    }, {
+      label:"Retweets",
+      backgroundColor: "#d46bc8",
+      fill:false,
+      borderColor:"#d46bc8",
+      data: [null,retweets[0],null]
+    },{
+      label:"Favourites",
+      backgroundColor: "#9085da",
+      fill:false,
+      borderColor:"#9085da",
+      data:[null,favs[0],null]
+      }
+      ]
+  },
+  options: {
+         scales: {
+            xAxes: [{
+              ticks: {
+                  reverse:true
+               },
+               gridLines: {
+                  display: false
+               }
+            }],
+            yAxes: [{
+               ticks: {
+                  display: true
+               },
+               gridLines: {
+                  display: false,
+               // drawBorder: false //maybe set this as well
+               }
+            }]
+         },
+        }
+});}
+
+else{
+  for(var i =0;i<data1.length;i++){
+      time_Array.push(convert((new Date( data1[i][1], (data1[i][2] -1), data1[i][3]))))
+      tweets.push(data1[i][4])
+      retweets.push(data1[i][5])
+      favs.push(data1[i][7])  
+    } 
+  var myChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: time_Array,
+    datasets: [{
+      label:"Tweets",
+      backgroundColor: "#22c9ff",
+      fill:false,
+      borderColor:"#22c9ff",
+      data: tweets
+    }, {
+      label:"Retweets",
+      backgroundColor: "#d46bc8",
+      fill:false,
+      borderColor:"#d46bc8",
+      data: retweets
+    },{
+      label:"Favourites",
+      backgroundColor: "#9085da",
+      fill:false,
+      borderColor:"#9085da",
+      data:favs
+      }
+      ]
+  },
+  options: {
+         scales: {
+            xAxes: [{
+               gridLines: {
+                  display: false
+               }
+            }],
+            yAxes: [{
+               ticks: {
+                  display: true
+               },
+               gridLines: {
+                  display: false,
+               // drawBorder: false //maybe set this as well
+               }
+            }]
+         },
+        }
+});}  
+
+    
+</script>
+
+<!------------------------------------------Heat Map script ------------------------------------------------->
+  
+<!-- <script src="https://cdn.jsdelivr.net/npm/apexcharts@latest"></script> -->
+
+<script>
+  //console.log(<%-JSON.stringify(Dates)%>);
+
+  var series = [];  
+  var myCurrentArray= <%-JSON.stringify(Dates)%>;
+
+ //var myCurrentArray = ['Sat Aug 10 01:20:30 +0000 2019']; 
+
+  
+  function getOptions(myCurrentArray)
+  {       
+      var counts = {};
+  
+      counts['Mon'] = [0,0,0,0];
+      counts['Tue'] = [0,0,0,0];
+      counts['Wed'] = [0,0,0,0];
+      counts['Thu'] = [0,0,0,0];
+      counts['Fri'] = [0,0,0,0];
+      counts['Sat'] = [0,0,0,0];
+      counts['Sun'] = [0,0,0,0];
+      var mon_time_1=0;var mon_time_2=0;var mon_time_3=0;var mon_time_4=0;
+      var tue_time_1=0;var tue_time_2=0;var tue_time_3=0;var tue_time_4=0;
+      var wed_time_1=0;var wed_time_2=0;var wed_time_3=0;var wed_time_4=0;
+      var thu_time_1=0;var thu_time_2=0;var thu_time_3=0;var thu_time_4=0;
+      var fri_time_1=0;var fri_time_2=0;var fri_time_3=0;var fri_time_4=0;
+      var sat_time_1=0;var sat_time_2=0;var sat_time_3=0;var sat_time_4=0;
+      var sun_time_1=0;var sun_time_2=0;var sun_time_3=0;var sun_time_4=0;
+      
+     
+      for(var i=0;i< myCurrentArray.length;i++)
+      {
+        var d = new Date(myCurrentArray[i]);
+      
+          if(d.getUTCDay()==1)
+          {
+          var key = 'Mon';
+          console.log(d.getUTCHours());
+          
+          if(d.getUTCHours() >0 && d.getUTCHours()<6){
+                mon_time_1 = mon_time_1+1;                    
+              }
+            if(d.getUTCHours() >=6 && d.getUTCHours()<12){
+                mon_time_2 = mon_time_2+1;             
+              }
+            if(d.getUTCHours() >=12 && d.getUTCHours()<18){
+                mon_time_3 = mon_time_3+1;                 
+              }
+            if(d.getUTCHours() >=18 && d.getUTCHours()<24){
+                mon_time_4 = mon_time_4+1;                   
+            }
+          
+          counts[key] = [mon_time_1,mon_time_2,mon_time_3,mon_time_4];
+          
+          
+        }
+        else if(d.getUTCDay()==2)
+        {
+          var key = 'Tue';
+        
+        if(d.getUTCHours() >0 && d.getUTCHours()<6){
+            tue_time_1 = tue_time_1+1;                    
+              }
+            if(d.getUTCHours() >=6 && d.getUTCHours()<12){
+                tue_time_2 = tue_time_2+1;             
+              }
+            if(d.getUTCHours() >=12 && d.getUTCHours()<18){
+                tue_time_3 = tue_time_3+1;                 
+              }
+            if(d.getUTCHours() >=18 && d.getUTCHours()<24){
+                tue_time_4 = tue_time_4+1;                   
+            }
+          
+          counts[key] = [tue_time_1,tue_time_2,tue_time_3,tue_time_4];
+        
+          }
+          else if(d.getUTCDay()==3)
+          {
+          var key = 'Wed';
+          if(d.getUTCHours() >0 && d.getUTCHours()<6){
+            wed_time_1 = wed_time_1+1;                    
+              }
+            if(d.getUTCHours() >=6 && d.getUTCHours()<12){
+                wed_time_2 = wed_time_2+1;             
+              }
+            if(d.getUTCHours() >=12 && d.getUTCHours()<18){
+                wed_time_3 = wed_time_3+1;                 
+              }
+            if(d.getUTCHours() >=18 && d.getUTCHours()<24){
+                wed_time_4 = wed_time_4+1;                   
+            }
+          
+          counts[key] = [wed_time_1,wed_time_2,wed_time_3,wed_time_4];
+          }
+          else if(d.getUTCDay()==4)
+          {
+          var key = 'Thu';
+          if(d.getUTCHours() >0 && d.getUTCHours()<6){
+            thu_time_1 = thu_time_1+1;                    
+              }
+            if(d.getUTCHours() >=6 && d.getUTCHours()<12){
+                thu_time_2 = thu_time_2+1;             
+              }
+            if(d.getUTCHours() >=12 && d.getUTCHours()<18){
+                thu_time_3 = thu_time_3+1;                 
+              }
+            if(d.getUTCHours() >=18 && d.getUTCHours()<24){
+                thu_time_4 = thu_time_4+1;                   
+            }
+          
+          counts[key] = [thu_time_1,thu_time_2,thu_time_3,thu_time_4];
+          }
+         else if(d.getUTCDay()==5)
+          {
+          var key = 'Fri';
+          if(d.getUTCHours() >0 && d.getUTCHours()<6){
+            fri_time_1 = fri_time_1+1;                    
+              }
+            if(d.getUTCHours() >=6 && d.getUTCHours()<12){
+                fri_time_2 = fri_time_2+1;             
+              }
+            if(d.getUTCHours() >=12 && d.getUTCHours()<18){
+                fri_time_3 = fri_time_3+1;                 
+              }
+            if(d.getUTCHours() >=18 && d.getUTCHours()<24){
+                fri_time_4 = fri_time_4+1;                   
+            }
+          
+          counts[key] = [fri_time_1,fri_time_2,fri_time_3,fri_time_4];
+          }
+          else if(d.getUTCDay()==6)
+          {
+          var key = 'Sat';
+          if(d.getUTCHours() >0 && d.getUTCHours()<6){
+            sat_time_1 = sat_time_1+1;                    
+              }
+            if(d.getUTCHours() >=6 && d.getUTCHours()<12){
+                sat_time_2 = sat_time_2+1;             
+              }
+            if(d.getUTCHours() >=12 && d.getUTCHours()<18){
+                sat_time_3 = sat_time_3+1;                 
+              }
+            if(d.getUTCHours() >=18 && d.getUTCHours()<24){
+                sat_time_4 = sat_time_4+1;                   
+            }
+          
+          counts[key] = [sat_time_1,sat_time_2,sat_time_3,sat_time_4];
+          }
+          else if(d.getUTCDay()==0)
+          {
+          var key = 'Sun';
+          if(d.getUTCHours() >0 && d.getUTCHours()<6){
+            sun_time_1 = sun_time_1+1;                    
+              }
+            if(d.getUTCHours() >=6 && d.getUTCHours()<12){
+                sun_time_2 = sun_time_2+1;             
+              }
+            if(d.getUTCHours() >=12 && d.getUTCHours()<18){
+                sun_time_3 = sun_time_3+1;                 
+              }
+            if(d.getUTCHours() >=18 && d.getUTCHours()<24){
+                sun_time_4 = sun_time_4+1;                   
+            }
+          
+          counts[key] = [sun_time_1,sun_time_2,sun_time_3,sun_time_4];
+          }
+      }
+
+      
+   
+  
+    var obj1 =  {name:'Mon',data:[{x:'0 - 6',y:counts.Mon['0']},{x:'6 - 12',y:counts.Mon['1']},{x:'12 - 18',y:counts.Mon['2']},{x:'18 - 24',y:counts.Mon['3']}]};
+    var obj2 =  {name:'Tue',data:[{x:'0 - 6',y:counts.Tue['0']},{x:'6 - 12',y:counts.Tue['1']},{x:'12 - 18',y:counts.Tue['2']},{x:'18 - 24',y:counts.Tue['3']}]};
+    var obj3 =  {name:'Wed',data:[{x:'0 - 6',y:counts.Wed['0']},{x:'6 - 12',y:counts.Wed['1']},{x:'12 - 18',y:counts.Wed['2']},{x:'18 - 24',y:counts.Wed['3']}]};
+    var obj4 =  {name:'Thu',data:[{x:'0 - 6',y:counts.Thu['0']},{x:'6 - 12',y:counts.Thu['1']},{x:'12 - 18',y:counts.Thu['2']},{x:'18 - 24',y:counts.Thu['3']}]};
+    var obj5 =  {name:'Fri',data:[{x:'0 - 6',y:counts.Fri['0']},{x:'6 - 12',y:counts.Fri['1']},{x:'12 - 18',y:counts.Fri['2']},{x:'18 - 24',y:counts.Fri['3']}]};
+    var obj6 =  {name:'Sat',data:[{x:'0 - 6',y:counts.Sat['0']},{x:'6 - 12',y:counts.Sat['1']},{x:'12 - 18',y:counts.Sat['2']},{x:'18 - 24',y:counts.Sat['3']}]};
+    var obj7 =  {name:'Sun',data:[{x:'0 - 6',y:counts.Sun['0']},{x:'6 - 12',y:counts.Sun['1']},{x:'12 - 18',y:counts.Sun['2']},{x:'18 - 24',y:counts.Sun['3']}]};
+  
+        
+    series.push(obj1,obj2,obj3,obj4,obj5,obj6,obj7);
+        
+    var options = {
+        chart: {
+            height: 400,
+            type: 'heatmap',
+        },
+        dataLabels: {
+            enabled: true
+        },
+        colors: ["#008FFB"],
+        title: {
+            text: 'HeatMap Chart'
+        },
+  
+    }
+  
+    options.series = series;
+    return options;
+  }
+  
+  
+    var options = getOptions(myCurrentArray);
+  
+    var chart = new ApexCharts(
+        document.querySelector("#chart"),
+        options
+    );
+  
+    chart.render();
+  </script>
+  <!------------------------------------------Heat Map script------------------------------------------------->
+  <!-- sentiment script -->
+  <script>
+
+      google.charts.load('current', {'packages':['corechart']});
+         google.charts.setOnLoadCallback(drawChart);
+      
+         function drawChart() {
+      
+           var data = google.visualization.arrayToDataTable([
+             ['Sentiment', 'Value'],
+             ['Positive',   <%= (typeof(feedback1) !== undefined)? parseFloat(feedback1) : undefined  %>],
+             ['Negative', <%= (typeof(feedback2) !== undefined)? parseFloat(feedback2) : undefined  %>],
+             ['Neutral', <%= (typeof(feedback3) !== undefined)? parseFloat(feedback3) : undefined  %>]
+            
+           ]);
+      
+           var options = {
+             title: 'Sentiment',
+             is3D:true,
+             
+           };
+      
+           var chart = new google.visualization.PieChart(document.getElementById('sentiment_chart'));
+      
+           chart.draw(data, options);
+         }
+      </script>
+
+
+
+  <!-- s s -->
+<script src="/js/loader.js"></script>
+<script src="/js/jquery.dataTables.min.js"></script>
+<%- include('../_includes/noFooter') %>

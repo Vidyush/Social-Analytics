@@ -1,0 +1,167 @@
+<%- include('../_includes/head') %>
+<header class="wow animated fadeInDown">
+    <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-light"> <a class="navbar-brand mb-1" href="index.html"><img src="images/logo.png"
+            class="img-fluid" alt=""></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav">
+            <!--<li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Products</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown"> <a class="dropdown-item" href="#">Action</a> <a class="dropdown-item" href="#">Another action</a> <a class="dropdown-item" href="#">Something else here</a> </div>
+          </li>
+          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pricing</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown"> <a class="dropdown-item" href="#">Action</a> <a class="dropdown-item" href="#">Another action</a> <a class="dropdown-item" href="#">Something else here</a> </div>
+          </li>-->
+            
+            <li class="nav-item"><a class="nav-link" href="/search">Search</a></li>
+            <li class="nav-item"><a class="nav-link" href="/auth/login">Login</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+</header>
+
+<section class="pricing text-center">
+  <div class="container">
+    <h2 class="heading wow animated fadeInUp">Social Media Analytics Platform</h2>
+    <p class="wow animated fadeInUp">Get instant access to online mentions, grow customer satisfaction and sales.</p>
+    <div class="pricing-block">
+      <div class="row customrow">
+        <!-- <div class="col-lg-4 col-xl-4 col-md-4 pricebox solo">
+          <div class="price-info"> <img src="assets/images/solo.png" alt="">
+            <h3 class="col-solo">Solo</h3>
+            <div class="price"><span>$49</span>per month</div>
+            <ul class="col-solo">
+              <li><span>1 user max<span>Admin only</span></span></li>
+              <li><span>1 Mastercard card included<span>1 physical card</span></span></li>
+              <li><span>20 SEPA transfers<span>Transfers (ingoing/outgoing) or debits</span></span></li>
+              <li><span>Unlimited card transactions<span>No payment fees in euro</span></span></li>
+            </ul>
+            <button type="button" class="choose-btn">Choose this plan</button>
+          </div>
+          <div class="feature">
+            <h3>Features</h3>
+            <ul class="col-solo">
+              <li>50K mentions / mo</li>
+              <li>5 users</li>
+              <li>Update every 12h</li>
+              <li>1 month archive</li>
+              <li>Data analysis</li>
+              <li>Sentiment analysis</li>
+              <li>Mobile App</li>
+              <li>Slack Integration</li>
+            </ul>
+          </div>
+        </div> -->
+        <div class="col-lg-4 col-xl-4 col-md-4 pricebox standard">
+          <div class="price-info">
+            <h2>Most Popular</h2>
+            <img src="assets/images/standard.png" alt="">
+            <h3 class="col-stand">Free</h3>
+            <div class="price"><span>Selected</div>
+              <button type="button" class="choose-btn">This plan is active</button>
+            <!-- <ul class="col-stand">
+              <li><span>5 users max<span>Admin + employees + accountant</span></span></li>
+              <li><span>4 Mastercard cards included<span>2 physical cards, 2 virtual cards</span></span></li>
+              <li><span>100 SEPA transfers<span>Transfers (ingoing/outgoing) or debits</span></span></li>
+              <li><span>Unlimited card transactions<span>No payment fees in euro</span></span></li>
+            </ul>
+            <button type="button" class="choose-btn">This plan is active</button>
+          </div>
+          <div class="feature">
+            <h3>Features</h3>
+            <ul class="col-solo">
+              <li>400K mentions / mo</li>
+              <li>10 users</li>
+              <li>Update every hour</li>
+              <li>12 months archive</li>
+              <li>Data analysis</li>
+              <li>Sentiment analysis</li>
+              <li>Mobile App</li>
+              <li>Slack Integration</li>
+              <li>PDF reports</li>
+              <li>Extending limits</li>
+              <li>Social Media Reach</li>
+            </ul> -->
+          </div>
+        </div>
+        <!-- <div class="col-lg-4 col-xl-4 col-md-4 pricebox premium">
+          <div class="price-info"> <img src="assets/images/premium.png" alt="">
+            <h3 class="col-prem">Premium</h3>
+            <div class="price"><span>$299</span>per month</div>
+            <ul class="col-prem">
+              <li><span>20 user max<span>Admin only</span></span></li>
+              <li><span>10 Mastercard cards included<span>1 physical card</span></span></li>
+              <li><span>500 SEPA transfers<span>Transfers (ingoing/outgoing) or debits</span></span></li>
+              <li><span>Unlimited card transactions<span>No payment fees in euro</span></span></li>
+            </ul>
+            <button type="button" class="choose-btn">Choose this plan</button>
+          </div>
+          <div class="feature">
+            <h3>Features</h3>
+            <ul class="col-solo">
+              <li>50K mentions / mo</li>
+              <li>5 users</li>
+              <li>Update every 12h</li>
+              <li>1 month archive</li>
+              <li>Data analysis</li>
+              <li>Sentiment analysis</li>
+              <li>Mobile App</li>
+              <li>Slack Integration</li>
+            </ul>
+          </div>
+        </div> -->
+
+        <form id="checkoutForm" name="checkoutForm" method="POST" action= <%= postUrl %>>
+          <table class="mainForm">
+            <tr>
+                <!-- <td>order id</td> -->
+                <td><input type="hidden" name="orderId" ></td>
+            </tr>
+            <tr>
+                <!-- <td>order amount</td> -->
+                <td><input type="hidden" name="orderAmount" value="2" ></td>
+            </tr>
+            <tr>
+                <!-- <td>customer name</td> -->
+                <td><input type="hidden" name="customerName" value="a" ></td>
+            </tr>
+            <tr>
+                <!-- <td>customer email</td> -->
+                <td><input type="hidden" name="customerEmail" value="a@a.com" ></td>
+            </tr>
+            <tr>
+                <!-- <td>customer phone</td> -->
+                <td><input type="hidden" name="customerPhone" value="1234512345" ></td>
+                </tr>
+
+                <tr>
+                  <!-- <td>customer phone</td> -->
+                  <td> <input type="hidden" name="returnUrl" value="http://localhost:1234/search"/></td>
+                  </tr>
+
+                 
+        </table>
+        <table>
+          <tr>
+              <td colspan="2"><input type="submit" value="pay cashfree" id="payBtn" style="display:none" ></td>
+          </tr>
+          <tr>
+              <td colspan="2"><button value="pay" id="submitBtn">pay</button></td>
+          </tr>
+          </table>
+       </form>
+        <div id="generatedSignature"></div>
+           
+      </div>
+    </div>
+  </div>
+</section>
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="/cashfree/javascripts/helper.js"></script>
+
+<script type="text/javascript" src="/cashfree/javascripts/script.js"></script>
+<%- include('../_includes/footer') %>

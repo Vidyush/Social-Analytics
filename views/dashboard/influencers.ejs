@@ -1,0 +1,454 @@
+<%- include('../_includes/head') %>
+<div class="dashboard-page">
+    <%- include('../_includes/dashboardNavMini') %>
+ 
+  <div class="dashboard">
+    <div class="search-section">
+      <div class="container-fluid deshheader">
+          <%- include('../_includes/dashboardNav') %>
+          <div class="col-12">
+            <h3>Influences</h3>
+            <div class="card withheading">
+                <div class="dtablebox">
+                    <table id="example" class="display nowrap cell-border" style="width:100%">
+                      <thead>
+                        <tr>
+                          <th>User Name</th>
+                          <th>Followers</th>
+                          <th>Location</th>
+                          <th>Information</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                          <% user_feb.forEach(elem => { 
+                            
+                            console.log(elem);
+                            %>
+                        <tr>
+                          <td><%= elem.user_name %></td>
+                          <td><%= elem.followers_count %></td>
+                          <td><%= elem.location %></td>
+                          <!-- <td><%= elem.description %></td> -->
+                          <td>
+                          <div class="container">
+                            <!-- Trigger the modal with a button -->
+                            <a class="opendialoge">VIEW</a><!-- data-toggle="modal" data-target="#myModal<%= elem.user_id %>"-->
+                            <div class="customviewmodel"></div>
+                            <div class="contentarea">
+                              <p><a href="javascript:void(0);" class="closedialoge">&times;</a></p>
+                              <table id="example1" class="modal-body" style="width:100%">
+                                <thead>
+                                  <tr>
+                                    <th>Parameter</th>
+                                    <th>Value</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>User Profile Image</td>
+                                        <td><img src=<%= elem.profile_image_url %>></td>
+                                    </tr>
+                                 
+                                  <tr>
+                                    <td>User Name</td>
+                                    <td><%= elem.user_name %></td>
+                                  </tr>
+                                  <tr>
+                                    <td>Screen Name</td>
+                                    <td><%= elem.screen_name %></td>
+                                  </tr>
+                                  <tr>
+                                      <td>User Name</td>
+                                      <td><%= elem.user_name %></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Posts</td>
+                                        <td><%= '2' %></td>
+                                      </tr>
+                                      <tr>
+                                          <td>Avg Eng</td>
+                                          <td><%= '2' %></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Followers</td>
+                                            <td><%= elem.followers_count %></td>
+                                          </tr>
+                                          <tr>
+                                              <td>Impressions</td>
+                                              <td><%= '180' %></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Exposure</td>
+                                                <td><%= '450' %></td>
+                                              </tr>
+                                </tbody>
+                              </table>
+
+                              <table id="example1" class="modal-body" style="width:100%">
+                                  <thead>
+                                    <tr>
+                                      <th colspan="2">Posts</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr>
+                                          <td>Posts</td>
+                                          <td><%='Continuous attack on Hindus in Delhi, Jaipur, Dehradun, Meerut, Kanpur etc are due to their frustration of loosing… https://t.co/0ZIVGuocNB' %></td>
+                                      </tr>
+                                   
+                                    <tr>
+                                      <td>Date</td>
+                                      <td><%= 'Jun 29, 2019' %></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Engagements</td>
+                                      <td><%= '234534' %></td>
+                                    </tr>
+                                    
+                                     
+                                       
+                                  </tbody>
+                                </table>
+                            </div>
+                            
+                          </div>
+              
+                        </td> 
+                        <% }) %> 
+                        </tr>
+                        
+                      </tbody>
+                    </table>
+                  </div>
+            </div>
+            </div>
+  </div>
+</div>
+
+
+<div class="dash-footer">
+  <p class="dash-copyright">
+      <script>
+          var d = new Date();
+          var dy = d.getFullYear();
+          document.write(dy);
+      </script> Social Analysis. All Rights Reserved.
+  </p>
+</div>
+<script>
+$(document).ready(function() {  
+    $('#example').DataTable( {  
+      "scrollX": true,
+      "bLengthChange": false,
+        initComplete: function () {  
+            this.api().columns().every( function () {  
+                var column = this;  
+                var select = $('<select><option value=""></option></select>')  
+                    .appendTo( $(column.footer()).empty() )  
+                    .on( 'change', function () {  
+                        var val = $.fn.dataTable.util.escapeRegex(  
+                            $(this).val()  
+                        );  
+                //to select and search from grid  
+                        column  
+                            .search( val ? '^'+val+'$' : '', true, false )  
+                            .draw();  
+                    } );  
+   
+                column.data().unique().sort().each( function ( d, j ) {  
+                    select.append( '<option value="'+d+'">'+d+'</option>' )  
+                } );  
+            } );  
+        }  
+    } );  
+} );
+</script> 
+
+<script>
+  // Get the modal
+  var modal = document.getElementById('myModal');
+  
+  // Get the button that opens the modal
+  var btn = document.getElementById("myBtn");
+  
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+  
+  // When the user clicks the button, open the modal 
+  btn.onclick = function() {
+      modal.style.display = "block";
+  }
+  
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function() {
+      modal.style.display = "none";
+  }
+  
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+      if (event.target == modal) {
+          modal.style.display = "none";
+      }
+  }
+  </script>
+
+
+<script>
+    // Get the modal
+    var modal = document.getElementById('myModal1');
+    
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn1");
+    
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    </script>
+
+<script>
+    // Get the modal
+    var modal = document.getElementById('myModal2');
+    
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn2");
+    
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    </script>
+
+<script>
+    // Get the modal
+    var modal = document.getElementById('myModal3');
+    
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn3");
+    
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    </script>
+
+
+<script>
+    // Get the modal
+    var modal = document.getElementById('myModal4');
+    
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn4");
+    
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    </script>
+
+
+<script>
+    // Get the modal
+    var modal = document.getElementById('myModal5');
+    
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn5");
+    
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    </script>
+
+
+<script>
+    // Get the modal
+    var modal = document.getElementById('myModal6');
+    
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn6");
+    
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    </script>
+
+
+<script>
+    // Get the modal
+    var modal = document.getElementById('myModal7');
+    
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn7");
+    
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    </script>
+
+
+<script>
+    // Get the modal
+    var modal = document.getElementById('myModal8');
+    
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn8");
+    
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    </script>
+
+
+<script>
+    // Get the modal
+    var modal = document.getElementById('myModal9');
+    
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn9");
+    
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    </script>
+
+<%- include('../_includes/noFooter') %>

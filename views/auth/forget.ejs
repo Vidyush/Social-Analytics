@@ -1,0 +1,68 @@
+<%- include("../_includes/head") %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="left-login col-lg-6 col-xl-6"> <img src="/images/illustration.png" alt=""
+        class="img-fluid illustration"> <span class="copyright-l">Copyright <script>
+          var d = new Date();
+          var dy = d.getFullYear();
+          document.write(dy);
+        </script> Social Media Analysis</span> </div>
+    <div class="login-right col-lg-6 col-xl-6">
+      <div class="access-form">
+        <figure class="text-center"><img src="/images/login-logo.png" alt="">
+          <figcaption>Buzzabl</figcaption>
+        </figure>
+
+	
+				<% if(error!=''){%>
+					<div class="alert alert-danger"><%=error%></div>
+				<%}%>
+				<% if(success!=''){%>
+					<div class="alert alert-success"><%=success%></div>
+				<%}%>
+				
+			<div class="login-panel panel panel-default">
+					<div class="panel-heading"><%=title%></div>
+				<div class="panel-body">
+					<% if(token=='undefined' || token=='') {%>
+						
+					<form role="form" action="/auth/resetpassword" method="POST">
+						<!-- <input type="hidden" name="_csrf" value="<%# =csrfToken#%>"> -->
+						<fieldset>
+							<div class="form-group">
+								<input class="form-control" placeholder="E-mail / User Name" name="email" type="email" autofocus="">
+							</div>
+							
+							
+							<button type="submit" class="btn btn-primary">Reset Password</button></fieldset>
+						<br/>
+							<a href="login">Login?</a>
+							&nbsp;
+							<a href="sign-up">New User/signUp?</a>							
+					</form>
+					<% }else{ %>
+						<form role="form" action="/auth/changepassword/<%=token%>" method="POST">
+							<!-- <input type="hidden" name="_csrf" value="<%# =csrfToken#%>"> -->
+							<fieldset>
+								<div class="form-group">
+									<input class="form-control" placeholder="Password" name="Password" type="password" autofocus="">
+								</div>
+								<div class="form-group">
+										<input class="form-control" placeholder="Confirm Password" name="ConfirmPassword" type="password" autofocus="">
+									</div>
+								
+								<button type="submit" class="btn btn-primary">Update Password</button></fieldset>
+							<br/>
+								<a href="login">Login?</a>
+								&nbsp;
+								<a href="sign-up">New User/signUp?</a>							
+						</form>
+
+					<% }%>
+				</div>
+			</div>
+	
+	
+
+
+    <%- include("../_includes/noFooter") %>

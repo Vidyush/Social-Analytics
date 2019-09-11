@@ -1,0 +1,45 @@
+<div class="dashboard-nav">
+        <div class="d-logo"><a href="/search"><img src="/images/logo.png" alt=""
+                    class="img-fluid desktop-logo"><img src="/images/login-logo.png" alt=""
+                    class="img-fluid mobile-logo"></a></div>
+        <div class="m-header">
+            <div class="user"> <a href="javascript:void(0);"><img src="/images/dashboard/user.png" alt=""> Hi,
+                    <span class="uname"><%= user.fullName %> </span></a>
+                <div class="dropuser"><a href="/auth/logout">Logout</a></div>
+                <div class="dropuser"><a href="/auth/profile">Profile</a></div>
+            </div>
+            <a class="m-menu" href="javascript:void(0);"><img src="/images/humberger.png" alt=""></a>
+        </div>
+        <ul class="dashnav">
+                <li><a class="" href="/dashboard"><img src="/images/dashboard/dash.png" alt="">Dashboard</a>
+                </li>
+                <li><a class="" href="/posts"><img src="/images/dashboard/dash.png" alt="">Posts</a>
+                </li>
+                <li><a class="" href="/sentiment"><img src="/images/dashboard/sentiment.png" alt="">Sentiment</a>
+                </li>
+                <li><a class="" href="/influencers"><img src="/images/dashboard/influential.png"
+                            alt="">Influencers</a></li>
+                <li><a class="" href="/buzzwords"><img src="/images/dashboard/buzz.png" alt="">Buzz Words</a></li>
+                 <li><a class="" href="/recents"><img src="/images/dashboard/recent.png" alt="">Recent Searches</a></li>
+                    
+               </ul>
+    </div>
+    <script>
+    $(function(){
+    var current = location.pathname;
+    //alert(current);
+    if (current == '/analyze'){
+        currentpage = '/dashboard';
+    } else {
+        currentpage = current;
+    }
+    //alert(current);
+    $('.dashnav li a').each(function(){
+        var $this = $(this);
+        // if the current path is like this link, make it active
+        if($this.attr('href').indexOf(currentpage) !== -1){
+            $this.addClass('active');
+        }
+    })
+})
+    </script>

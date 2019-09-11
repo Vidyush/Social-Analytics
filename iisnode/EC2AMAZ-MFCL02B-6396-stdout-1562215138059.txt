@@ -1,0 +1,2 @@
+Server running on port \\.\pipe\5c548fde-d4b6-459a-99c1-c2371048cf55
+Connection has been established successfully.

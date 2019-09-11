@@ -1,0 +1,128 @@
+<%- include('../_includes/head') %>
+<div class="dashboard-page">
+    <%- include('../_includes/dashboardNavMini') %>
+ 
+  <div class="dashboard">
+    <div class="search-section">
+      <div class="container-fluid deshheader">
+          <%- include('../_includes/dashboardNav') %>
+          <div class="col-12">
+            <h3>Influences</h3>
+            <div class="card withheading">
+                <div class="dtablebox">
+                    <table id="example" class="display nowrap cell-border" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Photo</th>
+                                <th>Tweet</th>
+                                <th>User</th>
+                                <th>Retweet</th>
+                                <th>Favourite</th>
+                                <th>Sentiment</th>
+                                <th>Location</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% posts_array.forEach(elem => { %>
+                        
+                            <tr>
+                                <td> <%= elem.date; %> </td>
+                                <td><img src=<%= elem.profile_image_url%>></td>
+                                <td><a target="_blank" href=<%=elem.url %>><%= elem.text %></a> </td>
+                                <td><a target="_blank" href=<%=elem.profile_link %>><%= elem.user_name %> </a> </td>
+                                <td> <%= elem.retweet_count %> </td>
+                                <td> <%= elem.favorite_count %> </td>
+                                <td><% if(elem.score>0){%><img src="images/icons/sentiment_positive.png"><%}
+                                    else if(elem.score==0){%><img src="images/icons/sentiment_neutral.png"><%}
+                                    else{%><img src="images/icons/sentiment_negative.png"><%}%></td>
+                                <td> <%= elem.location %> </td>
+                        
+                            </tr>
+                        
+                        
+                             <% }) %>
+                        </tbody>
+                </table>
+              </div>
+            </div>
+            </div>
+  </div>
+</div>
+
+
+<div class="dash-footer">
+  <p class="dash-copyright">
+      <script>
+          var d = new Date();
+          var dy = d.getFullYear();
+          document.write(dy);
+      </script> Social Analysis. All Rights Reserved.
+  </p>
+</div>
+<script>
+  $(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#example thead tr').clone(true).appendTo( '#example thead' );
+    $('#example thead tr:eq(1) th').each( function (i) {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+ 
+        $( 'input', this ).on( 'keyup change', function () {
+            if ( table.column(i).search() !== this.value ) {
+                table
+                    .column(i)
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    } );
+ 
+    var table = $('#example').DataTable( {
+        orderCellsTop: true,
+        fixedHeader: true,
+        //searching: false
+    } );
+} );
+
+
+
+
+
+
+
+
+// $(document).ready(function() {  
+//     $('#example').DataTable( {  
+//       "scrollX": true,
+//       "bLengthChange": false,
+//         initComplete: function () {  
+//             this.api().columns().every( function () {  
+//                 var column = this;  
+//                 var select = $('<select><option value=""></option></select>')  
+//                     .appendTo( $(column.footer()).empty() )  
+//                     .on( 'change', function () {  
+//                         var val = $.fn.dataTable.util.escapeRegex(  
+//                             $(this).val()  
+//                         );  
+//                 //to select and search from grid  
+//                         column  
+//                             .search( val ? '^'+val+'$' : '', true, false )  
+//                             .draw();  
+//                     } );  
+   
+//                 column.data().unique().sort().each( function ( d, j ) {  
+//                     select.append( '<option value="'+d+'">'+d+'</option>' )  
+//                 } );  
+//             } );  
+//         }  
+//     } );  
+// } );
+
+
+
+
+
+</script> 
+
+<%- include('../_includes/noFooter') %>

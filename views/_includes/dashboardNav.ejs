@@ -1,0 +1,39 @@
+ <div class="row">
+   <div style="width:80%;">
+               <form action="/analyze" id="analyze" class="search-form" method="POST">
+              <div class="search">
+                <input type="text" id="hashtag" name="hashtag" value="<%=hashtag%>" required>
+              </div>
+              <div class="filter site">
+                  <a href="" class="opentool"><img class="filter-icon" src="/images/twitter.png" alt=""> Twitter</a>
+              </div>   
+              <div class="btn-search">
+                <button type="submit" onclick="showLoader(this);">Search</button>
+              </div>
+            </form>
+          </div>
+            <div style="width:20%">
+                <div class="user float-right" > <a href="javascript:void(0);"><img src="/images/dashboard/user.png" alt=""> Hi, <span class="uname"> <%= user.name%> </span></a>
+                    <div class="dropuser"><a href="/auth/logout">Logout</a></div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        
+       
+      <script>
+      function showLoader(obj){
+      $('#analyze').submit(function(e) {
+      if ($('#hashtag').val().trim() == '') {
+        e.preventDefault();
+        alert('Please enter a hashtag');
+      }
+      else{
+        $(".search-page").css("opacity", 0.1);
+        $(".loader").removeClass('hidden').css({"display": "block"});
+      }
+      });
+      }
+      </script>
+                          
+                  
