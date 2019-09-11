@@ -11,10 +11,10 @@ const Keyword = sequelize.define('keywords', {
     user: Sequelize.STRING(255),    
     wpath: Sequelize.STRING(255),//wordcloud path
     rhpath: Sequelize.STRING(255),//related hastag wordcloud path
-    mapcloud:Sequelize.STRING(255),
     fullStream:Sequelize.JSON,
     dashboardJson:Sequelize.JSON,
     dateJson:Sequelize.JSON,
+    score:Sequelize.JSON,
     count:{type:Sequelize.INTEGER,
         defaultValue:1}
 })

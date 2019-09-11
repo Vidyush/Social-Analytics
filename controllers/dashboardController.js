@@ -47,9 +47,62 @@ function convertDate(d){
 module.exports.getDashboards = (req, res) => {
   
   if(!req.params.id)
-  {
-     return res.render("dashboard/dashboard",{feedback4:req.session.hashtag,feedback : req.session.test, feedb : req.session.arr, feedb1: req.session.arr1,Dates:req.session.dates,path:req.session.paths,influencer:req.session.influencer,feedback1 : req.session.test[5], feedback2 :req.session.test[7], feedback3: req.session.test[6]});
-  }
+  { 
+    Keyword.findOne({
+    where: {
+    user: req.session.user.email,
+    keyword : req.session.hashtag
+    }
+  })
+  .then(key => {
+    let allData = JSON.parse(JSON.stringify(key.fullStream));
+    
+    let student = JSON.parse(key.dashboardJson);  
+    var data1 = [];
+    data1[0] = student[0]["total_tweets"];
+    data1[1] = student[0]["total_retweets"];
+    data1[2] = student[0]["engagement_level"];
+    data1[3] = student[0]["total_fav"];
+    data1[4] = student[0]["fav_per"];
+    data1[5] = student[0]["pos"];
+    data1[6] = student[0]["neu"];
+    data1[7] = student[0]["neg"];
+    data1[8] = key.keyword;
+    test = data1;
+    
+    let student2 = JSON.parse(key.dateJson); 
+
+      var totalMessages1 = Object.keys(student2).length;
+           
+      let array1 = new Array(totalMessages1);   
+      for(let i = 0; i < totalMessages1; i++) {
+        array1[i] = new Array();         
+      }
+      
+      for(let a = 0;a<totalMessages1;a++){       
+          array1[a][0]=student2[a].V1;
+          array1[a][1]=student2[a].V2;
+          array1[a][2]=student2[a].V3;
+          array1[a][3]=student2[a].V4;
+          array1[a][4]=student2[a].V5;
+          array1[a][5]=student2[a].V6;
+          array1[a][6]=student2[a].V7;
+          array1[a][7]=student2[a].V8;
+          array1[a][8]=student2[a].V9;
+          array1[a][9]=student2[a].V10;
+          array1[a][10]=student2[a].V11;
+          array1[a][11]=student2[a].V12;
+      }
+      arr1 = array1;
+
+    let wordcloud_paths = [key.rhpath,key.wpath];
+    let Dates = [];
+allData.forEach(element => {
+  Dates.push(element.created_at)
+}) 
+return res.render("dashboard/dashboard",{hashtag:req.session.hashtag,feedback :test, feedb : req.session.usr_array, feedb1:arr1,Dates,path:wordcloud_paths,feedback1 :test[5], feedback2 :test[7], feedback3: test[6]});})
+   }
+
     else{
     Keyword.findOne({
       where: {
@@ -167,7 +220,7 @@ module.exports.getBuzzwords = (req,res)=>{
 
    let wordcloud_paths = [key.rhpath,key.wpath];
     
-    return res.render("dashboard/buzzwords", {feedback4: req.session.hashtag,path:wordcloud_paths});
+    return res.render("dashboard/buzzwords", {hashtag: req.session.hashtag,path:wordcloud_paths});
     
   })
   .catch(err => console.log(err));
@@ -190,79 +243,11 @@ else{
 
 
 module.exports.getPosts = (req,res)=>{
-  function getScore(id) {
-    console.log(id)
-    let getScore = req.session.s.find(x => x.id_str === id);
-    console.log(getScore)
-    return(getScore.Score)   
-  } 
-  function UrlGetter(id){
-    //console.log(id)
-    let getUrl = req.session.allData.find(x => x.id_str === id);
-    //console.log(getUrl)
-    //console.log('========');
-    getUrl =getUrl.entities.urls;
-    console.log(getUrl)
-    if(getUrl.length>0)
-    {
-      getUrl = getUrl.find(x=>x['url'])
-      return(getUrl.url);
-    }
-    else{
-      return "";
-    }
-    //console.log(getUrl)
-  
-    
-  }
   if(!req.params.id){
     
- Keyword.findOne({
-   where: {
-     user: req.session.user.email,
-     keyword:req.session.hashtag
-   }
- })
- .then(key => {
-   console.log(key.mapcloud)
-   let wordcloud_paths = [key.mapcloud];
-   let sw = JSON.parse(JSON.stringify(key.fullStream));
-  
-   var usr_array = new Array();
-     sw.forEach(element => {
-       if(element.retweeted = "false")
-       {var d = element.created_at;
-
-       usr_array.push({
-         url:UrlGetter(element.id_str),
-         //element.entities.urls[0]['url'],
-         text :element.text,
-         source:element.source,
-         score: getScore(element.id_str),
-         user_id : element.user.id,
-         user_name:element.user.name,
-         screen_name:element.user.screen_name,
-         location:element.user.location,
-         description:element.user.description,
-         followers_count:element.user.followers_count,
-         friends_count:element.user.friends_count,
-         listed_count:element.user.listed_count,
-         favourites_count:element.user.favourites_count,
-         statuses_count:element.user.statuses_count,
-         user_lang:element.user.lang,
-         profile_background_image_url:element.user.profile_background_image_url,
-         profile_image_url:element.user.profile_image_url,
-         retweet_count:element.retweet_count,
-         date : convertDate(d)
-     })
-   }});
-
-   let unique = _.uniqBy(usr_array, 'user_id');
  
+ return res.render("dashboard/posts",{hashtag: req.session.hashtag,usr_array:req.session.usr_array})
 
- return res.render("dashboard/posts",{feedback4: req.session.hashtag,feedback : req.session.test, user_feb : unique,mpath:wordcloud_paths})
-})
-.catch(err => console.log(err));
    }
    else{
      Keyword.findOne({
@@ -314,50 +299,11 @@ module.exports.getPosts = (req,res)=>{
 
 module.exports.getInfluencers = (req,res)=>{
    if(!req.params.id){
-  Keyword.findOne({
-    where: {
-      user: req.session.user.email,
-      keyword:req.session.hashtag
-    }
-  })
-  .then(key => {
-    console.log(key.mapcloud)
-    let wordcloud_paths = [key.mapcloud];
-    let sw = JSON.parse(JSON.stringify(key.fullStream));
-   
-    var usr_array = new Array();
-      sw.forEach(element => {
-        if(element.retweeted = "false")
-        {var d = element.created_at;
+    
+ 
+ return res.render("dashboard/influencers",{hashtag: req.session.hashtag,usr_array:req.session.usr_array})
 
-        usr_array.push({
-          text :element.text,
-          source:element.source,
-          user_id : element.user.id,
-          user_name:element.user.name,
-          screen_name:element.user.screen_name,
-          location:element.user.location,
-          description:element.user.description,
-          followers_count:element.user.followers_count,
-          friends_count:element.user.friends_count,
-          listed_count:element.user.listed_count,
-          favourites_count:element.user.favourites_count,
-          statuses_count:element.user.statuses_count,
-          user_lang:element.user.lang,
-          profile_background_image_url:element.user.profile_background_image_url,
-          profile_image_url:element.user.profile_image_url,
-          retweet_count:element.retweet_count,
-          date : convertDate(d)
-      })
-    }});
-
-    let unique = _.uniqBy(usr_array, 'user_id');
-  
-
-  return res.render("dashboard/influencers",{feedback4: req.session.hashtag,feedback : req.session.test, user_feb : unique,mpath:wordcloud_paths})
-})
-.catch(err => console.log(err));
-    }
+   }
     else{
       Keyword.findOne({
       where: {
@@ -405,8 +351,29 @@ module.exports.getInfluencers = (req,res)=>{
 
 module.exports.getSentiment = (req,res)=>{
   if(!req.params.id)
-  {
-    return res.render("dashboard/sentiment",{feedback4: req.session.hashtag,feedback : req.session.test, feedback1 : req.session.test[5], feedback2 :req.session.test[7], feedback3: req.session.test[6], feedb: req.session.arr, feedb1: req.session.arr1})
+  
+    { 
+      Keyword.findOne({
+      where: {
+      user: req.session.user.email,
+      keyword : req.session.hashtag
+      }
+    })
+    .then(key=>{
+      let student = JSON.parse(key.dashboardJson);  
+    var data1 = [];
+    data1[0] = student[0]["total_tweets"];
+    data1[1] = student[0]["total_retweets"];
+    data1[2] = student[0]["engagement_level"];
+    data1[3] = student[0]["total_fav"];
+    data1[4] = student[0]["fav_per"];
+    data1[5] = student[0]["pos"];
+    data1[6] = student[0]["neu"];
+    data1[7] = student[0]["neg"];
+    data1[8] = key.keyword;
+    test = data1;
+    })
+    return res.render("dashboard/sentiment",{hashtag: req.session.hashtag, feedback1 : test[5], feedback2 :test[7], feedback3:test[6]})
   }
     else{
     Keyword.findOne({
