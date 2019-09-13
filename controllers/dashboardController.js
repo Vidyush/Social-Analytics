@@ -2,7 +2,29 @@
 const Keyword = require("../models/keyword");
 const _=require("lodash")
 const Transaction = require("../models/transaction");
+function count_source(source){
+  let st = [];
+  source.forEach(s=>{
+    st.push(s.source)
+  })
+  let new_arr = []
+st.forEach(function(tag){
+  //console.log(tag);
+  new_arr.push(tag.match(/<a.*>(Twitter )?(for )?(.*)<\/a>/)[3]);
+});
 
+var uniqs = new_arr.reduce((acc, val) => {
+  acc[val] = acc[val] === undefined ? 1 : acc[val] += 1;
+  return acc;
+}, {});
+
+let score_array = [["device","value"]];
+for(var i in uniqs) {
+    score_array.push([i, uniqs[i]]);
+}
+//console.log(data)
+return(score_array);
+}
 
 function convertDate(d){
   var parts = d.split(" ");
@@ -100,7 +122,13 @@ module.exports.getDashboards = (req, res) => {
 allData.forEach(element => {
   Dates.push(element.created_at)
 }) 
-return res.render("dashboard/dashboard",{hashtag:req.session.hashtag,feedback :test, feedb : req.session.usr_array, feedb1:arr1,Dates,path:wordcloud_paths,feedback1 :test[5], feedback2 :test[7], feedback3: test[6]});})
+
+
+let source = req.session.usr_array;
+devices = count_source(source);
+console.log(devices);
+
+return res.render("dashboard/dashboard",{devices_score:devices,hashtag:req.session.hashtag,feedback :test, feedb : req.session.usr_array, feedb1:arr1,Dates,path:wordcloud_paths,feedback1 :test[5], feedback2 :test[7], feedback3: test[6]});})
    }
 
     else{

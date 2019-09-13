@@ -120,7 +120,7 @@
                 <div class="col-md-6">
                     <h3>Top Devices and Apps</h3>
                     <div class="card withheading">
-                      Top Devices and Apps come here
+                      <div id="devices_chart" style="width: 600; height: 500px;"></div>
                     </div>
                   </div>
               </div>
@@ -157,7 +157,25 @@
     var data1 =  <%- JSON.stringify(feedb1) %>;
     data1 = data1.reverse();
 </script>
+<script>
+var devices = <%-JSON.stringify(devices_score)%>
 
+google.charts.load('current', {'packages':['imagebarchart']});
+google.charts.setOnLoadCallback(drawChart);  
+     function drawChart() {
+  
+      var data = google.visualization.arrayToDataTable(
+      <%-JSON.stringify(devices_score)%>   
+          );
+  
+       var options = {
+         is3D:true,
+       };
+  
+       var chart = new google.visualization.ColumnChart(document.getElementById('devices_chart'));  
+       chart.draw(data, options, {width: 600, height: 500, min: 0});
+     }
+  </script> 
 
 <script>
 
