@@ -45,7 +45,7 @@
                     <h3>Top Posts</h3>
                   <div class="card withheading withexplore">
                     <ul class="toppostslist">
-                      <% topposts = feedb.slice(0, 3);%>
+                      <% topposts = feedb[0].slice(0, 3);%>
                         <% topposts.forEach(elem => { %>
                           <li>
                               <div class="userimg"><img class="img-fluid" src=<%= elem.profile_image_url%>> <span class="fromdata"><i class="fa fa-twitter"></i></span></div>
@@ -86,7 +86,7 @@
                     <h3>Influential Users</h3>
                   <div class="card withheading withexplore">
                       <ul class="toppostslist">
-                          <% topinfluencer = feedb.slice(0, 3);%>
+                          <% topinfluencer = feedb[1].slice(0, 3);%>
                             <% topinfluencer.forEach(elem => { %>
                               <li>
                                   <div class="userimg"><img class="img-fluid" src=<%= elem.profile_image_url%>> <span class="fromdata"><i class="fa fa-twitter"></i></span></div>

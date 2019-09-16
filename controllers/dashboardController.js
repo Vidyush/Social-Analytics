@@ -2,6 +2,7 @@
 const Keyword = require("../models/keyword");
 const _=require("lodash")
 const Transaction = require("../models/transaction");
+
 function count_source(source){
   let st = [];
   source.forEach(s=>{
@@ -126,9 +127,22 @@ allData.forEach(element => {
 
 let source = req.session.usr_array;
 devices = count_source(source);
-console.log(devices);
+//console.log(devices);
 
-return res.render("dashboard/dashboard",{devices_score:devices,hashtag:req.session.hashtag,feedback :test, feedb : req.session.usr_array, feedb1:arr1,Dates,path:wordcloud_paths,feedback1 :test[5], feedback2 :test[7], feedback3: test[6]});})
+let sorted_posts_array = [...req.session.usr_array];
+let sorted_users_array = [...req.session.usr_array];
+sorted_posts_array = sorted_posts_array.sort(function(a,b){
+      
+  return (b.retweet_count-a.retweet_count);
+ });
+sorted_users_array = sorted_users_array.sort(function(a,b){
+      
+  return (b.followers_count-a.followers_count);
+ });
+
+let sorted_posts_users_array = [sorted_posts_array,sorted_users_array]
+
+return res.render("dashboard/dashboard",{devices_score:devices,hashtag:req.session.hashtag,feedback :test, feedb : sorted_posts_users_array, feedb1:arr1,Dates,path:wordcloud_paths,feedback1 :test[5], feedback2 :test[7], feedback3: test[6]});})
    }
 
     else{

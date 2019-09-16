@@ -112,7 +112,7 @@ TwitterApi.get('search/tweets', { q: hashtag,count: 100}, function(err, data, re
 usr_array = _.uniqBy(usr_array, 'text');
 req.session.usr_array = usr_array;
 res.render("dashboard/posts",{usr_array,hashtag})
-})
+})          
 
 AlgorithmiaApi.algo("Vidyush/Test/0.11.1") 
      .pipe(JSON.stringify(data.statuses))
@@ -180,6 +180,7 @@ AlgorithmiaApi.algo("Vidyush/Test/0.11.1")
             
         cloud_save(student[0]["rhFileName"],r);
         cloud_save(wpath,w);
+        console.log("fin")
             })
       })
     })

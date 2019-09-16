@@ -33,6 +33,7 @@
     "nodemon": "^1.19.2",
     "r-script": "0.0.3",
     "sequelize": "^5.10.3",
+    "sort-json-array": "^0.1.7",
     "twit": "^2.2.11"
   }
 }

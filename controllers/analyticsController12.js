@@ -267,6 +267,7 @@ arr = unique;
         usr_array.push({
           url:UrlGetter(element.text),
           text :element.text,
+          profile_link : "https://twitter.com/"+element.user.screen_name,
           source:element.source,
           score: getScore(element.id_str),
           user_id : element.user.id,
