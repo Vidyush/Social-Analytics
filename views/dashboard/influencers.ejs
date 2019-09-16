@@ -20,7 +20,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                          <% usr_array.forEach(elem => {%>
+                          <% usr_array.forEach(elem => { var i = eng = 0%>
                         <tr>
                           <td><%= elem.user_name %></td>
                           <td><%= elem.followers_count %></td>
@@ -41,6 +41,7 @@
                                   </tr>
                                 </thead>
                                 <tbody>
+                                   
                                     <tr>
                                         <td>User Profile Image</td>
                                         <td><img src=<%= elem.profile_image_url %>></td>
@@ -55,16 +56,22 @@
                                     <td><%= elem.screen_name %></td>
                                   </tr>
                                   <tr>
-                                      <td>User Name</td>
-                                      <td><%= elem.user_name %></td>
+                                      <td>Bio</td>
+                                      <td><%= elem.description %></td>
                                     </tr>
+                                    <% posts.forEach(p => {;%>
+                                        <%if(p.user_name == elem.user_name){%>
+                                            <%i = i+1%>
+                                            <%eng = eng+p.retweet_count}%>
+                                            <% }) %>
                                     <tr>
                                         <td>Posts</td>
-                                        <td><%= '2' %></td>
+                                        <td><%= i %></td>
                                       </tr>
+                                       
                                       <tr>
                                           <td>Avg Eng</td>
-                                          <td><%= '2' %></td>
+                                          <td><%= (eng/i) %></td>
                                         </tr>
                                         <tr>
                                             <td>Followers</td>
@@ -72,12 +79,13 @@
                                           </tr>
                                           <tr>
                                               <td>Impressions</td>
-                                              <td><%= '180' %></td>
+                                              <td><%= elem.followers_count %></td>
                                             </tr>
                                             <tr>
                                                 <td>Exposure</td>
-                                                <td><%= '450' %></td>
+                                                <td><%= elem.exposure %></td>
                                               </tr>
+                                              
                                 </tbody>
                               </table>
 
@@ -88,22 +96,23 @@
                                     </tr>
                                   </thead>
                                   <tbody>
+                                        <% posts.forEach(p => {if(p.user_name == elem.user_name){%>
                                       <tr>
                                           <td>Posts</td>
-                                          <td><%='Continuous attack on Hindus in Delhi, Jaipur, Dehradun, Meerut, Kanpur etc are due to their frustration of loosing… https://t.co/0ZIVGuocNB' %></td>
+                                          <td><%=p.text %></td>
                                       </tr>
                                    
                                     <tr>
                                       <td>Date</td>
-                                      <td><%= 'Jun 29, 2019' %></td>
+                                      <td><%= p.date %></td>
                                     </tr>
                                     <tr>
                                       <td>Engagements</td>
-                                      <td><%= '234534' %></td>
+                                      <td><%= (p.retweet_count+p.followers_count)%></td>
                                     </tr>
                                     
                                      
-                                       
+                                    <% }}) %>    
                                   </tbody>
                                 </table>
                             </div>

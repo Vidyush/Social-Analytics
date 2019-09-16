@@ -3,7 +3,17 @@ const AlgorithmiaApi = require("../utilities/algorithmia_keys")
 const fs = require("fs")
 const Keyword = require("../models/keyword");
 const _ = require("lodash");
+const geolocator = require("node-geocoder")
 
+var options = {
+  provider: 'opencage',
+ 
+  // Optional depending on the providers
+  httpAdapter: 'https', // Default
+  apiKey: '9ec90faa49214bc2948e967c7e6e66bd', // for Mapquest, OpenCage, Google Premier
+  formatter: null         // 'gpx', 'string', ...
+};
+var geocoder = geolocator(options);
 
 function cloud_save(path,filename){
   AlgorithmiaApi.file(path).exists( function(exists) {
@@ -26,7 +36,6 @@ function cloud_save(path,filename){
 });
 
 }
-
 function convertDate(d){
   var parts = d.split(" ");
   var months = {
@@ -53,6 +62,18 @@ module.exports.analyseTwitterData =  (req,res)=>{
     req.session.hashtag = hashtag;        
 TwitterApi.get('search/tweets', { q: hashtag,count: 100}, function(err, data, response) { 
   let allData = JSON.parse(JSON.stringify(data.statuses));
+
+  
+  function Exposure(id){
+    let count = 0;
+    allData.forEach(x => {
+      if(x.id_str===id){if(x.retweeted_status){
+        count = count + x.retweeted_status.user.followers_count
+      }
+      else count = 0;
+      }})
+    return(count);
+  }
   
   function getScore(id) {
     let getScore = score.find(x => x.id_str === id);
@@ -62,7 +83,7 @@ TwitterApi.get('search/tweets', { q: hashtag,count: 100}, function(err, data, re
   function UrlGetter(id){
     let getUrl = allData.find(x => x.id_str === id);
     getUrl =getUrl.entities.urls;
-    console.log(getUrl)
+    //console.log(getUrl)
     if(getUrl.length>0)
     {
       getUrl = getUrl.find(x=>x['url'])
@@ -104,6 +125,7 @@ TwitterApi.get('search/tweets', { q: hashtag,count: 100}, function(err, data, re
           profile_background_image_url:element.user.profile_background_image_url,
           profile_image_url:element.user.profile_image_url,
           retweet_count:element.retweet_count,
+          exposure:element.user.followers_count+Exposure(element.id_str),
           date : convertDate(d)
       })
       

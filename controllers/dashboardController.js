@@ -341,9 +341,10 @@ module.exports.getPosts = (req,res)=>{
 
 module.exports.getInfluencers = (req,res)=>{
    if(!req.params.id){
-    
+    let influencers = _.uniqBy(req.session.usr_array , "user_name")
+    let posts = [...req.session.usr_array]
  
- return res.render("dashboard/influencers",{hashtag: req.session.hashtag,usr_array:req.session.usr_array})
+ return res.render("dashboard/influencers",{hashtag: req.session.hashtag,usr_array:influencers,posts})
 
    }
     else{
