@@ -7,8 +7,22 @@
       <div class="container-fluid deshheader">
           <%- include('../_includes/dashboardNav') %>
           <div class="col-12">
-            <h3>Influences</h3>
-            <div class="card withheading">
+            <h3>Posts</h3>
+            
+                <h3 class="loader hidden"><img src="/images/analysis.gif"></h3>
+            
+<script>
+const segment = new URL(window.location.href).pathname.split('/').filter(Boolean).pop();
+if(segment==analyze){
+    $(".loader").removeClass('hidden').css({"display": "block"});
+    setTimeout(function(){ 
+        alert("Data Analysed"); 
+    document.getElementById("myDiv").style.display="none"}, 8000);}  // 8 seconds
+    else {
+        console.log(segment);
+    }
+</script>
+              <div class="card withheading">
                 <div class="dtablebox">
                     <table id="example" class="display nowrap cell-border" style="width:100%">
                         <thead>

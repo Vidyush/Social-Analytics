@@ -10,10 +10,30 @@ var options = {
  
   // Optional depending on the providers
   httpAdapter: 'https', // Default
-  apiKey: '9ec90faa49214bc2948e967c7e6e66bd', // for Mapquest, OpenCage, Google Premier
+  apiKey: '056b8034c6bf472b886785cdb7f86fec', // for Mapquest, OpenCage, Google Premier
   formatter: null         // 'gpx', 'string', ...
 };
 var geocoder = geolocator(options);
+
+function getGeoLocation(allLocations){
+  let locationPromises = null;
+  if(! Array.isArray(allLocations)){
+        return new  Promise((resolve, reject)=>{
+        geocoder.geocode(allLocations).then(res=>resolve(res)).catch(err=>reject(err));
+  });
+} 
+  else{
+     locationPromises= allLocations.map(function(loc){
+    return  geocoder.geocode(loc);
+  });
+
+ // getting all the results now
+  return new Promise((resolve, reject)=>{
+    Promise.all(locationPromises).then(res=>resolve(res)).catch(err=>reject(err));
+  });
+  }
+ 
+}
 
 function cloud_save(path,filename){
   AlgorithmiaApi.file(path).exists( function(exists) {
@@ -28,7 +48,9 @@ function cloud_save(path,filename){
              // If an error occurred, show it and return
              if(err) return console.error(err);
              // Successfully wrote binary contents to the file!
-             else console.log("downloaded")
+             else {
+
+                console.log("downloaded")}
            });
          }
            });
@@ -63,7 +85,6 @@ module.exports.analyseTwitterData =  (req,res)=>{
 TwitterApi.get('search/tweets', { q: hashtag,count: 100}, function(err, data, response) { 
   let allData = JSON.parse(JSON.stringify(data.statuses));
 
-  
   function Exposure(id){
     let count = 0;
     allData.forEach(x => {
@@ -133,7 +154,8 @@ TwitterApi.get('search/tweets', { q: hashtag,count: 100}, function(err, data, re
 })
 usr_array = _.uniqBy(usr_array, 'text');
 req.session.usr_array = usr_array;
-res.render("dashboard/posts",{usr_array,hashtag})
+
+res.render("dashboard/posts",{usr_array,hashtag,message: ''})
 })          
 
 AlgorithmiaApi.algo("Vidyush/Test/0.11.1") 
@@ -156,6 +178,24 @@ AlgorithmiaApi.algo("Vidyush/Test/0.11.1")
       .pipe(string)
       .then(async function(response) {
       wpath = response.get()
+      
+      //Loactions Array
+      // var loccsss = [];
+      // allData.forEach(element => {
+      // loccsss.push({location : element.user.location})
+      // }) 
+      // console.log(loccsss)
+      // let allLocationsArray =[];
+      // loccsss.forEach(function(loc){
+      //   if(loc.location !== 'undefined' && loc.location !== '')
+      // allLocationsArray.push(loc.location);
+      // })
+      
+      // async function myFun(){
+
+      //   //  Await example....
+      //     let result = await getGeoLocation(allLocationsArray);
+      //     req.session.locations = result;
       
       let student = JSON.parse(xyz);  
       //keyss gives access to the rows if user and keyword matches in the db 
@@ -203,7 +243,10 @@ AlgorithmiaApi.algo("Vidyush/Test/0.11.1")
         cloud_save(student[0]["rhFileName"],r);
         cloud_save(wpath,w);
         console.log("fin")
-            })
+        //res.render("dashboard/posts",{usr_array,hashtag,message: 'All data Analysed'})
+    //   }
+    // myFun()
+      })
       })
     })
 })

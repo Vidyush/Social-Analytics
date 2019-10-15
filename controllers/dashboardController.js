@@ -3,7 +3,7 @@ const Keyword = require("../models/keyword");
 const _=require("lodash")
 const Transaction = require("../models/transaction");
 
-function count_source(source){
+function count_source(source,d){
   let st = [];
   source.forEach(s=>{
     st.push(s.source)
@@ -19,13 +19,14 @@ var uniqs = new_arr.reduce((acc, val) => {
   return acc;
 }, {});
 
-let score_array = [["device","value"]];
+let score_array = [[d,"value"]];
 for(var i in uniqs) {
     score_array.push([i, uniqs[i]]);
 }
 //console.log(data)
 return(score_array);
 }
+
 
 function convertDate(d){
   var parts = d.split(" ");
@@ -120,13 +121,26 @@ module.exports.getDashboards = (req, res) => {
 
     let wordcloud_paths = [key.rhpath,key.wpath];
     let Dates = [];
+
 allData.forEach(element => {
   Dates.push(element.created_at)
+  
 }) 
 
 
+
+// let locations = req.session.locations;
+// var new_locations = [] //creating a new array to push undefined locations
+// locations.forEach(element=>{
+// if(element!==undefined){a.push(element)}
+// })
+
+// countries = count_source(new_locations,"country");
+
+//console.log(countries)
+
 let source = req.session.usr_array;
-devices = count_source(source);
+devices = count_source(source,"device");
 //console.log(devices);
 
 let sorted_posts_array = [...req.session.usr_array];
