@@ -16,18 +16,19 @@ const robots = require("express-robots-txt");
 
 // const engine =  require('ejs-mate');
 
-const app  = express();
+const app = express();
 
-const PORT = process.env.PORT || 1234;
+const PORT = process.env.PORT || 3300;
 
 // adding middlewares
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "/public")));
-app.use('/public/wordclouds',express.static('./public/wordclouds'));
+app.use("/public", express.static(path.join(__dirname, "/public")));
+app.use("/", express.static(path.join(__dirname, "/public")));
+
 
 // adding robot.txt
-app.use(robots({UserAgent: '*', Disallow: '/'}))
+app.use(robots({ UserAgent: "*", Disallow: "/" }));
 var idleTimeoutSeconds = 180;
 // sessions :  by default session gets stored in the memory and it is really a horrible idea to store session in memory on production.
 app.use(
@@ -35,10 +36,7 @@ app.use(
     secret: "superSaiyan", //for signing hash which secretl stores our id to session
     resave: true,
     saveUninitialized: true,
-    cookie: {
-      
-    }
-    
+    cookie: {}
   })
 );
 
@@ -63,23 +61,23 @@ sequelize
 // syncing sequelize so that it creates table as per model if not table does`nt exist..
 sequelize.sync();
 
-
 // passing user data to all the views
 app.use(function(req, res, next) {
-
-  // // for testing only, remove on deployement
+  // for testing only, remove on deployement
   // req.session.isLoggedIn = true;
+  // req.session.keyword = { id: 1, name: "#javascript" };
+
   // req.session.user = {
   //   id: 1,
-  //   email: "swapnil.shukla@npglobal.in",
+  //   email: "swapnil.shukla@netprophetsglobal.com",
   //   fullName: "Swapnil Shukla",
   //   name: "Swapnil"
   // };
 
-
   if (req.session.isLoggedIn === true) {
     res.locals.user = req.session.user;
   }
+  res.locals.keyword = req.session.keyword;
   next();
 });
 
@@ -90,8 +88,6 @@ const paymentRoutes = require("./routes/paymentRoutes");
 app.use("/auth", authRoutes);
 app.use(pageRoutes);
 app.use(paymentRoutes);
-
-
 
 //------------vivek added cashfree------------//
 // app.use('/checkout',checkout);
@@ -116,7 +112,6 @@ app.use(paymentRoutes);
 //               appId: config.appId,
 //           };
 
-          
 //          return res.status(200).send({
 //               status:"success",
 //              additionalFields,
@@ -151,8 +146,6 @@ app.use(paymentRoutes);
 //   });
 // });*/
 
-
-
 // //below will not be hit as server is not on https://
 // app.post('/notify', (req, res, next)=>{
 //   console.log("notify hit");
@@ -173,12 +166,9 @@ app.use(paymentRoutes);
 
 // //------------vivek added cashfree------------//
 
-
-
 // home route
 app.get("/", (req, res) => {
   return res.render("index/index");
 });
-
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

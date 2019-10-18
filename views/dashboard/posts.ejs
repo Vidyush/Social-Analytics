@@ -1,4 +1,7 @@
 <%- include('../_includes/head') %>
+
+
+
 <div class="dashboard-page">
     <%- include('../_includes/dashboardNavMini') %>
  
@@ -8,20 +11,6 @@
           <%- include('../_includes/dashboardNav') %>
           <div class="col-12">
             <h3>Posts</h3>
-            
-                <h3 class="loader hidden"><img src="/images/analysis.gif"></h3>
-            
-<script>
-const segment = new URL(window.location.href).pathname.split('/').filter(Boolean).pop();
-if(segment==analyze){
-    $(".loader").removeClass('hidden').css({"display": "block"});
-    setTimeout(function(){ 
-        alert("Data Analysed"); 
-    document.getElementById("myDiv").style.display="none"}, 8000);}  // 8 seconds
-    else {
-        console.log(segment);
-    }
-</script>
               <div class="card withheading">
                 <div class="dtablebox">
                     <table id="example" class="display nowrap cell-border" style="width:100%">
@@ -38,7 +27,7 @@ if(segment==analyze){
                             </tr>
                         </thead>
                         <tbody>
-                            <% usr_array.forEach(elem => { %>
+                            <% posts.forEach(elem => { %>
                         
                             <tr>
                                 <td> <%= elem.date; %> </td>
@@ -47,9 +36,9 @@ if(segment==analyze){
                                 <td><a target="_blank" href=<%=elem.profile_link %>><%= elem.user_name %> </a> </td>
                                 <td> <%= elem.retweet_count %> </td>
                                 <td> <%= elem.favorite_count %> </td>
-                                <td><% if(elem.score>0){%><img src="images/icons/sentiment_positive.png"><%}
-                                    else if(elem.score==0){%><img src="images/icons/sentiment_neutral.png"><%}
-                                    else{%><img src="images/icons/sentiment_negative.png"><%}%></td>
+                                <td><% if(elem.score>0){%><img src="/images/icons/sentiment_positive.png"><%}
+                                    else if(elem.score==0){%><img src="/images/icons/sentiment_neutral.png"><%}
+                                    else{%><img src="/images/icons/sentiment_negative.png"><%}%></td>
                                 <td> <%= elem.location %> </td>
                         
                             </tr>
@@ -98,44 +87,6 @@ if(segment==analyze){
         //searching: false
     } );
 } );
-
-
-
-
-
-
-
-
-// $(document).ready(function() {  
-//     $('#example').DataTable( {  
-//       "scrollX": true,
-//       "bLengthChange": false,
-//         initComplete: function () {  
-//             this.api().columns().every( function () {  
-//                 var column = this;  
-//                 var select = $('<select><option value=""></option></select>')  
-//                     .appendTo( $(column.footer()).empty() )  
-//                     .on( 'change', function () {  
-//                         var val = $.fn.dataTable.util.escapeRegex(  
-//                             $(this).val()  
-//                         );  
-//                 //to select and search from grid  
-//                         column  
-//                             .search( val ? '^'+val+'$' : '', true, false )  
-//                             .draw();  
-//                     } );  
-   
-//                 column.data().unique().sort().each( function ( d, j ) {  
-//                     select.append( '<option value="'+d+'">'+d+'</option>' )  
-//                 } );  
-//             } );  
-//         }  
-//     } );  
-// } );
-
-
-
-
 
 </script> 
 

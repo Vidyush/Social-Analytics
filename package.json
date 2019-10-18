@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.js"
+    "dev": "nodemon index.js",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
@@ -33,7 +34,8 @@
     "nodemailer": "^6.1.1",
     "nodemon": "^1.19.2",
     "r-script": "0.0.3",
-    "sequelize": "^5.10.3",
+    "sentiment": "^5.0.2",
+    "sequelize": "^5.19.6",
     "sort-json-array": "^0.1.7",
     "twit": "^2.2.11"
   }

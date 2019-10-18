@@ -9,24 +9,36 @@ const authController = require("../controllers/authController");
 const authAccessonly = require("../middlewares/authAccess");
 router.get("/", pageController.index);
 router.get("/pricing", pageController.pricingPage);
-router.use(authAccessonly)
+router.use(authAccessonly);
 // dashboard routes
-router.get(["/dashboard","/recentDashboard/:id"], authAccessonly, dashboardController.getDashboards);
-router.get("/search", authAccessonly, dashboardController.getSearchPage);
-router.post("/search", authAccessonly, dashboardController.getSearchPage);
-router.post("/analyze",authAccessonly,analyticsController.analyseTwitterData);
+router.get(
+  ["/dashboard", "/recentDashboard/:id"],
+
+  dashboardController.getDashboards
+);
+router.get("/search", dashboardController.getSearchPage);
+router.post("/search", dashboardController.getSearchPage);
+router.post("/analyze", analyticsController.analyseTwitterData);
 router.get("/auth/logout", authController.getLogout);
-router.get("/posts", authAccessonly, dashboardController.getPosts);
-router.get("/influencers", authAccessonly, dashboardController.getInfluencers);
-router.get(["/sentiment","/recentSentiment/:id"], authAccessonly, dashboardController.getSentiment);
-router.get(["/buzzwords","/recentBuzzwords/:id"], authAccessonly, dashboardController.getBuzzwords);
-router.get("/recents", authAccessonly, dashboardController.getRecents);
-router.get("/onlyrecent", authAccessonly, dashboardController.getonlyRecents);
-router.get('/auth/profile/:id',authAccessonly,authController.profile)
-router.get('/auth/edituser/:id',authAccessonly,authController.editForm)
-router.post('/update/:id',authAccessonly,authController.update)
-router.get('/deleteUser/:id',authAccessonly,authController.Delete)
-router.get('/upload/:id',authAccessonly,authController.Upload)
-router.post('/uploaduser/:id',authAccessonly,authController.Uploaduser)
+router.get("/posts/:id?", dashboardController.getPosts);
+router.get("/influencers", dashboardController.getInfluencers);
+router.get(
+  ["/sentiment", "/recentSentiment/:id"],
+
+  dashboardController.getSentiment
+);
+router.get(
+  ["/buzzwords", "/recentBuzzwords/:id"],
+
+  dashboardController.getBuzzwords
+);
+router.get("/recents", dashboardController.getRecents);
+router.get("/onlyrecent", dashboardController.getonlyRecents);
+router.get("/auth/profile/:id", authController.profile);
+router.get("/auth/edituser/:id", authController.editForm);
+router.post("/update/:id", authController.update);
+router.get("/deleteUser/:id", authController.Delete);
+router.get("/upload/:id", authController.Upload);
+router.post("/uploaduser/:id", authController.Uploaduser);
 
 module.exports = router;

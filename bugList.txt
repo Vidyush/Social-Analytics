@@ -1,0 +1,10 @@
+1-  User Auth
+    - User Verification Pending
+    - Reset password functionality is pending.
+
+2-  Database
+    - Timestamp is missing, Database schema needs to be changed.
+    - Data getting stored in db is redundant.
+
+3- Optimization
+    -
