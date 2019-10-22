@@ -12,7 +12,7 @@ router.get("/pricing", pageController.pricingPage);
 router.use(authAccessonly);
 // dashboard routes
 router.get(
-  ["/dashboard", "/recentDashboard/:id"],
+  ["/dashboard/:id?", "/recentDashboard/:id"],
 
   dashboardController.getDashboards
 );
@@ -21,14 +21,14 @@ router.post("/search", dashboardController.getSearchPage);
 router.post("/analyze", analyticsController.analyseTwitterData);
 router.get("/auth/logout", authController.getLogout);
 router.get("/posts/:id?", dashboardController.getPosts);
-router.get("/influencers", dashboardController.getInfluencers);
+router.get("/influencers/:id?", dashboardController.getInfluencers);
 router.get(
-  ["/sentiment", "/recentSentiment/:id"],
+  ["/sentiment/:id?", "/recentSentiment/:id"],
 
   dashboardController.getSentiment
 );
 router.get(
-  ["/buzzwords", "/recentBuzzwords/:id"],
+  ["/buzzwords/:id?", "/recentBuzzwords/:id"],
 
   dashboardController.getBuzzwords
 );

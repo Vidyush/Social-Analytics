@@ -168,7 +168,8 @@ module.exports.analyseTwitterData = async (req, res) => {
         exposure: post.retweeted
           ? post.retweeted_status.user.followers_count
           : null,
-        date: formatDate(post.created_at)
+        date: post.created_at,
+        device:post.source
       };
     });
 
@@ -197,8 +198,8 @@ module.exports.analyseTwitterData = async (req, res) => {
       total_flitered_tweets: totalFilteredTweets,
       total_retweets: totalRetweets,
       total_filtered_retweets: totalFilteredRetweets,
-      engagement: totalFavReweet / (totalTweets == 0 ? 1 : totalTweets),
-      engagement_filtered: totalFilteredFavReweet / totalFilteredTweets,
+      engagement: (totalFavReweet / (totalTweets == 0 ? 1 : totalTweets))*100,
+      engagement_filtered: (totalFilteredFavReweet / totalFilteredTweets)*100,
       total_positive_score: totalPositiveScore,
       total_negative_score: totalNegativeScore,
       total_neutral_score: totalNeutralScore,

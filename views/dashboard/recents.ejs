@@ -16,9 +16,9 @@
                     <tr>
                       <th>Hashtag1</th>
                       <th>Count</th>
-                      <th>Dashboard</th>
-                      <th>Sentiment</th>
-                      <th>Buzzwords</th>
+                      <th>Details</th>
+                      <!-- <th>Sentiment</th>
+                      <th>Buzzwords</th> -->
                       </tr>
                   </thead>
                   <tbody>
@@ -27,9 +27,10 @@
                       
                       <td><%= recent.keyword %></td>
                       <td><%= recent.count %></td>
-                      <td><a class="openrecentpopup" data-toggle="modal" data-target="#myModal" onclick="showLoader('/recentDashboard/<%=recent.id%>');">VIEW</a></td>
-                      <td><a class="openrecentpopup" data-toggle="modal" data-target="#myModal" onclick="showLoader('/recentSentiment/<%=recent.id%>');">VIEW</a></td>
-                      <td><a class="openrecentpopup" data-toggle="modal" data-target="#myModal" onclick="showLoader('/recentBuzzwords/<%=recent.id%>');">VIEW</a></td>
+                      <td><a href="/dashboard/<%=recent.id%>">View</a></td>
+                      <!-- <td><a class="openrecentpopup" data-toggle="modal" data-target="#myModal" onclick="showLoader('/dashboard/<%=recent.id%>');">VIEW</a></td> -->
+                      <!-- <td><a class="openrecentpopup" data-toggle="modal" data-target="#myModal" onclick="showLoader('/recentSentiment/<%=recent.id%>');">VIEW</a></td>
+                      <td><a class="openrecentpopup" data-toggle="modal" data-target="#myModal" onclick="showLoader('/recentBuzzwords/<%=recent.id%>');">VIEW</a></td> -->
                       <% }) %> 
                     </tr>
                     
@@ -51,11 +52,11 @@
       </script> Social Analysis. All Rights Reserved.
   </p>
 </div>
-<div class="customviewmodel"></div>
+<!-- <div class="customviewmodel"></div>
 <div class="contentarea recentpage">
   <p><a href="javascript:void(0);" class="closedialoge closerecentpopup">&times;</a></p>
   <iframe style="width:100%; height:calc(100% - 50px)" class ="myFrame" id="myFrame" src="" frameborder="0"></iframe>
-</div>
+</div> -->
 <!-- <div id="myModal" class="modal fade" role="dialog">
     <div class="modal-dialog" style="width: 100%;max-width:800px;">
   
@@ -74,7 +75,7 @@
    
     
   
-    
+<!--     
   <script>
       function showLoader(obj){
         
@@ -95,7 +96,7 @@
   });
   </script>
 
-<script>
+<script> -->
 $(document).ready(function() {  
     $('#example').DataTable( {  
       "scrollX": true,

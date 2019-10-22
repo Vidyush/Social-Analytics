@@ -584,9 +584,9 @@ else{
       
            var data = google.visualization.arrayToDataTable([
              ['Sentiment', 'Value'],
-             ['Positive',   <%= (typeof(feedback1) !== undefined)? parseFloat(feedback1) : undefined  %>],
-             ['Negative', <%= (typeof(feedback2) !== undefined)? parseFloat(feedback2) : undefined  %>],
-             ['Neutral', <%= (typeof(feedback3) !== undefined)? parseFloat(feedback3) : undefined  %>]
+             ['Positive',   <%= (typeof(stats.positive_score_percent) !== undefined)? parseFloat(stats.positive_score_percent) : undefined  %>],
+             ['Negative', <%= (typeof(stats.negative_score_percentage) !== undefined)? parseFloat(stats.negative_score_percentage) : undefined  %>],
+             ['Neutral', <%= (typeof(stats.neutral_score_percentage) !== undefined)? parseFloat(stats.neutral_score_percentage) : undefined  %>]
             
            ]);
       
