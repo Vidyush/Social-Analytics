@@ -20,107 +20,15 @@
                         </tr>
                       </thead>
                       <tbody>
-                          <% usr_array.forEach(elem => { var i = eng = 0%>
+                          <% for(let i=0; i< usr_array.length; i++){ %>
                         <tr>
-                          <td><%= elem.user_name %></td>
-                          <td><%= elem.followers_count %></td>
-                          <td><%= elem.location %></td>
-                          <!-- <td><%= elem.description %></td> -->
+                          <td><%= usr_array[i].user_name %></td>
+                          <td><%= usr_array[i].followers_count %></td>
+                          <td><%= usr_array[i].location %></td>
                           <td>
-                          <div class="container">
-                            <!-- Trigger the modal with a button -->
-                            <a class="opendialoge">VIEW</a><!-- data-toggle="modal" data-target="#myModal<%= elem.user_id %>"-->
-                            <div class="customviewmodel"></div>
-                            <div class="contentarea">
-                              <p><a href="javascript:void(0);" class="closedialoge">&times;</a></p>
-                              <table id="example1" class="modal-body" style="width:100%">
-                                <thead>
-                                  <tr>
-                                    <th>Parameter</th>
-                                    <th>Value</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                   
-                                    <tr>
-                                        <td>User Profile Image</td>
-                                        <td><img src=<%= elem.profile_image_url %>></td>
-                                    </tr>
-                                 
-                                  <tr>
-                                    <td>User Name</td>
-                                    <td><%= elem.user_name %></td>
-                                  </tr>
-                                  <tr>
-                                    <td>Screen Name</td>
-                                    <td><%= elem.screen_name %></td>
-                                  </tr>
-                                  <tr>
-                                      <td>Bio</td>
-                                      <td><%= elem.description %></td>
-                                    </tr>
-                                    <% posts.forEach(p => {;%>
-                                        <%if(p.user_name == elem.user_name){%>
-                                            <%i = i+1%>
-                                            <%eng = eng+p.retweet_count}%>
-                                            <% }) %>
-                                    <tr>
-                                        <td>Posts</td>
-                                        <td><%= i %></td>
-                                      </tr>
-                                       
-                                      <tr>
-                                          <td>Avg Eng</td>
-                                          <td><%= (eng/i) %></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Followers</td>
-                                            <td><%= elem.followers_count %></td>
-                                          </tr>
-                                          <tr>
-                                              <td>Impressions</td>
-                                              <td><%= elem.followers_count %></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Exposure</td>
-                                                <td><%= elem.exposure %></td>
-                                              </tr>
-                                              
-                                </tbody>
-                              </table>
-
-                              <table id="example1" class="modal-body" style="width:100%">
-                                  <thead>
-                                    <tr>
-                                      <th colspan="2">Posts</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                        <% posts.forEach(p => {if(p.user_name == elem.user_name){%>
-                                      <tr>
-                                          <td>Posts</td>
-                                          <td><%=p.text %></td>
-                                      </tr>
-                                   
-                                    <tr>
-                                      <td>Date</td>
-                                      <td><%= p.date %></td>
-                                    </tr>
-                                    <tr>
-                                      <td>Engagements</td>
-                                      <td><%= (p.retweet_count+p.followers_count)%></td>
-                                    </tr>
-                                    
-                                     
-                                    <% }}) %>    
-                                  </tbody>
-                                </table>
-                            </div>
-                            
-                          </div>
-              
+                          <a data-id=<%=i%> class="viewModel opendialoge" >View</a>
                         </td> 
-                        <% }) %> 
+                        <% } %> 
                         </tr>
                         
                       </tbody>
@@ -130,6 +38,95 @@
             </div>
   </div>
 </div>
+
+<div class="container" id="modelContainer"></div>
+
+<!--  posts model template-->
+<template id="postTableTemplate">
+  <tr>
+      <td>Posts</td>
+      <td>%%post_title%%</td>
+  </tr>
+
+<tr>
+  <td>Date</td>
+  <td>%%post_date%%</td>
+</tr>
+<tr>
+  <td>Engagements</td>
+  <td>%%post_engagement%%</td>
+</tr>
+
+</template>
+
+
+<!--  posts model template-->
+ <template id="customModel" >
+  <div class="customviewmodel open"></div>
+<div class="contentarea open modal-body" >
+  <p><a href="javascript:void(0);" class="closedialoge">&times;</a></p>
+  <table id="example1" style="width:100%; font-size: 15px;">
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+        
+        <tr>
+            <td>User Profile Image</td>
+            <td><img src="%%profile_image_url%%"></td>
+        </tr>
+      
+      <tr>
+        <td>User Name</td>
+        <td>%%user_name%%</td>
+      </tr>
+      <tr>
+        <td>Screen Name</td>
+        <td>%%screen_name%%</td>
+      </tr>
+      <tr>
+          <td>Bio</td>
+          <td>%%description%%</td>
+        </tr>
+        <tr>
+            <td>Posts</td>
+            <td>%%total_posts%%</td>
+          </tr>
+            
+          <tr>
+              <td>Avg Eng</td>
+              <td>%%avg_eng%%</td>
+            </tr>
+            <tr>
+                <td>Followers</td>
+                <td>%%followers_count%%</td>
+              </tr>
+              <tr>
+                  <td>Impressions</td>
+                  <td>%%followers_count%%</td>
+                </tr>                  
+    </tbody>
+  </table>
+
+              <table style="width:100%; font-size: 15px;">
+                  <thead>
+                    <tr>
+                      <th colspan="2">Posts</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>%%post_table%%</td></tr>
+                 
+                  
+                  </tbody>
+                  </table>
+
+</div>
+                            
+ </template>   
 
 
 <div class="dash-footer">
@@ -142,7 +139,38 @@
   </p>
 </div>
 <script>
+
+   let influencersData = <%- JSON.stringify(influencersData) %>
+
 $(document).ready(function() {  
+
+  $(".viewModel").click(function(e){
+    let id= $(this).data('id');
+    let modelData = influencersData[id];
+
+    var postTableTemplateString = $("#postTableTemplate").html();
+    var postsString = "";
+    for(let j=0; j<modelData.posts.length; j++ ){
+      var thisString = postTableTemplateString;
+     thisString=  thisString.replace("%%post_title%%",modelData.posts[j].text).replace("%%post_date%%",modelData.posts[j].date).replace("%%post_engagement%%",modelData.posts[j].engagement);
+      postsString  = postsString+ thisString;
+    }
+
+    var modelContent = $("#customModel").html();
+
+    // replacing string with data
+    modelContent = modelContent.replace("%%profile_image_url%%", modelData.profile_image_url).replace("%%user_name%%", modelData.user_name).replace("%%total_posts%%", modelData.posts.length).replace("%%screen_name%%", modelData.screen_name).replace("%%description%%", modelData.description).replace("%%total_posts%%", modelData.total_posts).replace("%%avg_eng%%", ( modelData.totalEngagement / modelData.posts.length)).replace("%%followers_count%%", modelData.followers_count).replace("%%followers_count%%", modelData.followers_count);
+
+// console.log(modelContent)
+    modelContent = modelContent.replace("<tr><td>%%post_table%%</td></tr>", postsString);
+// console.log(modelContent)
+
+
+
+    $("#modelContainer").html(modelContent);
+});
+
+
     $('#example').DataTable( {  
       "scrollX": true,
       "bLengthChange": false,
@@ -169,33 +197,5 @@ $(document).ready(function() {
     } );  
 } );
 </script> 
-
-<!-- <script>
-  // Get the modal
-  var modal = document.getElementById('myModal');
-  
-  // Get the button that opens the modal
-  var btn = document.getElementById("myBtn");
-  
-  // Get the <span> element that closes the modal
-  var span = document.getElementsByClassName("close")[0];
-  
-  // When the user clicks the button, open the modal 
-  btn.onclick = function() {
-      modal.style.display = "block";
-  }
-  
-  // When the user clicks on <span> (x), close the modal
-  span.onclick = function() {
-      modal.style.display = "none";
-  }
-  
-  // When the user clicks anywhere outside of the modal, close it
-  window.onclick = function(event) {
-      if (event.target == modal) {
-          modal.style.display = "none";
-      }
-  }
-  </script> -->
 
 <%- include('../_includes/noFooter') %>

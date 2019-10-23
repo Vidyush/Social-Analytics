@@ -26,6 +26,14 @@ module.exports.getKeywordData = function(req, res, attributes = []) {
       keywordData = await Keyword.findByPk(id, {
         attributes
       });
+      // setting session keyword info based on search history
+      if (req.params.id) {
+        req.session.keyword = {
+          id: keywordData.id,
+          name: keywordData.keyword
+        };
+        res.locals.keyword = req.session.keyword;
+      }
     }
 
     resolve(keywordData);

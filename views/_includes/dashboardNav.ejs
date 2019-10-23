@@ -5,7 +5,7 @@
    <div style="width:80%;">
                <form action="/analyze" id="analyze" class="search-form" method="POST">
               <div class="search">
-                <input type="text" id="hashtag" name="hashtag" value="<%hashtag%>" required>
+                <input type="text" id="hashtag" name="hashtag" value="<%= keyword.name %>" required>
               </div>
               <div class="filter site">
                   <a href="" class="opentool"><img class="filter-icon" src="/images/twitter.png" alt=""> Twitter</a>
@@ -33,7 +33,7 @@
       }
       else{
         $(".search-page").css("opacity", 0.1);
-        $(".loader").removeClass('hidden').css({"display": "block"});
+        $(".loader").removeClass('hidden').css({"display": "block", 'z-index': 99});
       }
       });
       }
