@@ -14,8 +14,10 @@
                 <table id="example" class="display nowrap cell-border" style="width:100%">
                   <thead>
                     <tr>
-                      <th>Hashtag1</th>
-                      <th>Count</th>
+                      <th>Hashtag</th>
+                      <th>Tweets</th>
+                      <th>Retweets</th>
+                      <th>Engagement</th>
                       <th>Details</th>
                       <!-- <th>Sentiment</th>
                       <th>Buzzwords</th> -->
@@ -26,7 +28,9 @@
                     <tr>
                       
                       <td><%= recent.keyword %></td>
-                      <td><%= recent.count %></td>
+                      <td><%= recent.dashboardJson.total_tweets%></td>
+                      <td><%= recent.dashboardJson.total_retweets %></td>
+                      <td><%= recent.dashboardJson.engagement %></td>
                       <td><a href="/dashboard/<%=recent.id%>">View</a></td>
                       <!-- <td><a class="openrecentpopup" data-toggle="modal" data-target="#myModal" onclick="showLoader('/dashboard/<%=recent.id%>');">VIEW</a></td> -->
                       <!-- <td><a class="openrecentpopup" data-toggle="modal" data-target="#myModal" onclick="showLoader('/recentSentiment/<%=recent.id%>');">VIEW</a></td>

@@ -77,6 +77,7 @@ module.exports.getDashboards = async (req, res) => {
   ]);
    let sorted_posts_array = [...keywordData.postsWithSentiment];
       let sorted_users_array = [...keywordData.postsWithSentiment];
+      let unique_users =  Object.keys(_.countBy(sorted_users_array, 'user_id')).length
       sorted_posts_array = sorted_posts_array.sort(function(a, b) {
         return b.retweet_count - a.retweet_count;
       });
@@ -126,6 +127,7 @@ module.exports.getDashboards = async (req, res) => {
     hashtag: keywordData.keyword,
     stats: keywordData.dashboardJson,
     feedb: sorted_posts_users_array,
+    user_count:unique_users,
     feedb1: arr1,
     devices_score: devices,
     Dates,
@@ -141,8 +143,15 @@ module.exports.getDashboards = async (req, res) => {
           Id: req.params.id
         }
       }).then(key=>{
+
+        req.session.keyword= {
+          id: key.id,
+          name : key.keyword
+        }
+
           let sorted_posts_array = [...key.postsWithSentiment];
           let sorted_users_array = [...key.postsWithSentiment];
+          let unique_users =  Object.keys(_.countBy(sorted_users_array, 'user_id')).length
           sorted_posts_array = sorted_posts_array.sort(function(a, b) {
             return b.retweet_count - a.retweet_count;
           });
@@ -189,6 +198,7 @@ module.exports.getDashboards = async (req, res) => {
             stats: key.dashboardJson,
             feedb: sorted_posts_users_array,
             feedb1: arr1,
+            user_count:unique_users,
             devices_score: devices,
             Dates,
             path: [key.rhpath, key.wpath]
@@ -490,10 +500,9 @@ else{
 
 module.exports.getRecents = async (req, res) => {
   let recent = await Keyword.findAll({
-    attributes: ["keyword", "count", "id"], // to get only selected columns
+    attributes: ["keyword", "dashboardJson", "id"], // to get only selected columns
     where: { UserId: req.session.user.id}
   });
-
   res.render("dashboard/recents", {
     hashtag: req.session.hashtag,
     recents: recent,
@@ -502,7 +511,7 @@ module.exports.getRecents = async (req, res) => {
 
 module.exports.getonlyRecents = async (req, res) => {
   let recent = await Keyword.findAll({
-    attributes: ["keyword", "count", "id"], // to get only selected columns
+    attributes: ["keyword", "dashboardJson", "id"], // to get only selected columns
     where: { UserId: req.session.user.id }
   });
 

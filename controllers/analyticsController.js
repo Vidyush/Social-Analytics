@@ -71,6 +71,7 @@ module.exports.analyseTwitterData = async (req, res) => {
   let body = req.body;
   let hashtag = body.hashtag;
   req.session.hashtag = hashtag;
+  
 
   try {
     let tweets = await TwitterApi.get("search/tweets", {
@@ -127,6 +128,7 @@ module.exports.analyseTwitterData = async (req, res) => {
       } catch (err) {
         // not required
       }
+      
 
       let sentiment = new Sentiment();
       let thisSentiment = sentiment.analyze(post.text);
@@ -135,9 +137,9 @@ module.exports.analyseTwitterData = async (req, res) => {
       // extracting hashtags for post text
       let thisPostHash = getHashTagsAll(post.text);
       if (thisPostHash) hashTagArray.push(...thisPostHash);
-
+console.log(post.retweet_count,post.favorite_count)
       totalRetweets += post.retweet_count ? post.retweet_count : 0;
-      totalFavReweet += post.favourites_count + post.retweet_count;
+      totalFavReweet += (post.favorite_count + post.retweet_count);
       totalPositiveScore += thisSentiment.score > 0 ? 1 : 0;
       totalNegativeScore += thisSentiment.score < 0 ? 1 : 0;
       totalNeutralScore += thisSentiment.score == 0 ? 1 : 0;
@@ -176,7 +178,7 @@ module.exports.analyseTwitterData = async (req, res) => {
     // if want to remove retweets
     postsWithSentimentFiltered = postsWithSentiment.filter(x => {
       if (!x.retweeted) {
-        totalFilteredFavReweet += x.favourites_count + x.retweet_count;
+        totalFilteredFavReweet += x.favorite_count + x.retweet_count;
         totalFilteredRetweets += x.retweet_count ? x.retweet_count : 0;
         totalFilteredPositiveScore += x.score > 0 ? 1 : 0;
         totalFilteredNegativeScore += x.score < 0 ? 1 : 0;
@@ -193,13 +195,14 @@ module.exports.analyseTwitterData = async (req, res) => {
         : postsWithSentimentFiltered.length;
 
     // --dashboard data
+    console.log(totalFavReweet)
     const dashboardData = {
       total_tweets: totalTweets,
       total_flitered_tweets: totalFilteredTweets,
       total_retweets: totalRetweets,
       total_filtered_retweets: totalFilteredRetweets,
-      engagement: (totalFavReweet / (totalTweets == 0 ? 1 : totalTweets))*100,
-      engagement_filtered: (totalFilteredFavReweet / totalFilteredTweets)*100,
+      engagement: totalFavReweet,
+      engagement_filtered: totalFilteredFavReweet,
       total_positive_score: totalPositiveScore,
       total_negative_score: totalNegativeScore,
       total_neutral_score: totalNeutralScore,

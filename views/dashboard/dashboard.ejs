@@ -19,19 +19,19 @@
                 <div class="col-md-3">
                   <div class="infobox retweet">
                     <span class="icon"><img src="images/icons/retweet.png" alt=""></span>
-                    <p><strong><%= stats.total_retweets %></strong>Total Retweets</p>
+                    <p><strong><%= stats.total_retweets%></strong>Total Retweets</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="infobox other">
+                    <span class="icon"><img src="images/icons/user.png" alt=""></span>
+                    <p><strong><%= user_count%></strong>Users</p>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="infobox engage">
                     <span class="icon"><img src="images/icons/engagment.png" alt=""></span>
-                    <p><strong><%= stats.engagement %></strong>Enagagement Level</p>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="infobox other">
-                    <span class="icon"><img src="images/icons/favourite.png" alt=""></span>
-                    <p><strong><%= stats.total_tweets  %></strong>Impressions</p>
+                    <p><strong><%= stats.engagement || 0 %></strong>Enagagement</p>
                   </div>
                 </div>
               </div>
