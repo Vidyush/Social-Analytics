@@ -82,28 +82,7 @@ module.exports.analyseTwitterData = async (req, res) => {
     tweets = tweets.data;
     let { statuses } = tweets;
 
-    // // Connecting algorithma for result
-    // let scoreAlgoData = await AlgorithmiaApi.algo("Vidyush/Score/0.1.6").pipe(
-    //   JSON.stringify(statuses)
-    // );
-    // scoreAlgoData = JSON.parse(scoreAlgoData.result);
-
-    /*
-     * scoreAlgoData  is array of object, converting it to object with key val to reduce complexity of score mapping
-     */
-
-    //  adding sentiments to the twitter posts
-    // for (let i = 0; i < statuses.length; i++) {
-
-    // }
-
-    // let scoreAlgoDataObject = {};
-    // for (let sIndex = 0; sIndex < scoreAlgoData.length; sIndex++) {
-    //   let sentiment = new Sentiment();
-    //   let thisScore = sentiment.analyze();
-    //   let elem = scoreAlgoData[sIndex];
-    //   scoreAlgoDataObject[elem.id_str] = elem.Score;
-    // }
+    if(statuses.length == 0) return res.redirect("/search");
 
     // making post data with sentiment score
     let postsWithSentiment = [];
@@ -137,7 +116,6 @@ module.exports.analyseTwitterData = async (req, res) => {
       // extracting hashtags for post text
       let thisPostHash = getHashTagsAll(post.text);
       if (thisPostHash) hashTagArray.push(...thisPostHash);
-console.log(post.retweet_count,post.favorite_count)
       totalRetweets += post.retweet_count ? post.retweet_count : 0;
       totalFavReweet += (post.favorite_count + post.retweet_count);
       totalPositiveScore += thisSentiment.score > 0 ? 1 : 0;
@@ -195,7 +173,6 @@ console.log(post.retweet_count,post.favorite_count)
         : postsWithSentimentFiltered.length;
 
     // --dashboard data
-    console.log(totalFavReweet)
     const dashboardData = {
       total_tweets: totalTweets,
       total_flitered_tweets: totalFilteredTweets,
@@ -243,11 +220,11 @@ console.log(post.retweet_count,post.favorite_count)
 
     // -- word cloud path
     let wordCloudPathPromise = AlgorithmiaApi.algo(
-      "Vidyush/wordcloud/0.2.5"
+      "Vidyush/wordcloud/0.2.7"
     ).pipe(stringForWordCloud);
 
     let hashTagCloudPromise = AlgorithmiaApi.algo(
-      "Vidyush/wordcloud/0.2.5"
+      "Vidyush/wordcloud/0.2.7"
     ).pipe(hashTagArray.join(" "));
 
     let analyticsDataResponse = await Promise.all([
@@ -260,19 +237,18 @@ console.log(post.retweet_count,post.favorite_count)
     dateJson = dateJson.result;
     wordCloudPath = wordCloudPath.result;
     hashTagCloudPath = hashTagCloudPath.result;
-
-    let wordCloudFileName = wordCloudPath.substring(36);
-    let hashTagCloudFileName = hashTagCloudPath.substring(36);
+    let lastIndex = wordCloudPath.lastIndexOf("/");
+    let wordCloudFileName = wordCloudPath.substring(lastIndex);
+    lastIndex = hashTagCloudPath.lastIndexOf("/");
+    let hashTagCloudFileName = hashTagCloudPath.substring(lastIndex);
     cloud_save(wordCloudPath, wordCloudFileName);
-    cloud_save(hashTagCloudPath, hashTagCloudFileName);
-
-    // wordCloudPath = wordCloudPath.result;
+    cloud_save(hashTagCloudPath, hashTagCloudFileName,);
 
     let keyWordEntry = await Keyword.create({
       keyword: hashtag,
       userId: req.session.user.id,
-      wpath: "public/wordclouds/" + wordCloudFileName,
-      rhpath: "public/wordclouds/" + hashTagCloudFileName,
+      wpath: "/public/wordclouds/" + wordCloudFileName,
+      rhpath: "/public/wordclouds/" + hashTagCloudFileName,
       fullStream: statuses,
       postsWithSentiment: postsWithSentiment,
       dashboardJson: dashboardData,
@@ -282,6 +258,6 @@ console.log(post.retweet_count,post.favorite_count)
     req.session.keyword = { id: keyWordEntry.id, name: keyWordEntry.keyword };
     return res.redirect("/posts");
   } catch (err) {
-    throw "Something went wrong...";
+    res.send(err);
   }
 };
