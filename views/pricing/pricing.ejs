@@ -113,35 +113,35 @@
             </ul>
           </div>
         </div> -->
-
+        <% if(postUrl!=''){%>
         <form id="checkoutForm" name="checkoutForm" method="POST" action= <%= postUrl %>>
           <table class="mainForm">
             <tr>
                 <!-- <td>order id</td> -->
-                <td><input type="hidden" name="orderId" ></td>
+                <td><input type="hidden" name="orderId" value =<%= orderId %> ></td>
             </tr>
             <tr>
                 <!-- <td>order amount</td> -->
-                <td><input type="hidden" name="orderAmount" value="2" ></td>
+                <td><input type="hidden" name="orderAmount" value=<%= orderAmount %> ></td>
             </tr>
             <tr>
                 <!-- <td>customer name</td> -->
-                <td><input type="hidden" name="customerName" value="a" ></td>
+                <td><input type="hidden" name="customerName" value=<%= customerName %> ></td>
             </tr>
             <tr>
                 <!-- <td>customer email</td> -->
-                <td><input type="hidden" name="customerEmail" value="a@a.com" ></td>
+                <td><input type="hidden" name="customerEmail" value=<%= customerEmail %> ></td>
             </tr>
             <tr>
                 <!-- <td>customer phone</td> -->
-                <td><input type="hidden" name="customerPhone" value="1234512345" ></td>
+                <td><input type="hidden" name="customerPhone" value=<%= customerPhone %> ></td>
                 </tr>
 
-                <tr>
-                  <!-- <td>customer phone</td> -->
+                <!-- <tr>
+                  <td>customer phone</td> 
                   <td> <input type="hidden" name="returnUrl" value="http://localhost:1234/search"/></td>
                   </tr>
-
+                  -->
                  
         </table>
         <table>
@@ -154,12 +154,27 @@
           </table>
        </form>
         <div id="generatedSignature"></div>
+        <%}else{%>
+          <table>
+            <tr>
+                <td colspan="2"><button value="pay" id="loginButton">pay</button></td>
+            </tr>
+            </table>
+          <%}%>
            
       </div>
     </div>
   </div>
 </section>
 </script>
+<script>
+  $('#loginButton').click(function(){
+    window.location.href = 'http://localhost:3300/auth/login';
+  });
+
+</script>
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript" src="/cashfree/javascripts/helper.js"></script>
 

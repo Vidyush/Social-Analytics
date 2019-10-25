@@ -63,5 +63,5 @@ function generateRandomOrderId(){
 }
 
 $(document).ready(()=>{
-    $('[name="orderId"]').prop('value',generateRandomOrderId());
+    //$('[name="orderId"]').prop('value',generateRandomOrderId());
 })

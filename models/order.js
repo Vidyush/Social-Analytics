@@ -1,12 +1,13 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/db');
-
+const User = require('./user');
 const Order = sequelize.define('orders', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
     },
+    orderId: Sequelize.STRING(255),
     customerName: Sequelize.STRING(255),
     customerEmail: Sequelize.STRING(255),    
     orderAmount: Sequelize.STRING(255),
@@ -15,4 +16,5 @@ const Order = sequelize.define('orders', {
     updated_at: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },
 })
 
+Order.belongsTo(User);
 module.exports = Order;

@@ -142,18 +142,37 @@ module.exports.getDashboards = async (req, res) => {
  ** Search page
  ** @Method : GET
  */
-module.exports.getSearchPage = (req, res) => {
-  return res.render("dashboard/search");
 
-  // if (Object.keys(req.body).length != 0) {
-  //   //console.log(req.body)
-  //   Transaction.create({
-  //     orderId: req.body.orderId
-  //   });
-  //   return res.render("dashboard/search");
-  // } else {
-  //   return res.render("dashboard/search");
-  // }
+module.exports.getSearchPage = (req, res) => {
+  if(Object.keys(req.body).length !=0)
+   {
+     console.log(req.body)
+     Transaction.update({
+     //orderId:req.body.orderId,
+     orderAmount:req.body.orderAmount,
+     referenceId:req.body.referenceId,
+     txStatus:req.body.txStatus,
+     paymentMode:req.body.paymentMode,
+     txMsg:req.body.txMsg,
+     txTime:req.body.txTime,
+     signature:req.body.signature,
+   },
+   { where: { orderId : req.body.orderId }} 
+   
+   ).then(function() {
+
+     //console.log("Project with id =1 updated successfully!");
+     return res.render("dashboard/search");
+ }).catch(function(e) {
+     console.log("Project update failed !");
+ }); 
+
+   
+  }
+  else
+  {
+   return res.render("dashboard/search");
+  }
 };
 
 /*
