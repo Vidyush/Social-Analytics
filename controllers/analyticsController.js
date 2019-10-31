@@ -224,8 +224,8 @@ module.exports.analyseTwitterData = async (req, res) => {
     ).pipe(stringForWordCloud);
 
     let hashTagCloudPromise = AlgorithmiaApi.algo(
-      "Vidyush/Hashtagwordcloud/0.1.1"
-    ).pipe(hashTagArray.join(" "));
+      "Vidyush/RHashtag/0.1.3"
+    ).pipe(hashTagArray);
 
     let analyticsDataResponse = await Promise.all([
       dateJsonDataPromise,
