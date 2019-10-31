@@ -224,7 +224,7 @@ module.exports.analyseTwitterData = async (req, res) => {
     ).pipe(stringForWordCloud);
 
     let hashTagCloudPromise = AlgorithmiaApi.algo(
-      "Vidyush/wordcloud/0.2.7"
+      "Vidyush/Hashtagwordcloud/0.1.1"
     ).pipe(hashTagArray.join(" "));
 
     let analyticsDataResponse = await Promise.all([
@@ -232,7 +232,6 @@ module.exports.analyseTwitterData = async (req, res) => {
       wordCloudPathPromise,
       hashTagCloudPromise
     ]);
-
     let [dateJson, wordCloudPath, hashTagCloudPath] = analyticsDataResponse;
     dateJson = dateJson.result;
     wordCloudPath = wordCloudPath.result;
