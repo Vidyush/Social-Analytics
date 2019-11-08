@@ -11,6 +11,7 @@ router.get("/", pageController.index);
 router.get("/pricing", pageController.pricingPage);
 router.use(authAccessonly);
 // dashboard routes
+router.get("/myplan",dashboardController.myPlan)
 router.get("/dashboard/:id?", dashboardController.getDashboards);
 router.get("/search", dashboardController.getSearchPage);
 router.post("/search", dashboardController.getSearchPage);

@@ -4,6 +4,7 @@ const _ = require("lodash");
 const Transaction = require("../models/transaction");
 const { getKeywordData } = require("../utils/ModelUtils");
 
+
 function count_source(source, d) {
   let st = [];
   source.forEach(s => {
@@ -28,41 +29,7 @@ function count_source(source, d) {
   return score_array;
 }
 
-function convertDate(d) {
-  var parts = d.split(" ");
-  // var months = {
-  //  Jan: "01",
-  //  Feb: "02",
-  //  Mar: "03",
-  //  Apr: "04",
-  //  May: "05",
-  //  Jun: "06",
-  //  Jul: "07",
-  //  Aug: "08",
-  //  Sep: "09",
-  //  Oct: "10",
-  //  Nov: "11",
-  //  Dec: "12"
-  // };
 
-  var months = {
-    Jan: "Jan",
-    Feb: "Feb",
-    Mar: "Mar",
-    Apr: "Apr",
-    May: "May",
-    Jun: "Jun",
-    Jul: "Jul",
-    Aug: "Aug",
-    Sep: "Sep",
-    Oct: "Oct",
-    Nov: "Nov",
-    Dec: "Dec"
-  };
-
-  //return parts[2]+"-"+months[parts[1]]+"-"+parts[5];
-  return parts[2] + " " + months[parts[1]];
-}
 
 module.exports.getDashboards = async (req, res) => {
   // return res.json({session :req.session, id: req.params.id });
@@ -77,25 +44,27 @@ module.exports.getDashboards = async (req, res) => {
   ]);
 
   if (!keywordData) return res.redirect("/search");
-
-  let sorted_posts_array = [...keywordData.postsWithSentiment];
-  let sorted_users_array = [...keywordData.postsWithSentiment];
-  let unique_users = Object.keys(_.countBy(sorted_users_array, "user_id"))
+  let influencers = _.orderBy(_.uniqBy(keywordData.postsWithSentiment, "user_name"),["followers_count"],['desc'])
+  let uni_posts =  _.orderBy(_.uniqBy(keywordData.postsWithSentiment, "text"),["retweet_count"],['desc'])
+  let alllocations = [];
+  let unique_users = Object.keys(_.countBy(influencers, "user_id"))
     .length;
-  sorted_posts_array = sorted_posts_array.sort(function(a, b) {
-    return b.retweet_count - a.retweet_count;
-  });
-  sorted_users_array = sorted_users_array.sort(function(a, b) {
-    return b.followers_count - a.followers_count;
-  });
-
-  let sorted_posts_users_array = [sorted_posts_array, sorted_users_array];
-
   let Dates = [];
   let source = keywordData.postsWithSentiment;
   source.forEach(element => {
     Dates.push(element.date);
+    alllocations.push(element.location)
   });
+  let uniqLocations = alllocations.reduce((acc, val) => {
+    acc[val] = acc[val] === undefined ? 1 : acc[val] += 1;
+    return acc;
+  }, {});
+  let location_array = [["location", "value"]];
+  for (var i in uniqLocations) {
+    location_array.push([i, uniqLocations[i]]);
+  }
+  //console.log(location_array)
+  
 
   let devices = count_source(source, "device");
   let student2 = JSON.parse(keywordData.dateJson);
@@ -129,7 +98,8 @@ module.exports.getDashboards = async (req, res) => {
   return res.render("dashboard/dashboard", {
     hashtag: keywordData.keyword,
     stats: keywordData.dashboardJson,
-    feedb: sorted_posts_users_array,
+    influencers: influencers,
+    unique_posts : uni_posts,
     user_count: unique_users,
     feedb1: arr1,
     devices_score: devices,
@@ -188,7 +158,7 @@ module.exports.getBuzzwords = async (req, res) => {
       "keyword"
     ]);
     if (!keywordData) return res.redirect("/search");
-
+  
     return res.render("dashboard/buzzwords", {
       hashtag: req.session.hashtag,
       path: [keywordData.wpath, keywordData.rhpath]
@@ -222,7 +192,7 @@ module.exports.getPosts = async (req, res) => {
   ]);
   if (!keywordData) return res.redirect("/search");
 
-  let posts = keywordData.postsWithSentiment;
+  let posts =  _.uniqBy(keywordData.postsWithSentiment, "text");
 
   return res.status(200).render("dashboard/posts", {
     hashtag: req.session.hashtag,
@@ -245,6 +215,9 @@ module.exports.getInfluencers = async (req, res) => {
   if (!keywordData) return res.redirect("/search");
 
   let influencers = _.uniqBy(keywordData.postsWithSentiment, "user_name");
+  influencers = _.filter(influencers, person => person.followers_count >=500 || person.verified === true);
+  
+  
   let posts = keywordData.postsWithSentiment;
 
   let influencersData = {};
@@ -294,6 +267,10 @@ module.exports.getSentiment = async (req, res) => {
   });
 };
 
+module.exports.myPlan = (req,res)=>{
+return res.render("dashboard/myplan")
+
+}
 module.exports.getRecents = async (req, res) => {
   let recent = await Keyword.findAll({
     attributes: ["keyword", "dashboardJson", "id"], // to get only selected columns

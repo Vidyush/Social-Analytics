@@ -8,7 +8,13 @@ const { TWITTER_POST_LIMIT } = require("../config/constants");
 const { formatDate } = require("../utils/dates");
 const { getHashTagsAll } = require("../utils");
 const Sentiment = require("sentiment");
+const moment = require("moment");
 
+function dateFormatter(d){
+  var datestring = d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear() + " " +
+d.getHours() + ":" + d.getMinutes();
+return datestring;
+}
 var options = {
   provider: "opencage",
 
@@ -78,12 +84,12 @@ module.exports.analyseTwitterData = async (req, res) => {
       q: hashtag,
       count: TWITTER_POST_LIMIT
     });
+    
 
     tweets = tweets.data;
     let { statuses } = tweets;
 
     if(statuses.length == 0) return res.redirect("/search");
-
     // making post data with sentiment score
     let postsWithSentiment = [];
     let totalRetweets = 0,
@@ -114,6 +120,7 @@ module.exports.analyseTwitterData = async (req, res) => {
       // return res.json(thisSentiment);
       stringForWordCloud += post.text;
       // extracting hashtags for post text
+      //console.log(post.text)
       let thisPostHash = getHashTagsAll(post.text);
       if (thisPostHash) hashTagArray.push(...thisPostHash);
       totalRetweets += post.retweet_count ? post.retweet_count : 0;
@@ -136,6 +143,7 @@ module.exports.analyseTwitterData = async (req, res) => {
         location: post.user.location,
         description: post.user.description,
         followers_count: post.user.followers_count,
+        verified : post.user.verified,
         friends_count: post.user.friends_count,
         listed_count: post.user.listed_count,
         favourites_count: post.user.favourites_count,
@@ -148,7 +156,8 @@ module.exports.analyseTwitterData = async (req, res) => {
         exposure: post.retweeted
           ? post.retweeted_status.user.followers_count
           : null,
-        date: post.created_at,
+        //date: moment(post.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en'),
+        date:dateFormatter(new Date(post.created_at)),
         device:post.source
       };
     });
@@ -224,7 +233,7 @@ module.exports.analyseTwitterData = async (req, res) => {
     ).pipe(stringForWordCloud);
 
     let hashTagCloudPromise = AlgorithmiaApi.algo(
-      "Vidyush/RHashtag/0.1.3"
+      "Vidyush/RHashtag/0.1.8"
     ).pipe(hashTagArray);
 
     let analyticsDataResponse = await Promise.all([

@@ -21,7 +21,7 @@ module.exports.pricingPage = (req, res) => {
   if(orders.length>0){
     res.render('pricing/pricing',{ 
         postUrl: config.paths[config.enviornment].cashfreePayUrl,
-        orderId:200000000+orders[0].id+1,
+        orderId:300000000+orders[0].id+1,
         orderAmount:10,
         customerName:req.session.user.fullName,
         customerEmail:req.session.user.email,
@@ -31,7 +31,7 @@ module.exports.pricingPage = (req, res) => {
   else{
     res.render('pricing/pricing',{ 
         postUrl: config.paths[config.enviornment].cashfreePayUrl,
-        orderId:200000001,
+        orderId:300000001,
         orderAmount:10,
         customerName:req.session.user.fullName,
         customerEmail:req.session.user.email,
