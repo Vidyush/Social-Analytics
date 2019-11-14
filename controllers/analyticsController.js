@@ -8,7 +8,6 @@ const { TWITTER_POST_LIMIT } = require("../config/constants");
 const { formatDate } = require("../utils/dates");
 const { getHashTagsAll } = require("../utils");
 const Sentiment = require("sentiment");
-const moment = require("moment");
 
 function dateFormatter(d){
   var datestring = d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear() + " " +
@@ -116,6 +115,7 @@ module.exports.analyseTwitterData = async (req, res) => {
       
 
       let sentiment = new Sentiment();
+      
       let thisSentiment = sentiment.analyze(post.text);
       // return res.json(thisSentiment);
       stringForWordCloud += post.text;
@@ -130,9 +130,10 @@ module.exports.analyseTwitterData = async (req, res) => {
       totalNeutralScore += thisSentiment.score == 0 ? 1 : 0;
 
       // -- calculating positive sentiment percentage
-
+      
+      
       return {
-        url: postUrl,
+        url: "https://twitter.com/i/web/status/"+post.id_str,
         text: post.text,
         profile_link: "https://twitter.com/" + post.user.screen_name,
         source: post.source,
@@ -158,6 +159,7 @@ module.exports.analyseTwitterData = async (req, res) => {
           : null,
         //date: moment(post.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en'),
         date:dateFormatter(new Date(post.created_at)),
+        dateUTC : post.created_at,
         device:post.source
       };
     });
@@ -232,35 +234,27 @@ module.exports.analyseTwitterData = async (req, res) => {
       "Vidyush/wordcloud/0.2.7"
     ).pipe(stringForWordCloud);
 
-    let hashTagCloudPromise = AlgorithmiaApi.algo(
-      "Vidyush/RHashtag/0.1.8"
-    ).pipe(hashTagArray);
-
     let analyticsDataResponse = await Promise.all([
       dateJsonDataPromise,
       wordCloudPathPromise,
-      hashTagCloudPromise
     ]);
     let [dateJson, wordCloudPath, hashTagCloudPath] = analyticsDataResponse;
     dateJson = dateJson.result;
     wordCloudPath = wordCloudPath.result;
-    hashTagCloudPath = hashTagCloudPath.result;
     let lastIndex = wordCloudPath.lastIndexOf("/");
     let wordCloudFileName = wordCloudPath.substring(lastIndex);
-    lastIndex = hashTagCloudPath.lastIndexOf("/");
-    let hashTagCloudFileName = hashTagCloudPath.substring(lastIndex);
     cloud_save(wordCloudPath, wordCloudFileName);
-    cloud_save(hashTagCloudPath, hashTagCloudFileName,);
 
     let keyWordEntry = await Keyword.create({
       keyword: hashtag,
       userId: req.session.user.id,
       wpath: "/public/wordclouds/" + wordCloudFileName,
-      rhpath: "/public/wordclouds/" + hashTagCloudFileName,
       fullStream: statuses,
       postsWithSentiment: postsWithSentiment,
       dashboardJson: dashboardData,
-      dateJson: dateJson
+      dateJson: dateJson,
+      hashtagArray:hashTagArray,
+      wtext:stringForWordCloud,
     });
 
     req.session.keyword = { id: keyWordEntry.id, name: keyWordEntry.keyword };

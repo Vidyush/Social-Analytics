@@ -57,6 +57,10 @@
   <td>Engagements</td>
   <td>%%post_engagement%%</td>
 </tr>
+<tr>
+  <td>View Post</td>
+  <td><a href="%%post_link%%">View</a></td>
+</tr>
 
 </template>
 
@@ -85,8 +89,8 @@
         <td>%%user_name%%</td>
       </tr>
       <tr>
-        <td>Screen Name</td>
-        <td>%%screen_name%%</td>
+        <td>View Profile</td>
+        <td><a href ="https://twitter.com/%%screen_name%%">View</a></td>
       </tr>
       <tr>
           <td>Bio</td>
@@ -153,7 +157,7 @@ $(document).ready(function() {
     var postsString = "";
     for(let j=0; j<modelData.posts.length; j++ ){
       var thisString = postTableTemplateString;
-     thisString=  thisString.replace("%%post_title%%",modelData.posts[j].text).replace("%%post_date%%",modelData.posts[j].date).replace("%%post_engagement%%",modelData.posts[j].engagement);
+     thisString=  thisString.replace("%%post_title%%",modelData.posts[j].text).replace("%%post_date%%",modelData.posts[j].date).replace("%%post_engagement%%",modelData.posts[j].engagement).replace("%%post_link%%",modelData.posts[j].url);
       postsString  = postsString+ thisString;
     }
 

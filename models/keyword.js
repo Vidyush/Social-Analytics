@@ -15,7 +15,9 @@ const Keyword = sequelize.define("keywords", {
   dashboardJson: Sequelize.JSON,
   dateJson: Sequelize.JSON,
   postsWithSentiment: Sequelize.JSON,
-  count: { type: Sequelize.INTEGER, defaultValue: 1 }
+  count: { type: Sequelize.INTEGER, defaultValue: 1 },
+  hashtagArray:Sequelize.JSON,
+  wtext:Sequelize.JSON
 });
 
 Keyword.belongsTo(User);

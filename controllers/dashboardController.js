@@ -4,7 +4,17 @@ const _ = require("lodash");
 const Transaction = require("../models/transaction");
 const { getKeywordData } = require("../utils/ModelUtils");
 
-
+function counter(a){
+  let uniqLocations = a.  reduce((acc, val) => {
+      acc[val] = acc[val] === undefined ? 1 : acc[val] += 1;
+      return acc;
+    }, {});
+    let location_array = [["location", "value"]];
+    for (var i in uniqLocations) {
+      location_array.push([i, uniqLocations[i]]);
+    }
+  return location_array
+  }
 function count_source(source, d) {
   let st = [];
   source.forEach(s => {
@@ -29,7 +39,39 @@ function count_source(source, d) {
   return score_array;
 }
 
+function parseAndFormat(s) {
 
+  // Helper
+  function z(n){return (n<10? "0":'') + n;}
+
+  // Split into parts
+  //var b = s.split(/[ :]/);
+  var m = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+  var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+  // Create a date based on UTC values
+ // var d = new Date(Date.UTC(b[3], m.indexOf(b[1]), b[2], b[4], b[5], b[6]));
+var d = new Date(s)
+  // Add 5 hours 30 minutes to the UTC time -> IST
+  d.setUTCHours(d.getUTCHours() + 5, d.getUTCMinutes() + 30);
+
+  // Format the hours for am/pm
+  var hr = d.getUTCHours();
+  var ap = "+0530";
+ // hr = hr%12 || 12;
+
+  // Format the output based on the adjusted UTC time
+  var dt = days[d.getUTCDay()] + ' '
+           + m[d.getUTCMonth()] + ' '
+           + d.getUTCDate() + ' '
+           
+           + z(hr) + ':'
+           + z(d.getUTCMinutes()) + ':'
+           + z(d.getUTCSeconds()) + ' '
+           + ap+ ' '
+           + d.getUTCFullYear() ;
+  return dt;
+}
 
 module.exports.getDashboards = async (req, res) => {
   // return res.json({session :req.session, id: req.params.id });
@@ -39,8 +81,8 @@ module.exports.getDashboards = async (req, res) => {
     "dashboardJson",
     "postsWithSentiment",
     "dateJson",
-    "rhpath",
-    "wpath"
+    "wpath",
+    "hashtagArray"
   ]);
 
   if (!keywordData) return res.redirect("/search");
@@ -50,9 +92,11 @@ module.exports.getDashboards = async (req, res) => {
   let unique_users = Object.keys(_.countBy(influencers, "user_id"))
     .length;
   let Dates = [];
+  let DatesUtc = []
   let source = keywordData.postsWithSentiment;
   source.forEach(element => {
-    Dates.push(element.date);
+    DatesUtc.push(element.dateUTC)
+    Dates.push(parseAndFormat(element.date));
     alllocations.push(element.location)
   });
   let uniqLocations = alllocations.reduce((acc, val) => {
@@ -64,7 +108,6 @@ module.exports.getDashboards = async (req, res) => {
     location_array.push([i, uniqLocations[i]]);
   }
   //console.log(location_array)
-  
 
   let devices = count_source(source, "device");
   let student2 = JSON.parse(keywordData.dateJson);
@@ -91,9 +134,9 @@ module.exports.getDashboards = async (req, res) => {
     array1[a][11] = student2[a].V12;
   }
   arr1 = array1;
-
+  
   if (!keywordData) return res.redirect("/search");
-
+  let hashes = counter(keywordData.hashtagArray)
   // return
   return res.render("dashboard/dashboard", {
     hashtag: keywordData.keyword,
@@ -104,7 +147,10 @@ module.exports.getDashboards = async (req, res) => {
     feedb1: arr1,
     devices_score: devices,
     Dates,
-    path: [keywordData.rhpath, keywordData.wpath]
+    path: keywordData.wpath,
+    location_array,
+    hashes,
+    DatesUtc
   });
 };
 
@@ -150,32 +196,21 @@ module.exports.getSearchPage = (req, res) => {
  ** @Method : GET
  */
 module.exports.getBuzzwords = async (req, res) => {
-  if (!req.session.currentId) {
+  
     let keywordData = await getKeywordData(req, res, [
       "id",
       "wpath",
-      "rhpath",
-      "keyword"
+      "keyword",
+      "hashtagArray"
     ]);
     if (!keywordData) return res.redirect("/search");
-  
+    let hashes = counter(keywordData.hashtagArray)
     return res.render("dashboard/buzzwords", {
       hashtag: req.session.hashtag,
-      path: [keywordData.wpath, keywordData.rhpath]
+      hashes,
+      path: keywordData.wpath
     });
-  } else {
-    Keyword.findOne({
-      where: {
-        UserId: req.session.user.id,
-        Id: req.session.currentId
-      }
-    }).then(key => {
-      return res.render("dashboard/buzzwords", {
-        hashtag: key.keyword,
-        path: [key.wpath, key.rhpath]
-      });
-    });
-  }
+  
 };
 
 /*
@@ -199,7 +234,7 @@ module.exports.getPosts = async (req, res) => {
     id: keywordData.id,
     posts
   });
-};
+}
 
 /*
  ** Influencers page
@@ -232,7 +267,8 @@ module.exports.getInfluencers = async (req, res) => {
       return {
         text: i.text,
         date: i.date,
-        engagement: i.retweet_count + i.followers_count
+        engagement: i.retweet_count + i.followers_count,
+        url :i.url ,
       };
     });
 

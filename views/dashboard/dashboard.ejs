@@ -50,8 +50,8 @@
                           <li>
                               <div class="userimg"><img class="img-fluid" src=<%= elem.profile_image_url%>> <span class="fromdata"><i class="fa fa-twitter"></i></span></div>
                               <div class="userdes">
-                                <h3><%= elem.user_name; %> <span><%= elem.date; %></span><span class="tweetdata"><%= elem.retweet_count %> <img class="mrrt10" src="images/icons/user_retweet.png" alt=""> <%= elem.favorite_count %> <img src="images/icons/user_favourite.png" alt=""></span></h3>
-                                <p><%= elem.text %></p>
+                                <h3><a target="_blank" href=<%=elem.profile_link %>><%= elem.user_name; %></a> <span><%= elem.date; %></span><span class="tweetdata"><%= elem.retweet_count %> <img class="mrrt10" src="images/icons/user_retweet.png" alt=""> <%= elem.favorite_count %> <img src="images/icons/user_favourite.png" alt=""></span></h3>
+                                <p><a target="_blank" href=<%=elem.url %>><%= elem.text %></a></p>
                               </div>
                             </li>
                       
@@ -62,24 +62,17 @@
                   </div>
                 </div>
                 <div class="col-md-6">
-                    <h3>Related Topics</h3>
-                    <div class="card withheading withexplore withtabs">
-                      <div class="tablinks">
-                        <a class="customtabs ctab1 active" onclick="opentabcontent(1)" href="javascript:void(0);">Hashtags</a>
-                        <a class="customtabs ctab2" onclick="opentabcontent(2)" href="javascript:void(0);">Keywords</a>
-                      </div>
-                      <div class="tabcontentarea">
-                        <div class="part1 open">
-                            <img  id="rh" alt="Related Hashtags" src=<%=path[0]%> >
-                        </div>
-                        <div class="part2">
-                            <img class="img-fluid" id="wc" alt="wordcloud" src=<%=path[1]%> >
+                    <h3>Wordcloud</h3>
+                    <div class="card withheading withexplore">
+                      
+                        <div style="text-align: center;">
+                            <img class="img-fluid" style="width:500px; max-width: 100%; height:100%;" id="wc" alt="wordcloud" src=<%=path%> >
                           </div>
-                      </div>
-                      <a class="cardfooter" href="/posts">View All Posts <i class="fa fa-chevron-right"></i></a>
+                      
+                      <a class="cardfooter" href="/buzzwords">View Buzzwords <i class="fa fa-chevron-right"></i></a>
                     </div>
                 </div>
-              </div>
+                    </div>
 
               <div class="row d-flex">
                 <div class="col-md-6">
@@ -91,7 +84,7 @@
                               <li>
                                   <div class="userimg"><img class="img-fluid" src=<%= elem.profile_image_url%>> <span class="fromdata"><i class="fa fa-twitter"></i></span></div>
                                   <div class="userdes">
-                                    <h3><%= elem.user_name; %> <span><%=elem.location %></span><span class="tweetdata"><%= elem.followers_count %>fc</span></h3>
+                                    <h3><a href=<%=elem.profile_link %>><%= elem.user_name; %></a> <span><%=elem.location %></span><span class="tweetdata"><%= elem.followers_count %>fc</span></h3>
                                     <p><%=  elem.description; %></p>
                                   </div>
                                 </li>
@@ -124,6 +117,22 @@
                     </div>
                   </div>
               </div>
+              <div class="row d-flex">
+              <div class="col-md-6">
+                  <h3>Location Frequency</h3>
+                  <div class="card withheading">
+                  <div id="LocChart" style="width:100%; height:500px;"></div>
+                  </div>
+
+              </div>
+              <div class="col-md-6">
+                  <h3>Hashtags Frequency</h3>
+                  <div class="card withheading">
+                  <div id="hashChart1" style="width:100%; height:500px;" ></div>
+                  </div>
+
+              </div>
+            </div>
              
                 
               </div>
@@ -146,6 +155,79 @@
       </script> Social Analysis. All Rights Reserved.
   </p>
 </div>
+
+ <script>
+    var chartVars = "KoolOnLoadCallFunction=chartReadyHandler";
+    var Vars = "KoolOnLoadCallFunction=chartReadyHandler1"
+
+KoolChart.create("chart1", "LocChart", chartVars, "100%", "100%");
+KoolChart.create("chart2", "hashChart1", Vars, "100%", "100%");
+
+function chartReadyHandler(id) {
+  document.getElementById(id).setLayout(layoutStr);
+  document.getElementById(id).setData(makeData1());
+}
+
+function chartReadyHandler1(id) {
+  document.getElementById(id).setLayout(layoutStr);
+  document.getElementById(id).setData(makeData2());
+}
+
+var layoutStr =
+  '<KoolChart backgroundColor="#FFFFFF"  borderStyle="none" fontFamily="Noto Sans">'
+   +'<WordCloudChart showDataTips="true">'
+    +'<series>'
+     +'<WordCloudSeries textField="text" weightField="weight">'
+      +'<showDataEffect>'
+       +'<SeriesInterpolate duration="1000"/>'
+      +'</showDataEffect>'
+      +'<fills>'
+       +'<SolidColor color="#5586a4"/>'
+       +'<SolidColor color="#40b2e6"/>'
+       +'<SolidColor color="#ffa123"/>'
+       +'<SolidColor color="#595c7b"/>'
+       +'<SolidColor color="#ef8075"/>'
+       +'<SolidColor color="#f8ba03"/>'
+       +'<SolidColor color="#03b79a"/>'
+       +'<SolidColor color="#a5d4e6"/>'
+       +'<SolidColor color="#b79d7c"/>'
+       +'<SolidColor color="#9e589e"/>'
+      +'</fills>'
+     +'</WordCloudSeries>'
+    +'</series>'
+   +'</WordCloudChart>'
+  +'</KoolChart>';
+
+
+ function makeData1(){
+      var i, n,
+       chartData = [],
+       data = <%-JSON.stringify(location_array)%>;
+       console.log(data)
+      for(i = 0, n = data.length ; i < n ; i += 1){
+       chartData.push({
+        text : data[i][0],
+        weight : data[i][1]
+       });
+      }
+      return chartData;
+ };
+ function makeData2(){
+       var i, n,
+       chartData = [],
+       data = <%-JSON.stringify(hashes)%>;
+       console.log(data)
+      for(i = 0, n = data.length ; i < n ; i += 1){
+       chartData.push({
+        text : data[i][0],
+        weight : data[i][1]
+       });
+      }
+      return chartData;
+ };
+   
+    </script>
+    
 <script>
     var data1 =  <%- JSON.stringify(feedb1) %>;
     data1 = data1.reverse();
@@ -360,7 +442,7 @@ else{
   //console.log(<%-JSON.stringify(Dates)%>);
 
   var series = [];  
-  var myCurrentArray= <%-JSON.stringify(Dates)%>;
+  var myCurrentArray= <%-JSON.stringify(DatesUtc)%>;
 
  //var myCurrentArray = ['Sat Aug 10 01:20:30 +0000 2019']; 
 
@@ -584,7 +666,6 @@ else{
            ]);
       
            var options = {
-             title: 'Sentiment',
              is3D:true,
              
            };
@@ -592,12 +673,18 @@ else{
            var chart = new google.visualization.PieChart(document.getElementById('sentiment_chart'));
       
            chart.draw(data, options);
+           google.visualization.events.addListener(chart, 'select', function() {
+    var row = chart.getSelection()[0].row;
+    console.log(row)
+    window.open('/posts'); //This will open Google in a new window.
+  });
          }
       </script>
 
 
 
   <!-- s s -->
+  
 <script src="/js/loader.js"></script>
 <script src="/js/jquery.dataTables.min.js"></script>
 <%- include('../_includes/noFooter') %>
