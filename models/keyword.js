@@ -12,12 +12,10 @@ const Keyword = sequelize.define("keywords", {
   wpath: Sequelize.STRING(255), //wordcloud path
   rhpath: Sequelize.STRING(255), //related hastag wordcloud path
   fullStream: Sequelize.JSON,
-  dashboardJson: Sequelize.JSON,
-  dateJson: Sequelize.JSON,
+  dashboardJson: Sequelize.JSON,  
   postsWithSentiment: Sequelize.JSON,
   count: { type: Sequelize.INTEGER, defaultValue: 1 },
-  hashtagArray:Sequelize.JSON,
-  wtext:Sequelize.JSON
+  hashtagArray:Sequelize.JSON
 });
 
 Keyword.belongsTo(User);

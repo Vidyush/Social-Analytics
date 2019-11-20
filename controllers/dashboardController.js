@@ -3,6 +3,32 @@ const Keyword = require("../models/keyword");
 const _ = require("lodash");
 const Transaction = require("../models/transaction");
 const { getKeywordData } = require("../utils/ModelUtils");
+const config = require("../config/constants");
+
+function Values(arr1){
+  var checkdate = [];
+  var fnldata = [];
+  for(var i=0;i<arr1.length;i++){
+      var datem = new Date(arr1[i].created_at);
+      var d = datem.getDate();
+      var m = datem.getMonth() + 1;
+      var y = datem.getFullYear();
+  
+      var fnldate = y+'-'+m+'-'+d;
+  
+      if(checkdate.includes(fnldate)){
+          var index = checkdate.indexOf(fnldate);
+          fnldata[index].totalTweets++;
+          fnldata[index].retweet_count += arr1[i].retweet_count;
+          fnldata[index].favorite_count += arr1[i].favorite_count;
+      }else{
+          checkdate[i] = fnldate;
+          fnldata[i] = {"date":fnldate,"totalTweets":1,"retweet_count":arr1[i].retweet_count,"favorite_count":arr1[i].favorite_count};
+      }
+  }
+  fnldata = fnldata.filter(function(){return true;});
+  return(fnldata);
+}
 
 function counter(a){
   let uniqLocations = a.  reduce((acc, val) => {
@@ -80,9 +106,8 @@ module.exports.getDashboards = async (req, res) => {
     "keyword",
     "dashboardJson",
     "postsWithSentiment",
-    "dateJson",
     "wpath",
-    "hashtagArray"
+    "hashtagArray","fullStream"
   ]);
 
   if (!keywordData) return res.redirect("/search");
@@ -110,30 +135,8 @@ module.exports.getDashboards = async (req, res) => {
   //console.log(location_array)
 
   let devices = count_source(source, "device");
-  let student2 = JSON.parse(keywordData.dateJson);
-
-  var totalMessages1 = Object.keys(student2).length;
-
-  let array1 = new Array(totalMessages1);
-  for (let i = 0; i < totalMessages1; i++) {
-    array1[i] = new Array();
-  }
-
-  for (let a = 0; a < totalMessages1; a++) {
-    array1[a][0] = student2[a].V1;
-    array1[a][1] = student2[a].V2;
-    array1[a][2] = student2[a].V3;
-    array1[a][3] = student2[a].V4;
-    array1[a][4] = student2[a].V5;
-    array1[a][5] = student2[a].V6;
-    array1[a][6] = student2[a].V7;
-    array1[a][7] = student2[a].V8;
-    array1[a][8] = student2[a].V9;
-    array1[a][9] = student2[a].V10;
-    array1[a][10] = student2[a].V11;
-    array1[a][11] = student2[a].V12;
-  }
-  arr1 = array1;
+  arr1 = Values(keywordData.fullStream);
+  console.log(arr1)
   
   if (!keywordData) return res.redirect("/search");
   let hashes = counter(keywordData.hashtagArray)
@@ -250,7 +253,7 @@ module.exports.getInfluencers = async (req, res) => {
   if (!keywordData) return res.redirect("/search");
 
   let influencers = _.uniqBy(keywordData.postsWithSentiment, "user_name");
-  influencers = _.filter(influencers, person => person.followers_count >=500 || person.verified === true);
+  influencers = _.filter(influencers, person => person.followers_count >=config.influencerLimit || person.verified === true);
   
   
   let posts = keywordData.postsWithSentiment;

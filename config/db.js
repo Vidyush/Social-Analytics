@@ -11,4 +11,5 @@ const sequelize = new Sequelize('mysql://127.0.0.1:3306/buzzabl', {
   }
 });
 
+
 module.exports = sequelize;

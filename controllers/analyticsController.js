@@ -4,11 +4,26 @@ const fs = require("fs");
 const Keyword = require("../models/keyword");
 const _ = require("lodash");
 const geolocator = require("node-geocoder");
-const { TWITTER_POST_LIMIT } = require("../config/constants");
+const { TWITTER_POST_LIMIT,config } = require("../config/constants");
 const { formatDate } = require("../utils/dates");
 const { getHashTagsAll } = require("../utils");
 const Sentiment = require("sentiment");
+const con = require("../config/db")
 
+function JsonAdder(js1,js2){
+let z = [js1,js2]
+  let merged = z.reduce((r,o) => {
+    Object.keys(o).forEach(k => {
+      if(js1[k] && js2[k]){
+      r[k] = parseInt(js1[k])+parseInt(js2[k])
+      }
+    })
+    return r;
+  },{});
+return merged;
+
+
+}
 function dateFormatter(d){
   var datestring = d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear() + " " +
 d.getHours() + ":" + d.getMinutes();
@@ -76,8 +91,16 @@ module.exports.analyseTwitterData = async (req, res) => {
   let body = req.body;
   let hashtag = body.hashtag;
   req.session.hashtag = hashtag;
-  
-
+  //console.log(req.session.user.id)
+  const unqCount = await Keyword.count({
+    where:{
+      userId: req.session.user.id
+    },
+     distinct: true,
+  col: 'keyword'
+ })
+console.log(unqCount)
+ if(unqCount < config.keywordLimit){
   try {
     let tweets = await TwitterApi.get("search/tweets", {
       q: hashtag,
@@ -103,7 +126,7 @@ module.exports.analyseTwitterData = async (req, res) => {
     totalFilteredNeutralScore = 0;
     stringForWordCloud = "";
     let hashTagArray = [];
-
+    
     postsWithSentiment = statuses.map(post => {
       // getting post url from extended entities
       let postUrl = null;
@@ -124,6 +147,7 @@ module.exports.analyseTwitterData = async (req, res) => {
       let thisPostHash = getHashTagsAll(post.text);
       if (thisPostHash) hashTagArray.push(...thisPostHash);
       totalRetweets += post.retweet_count ? post.retweet_count : 0;
+      //totalFav += post.favorite_count ? post.favorite_count : 0;
       totalFavReweet += (post.favorite_count + post.retweet_count);
       totalPositiveScore += thisSentiment.score > 0 ? 1 : 0;
       totalNegativeScore += thisSentiment.score < 0 ? 1 : 0;
@@ -147,7 +171,7 @@ module.exports.analyseTwitterData = async (req, res) => {
         verified : post.user.verified,
         friends_count: post.user.friends_count,
         listed_count: post.user.listed_count,
-        favourites_count: post.user.favourites_count,
+        //favorite_count: post.favorite_count,
         statuses_count: post.user.statuses_count,
         user_lang: post.user.lang,
         profile_background_image_url: post.user.profile_background_image_url,
@@ -222,11 +246,11 @@ module.exports.analyseTwitterData = async (req, res) => {
         100
       ).toFixed(2)
     };
-
+    
     // --dateJson data
-    let dateJsonDataPromise = AlgorithmiaApi.algo("Vidyush/Forth/0.1.2").pipe(
-      JSON.stringify(statuses)
-    );
+    // let dateJsonDataPromise = AlgorithmiaApi.algo("Vidyush/Forth/0.1.2").pipe(
+    //   JSON.stringify(statuses)
+    // );
     // dateJsonData = dateJsonData.result;
 
     // -- word cloud path
@@ -235,31 +259,66 @@ module.exports.analyseTwitterData = async (req, res) => {
     ).pipe(stringForWordCloud);
 
     let analyticsDataResponse = await Promise.all([
-      dateJsonDataPromise,
+      // dateJsonDataPromise,
       wordCloudPathPromise,
     ]);
-    let [dateJson, wordCloudPath, hashTagCloudPath] = analyticsDataResponse;
-    dateJson = dateJson.result;
+    let [wordCloudPath, hashTagCloudPath] = analyticsDataResponse;
+   // dateJson = dateJson.result;
     wordCloudPath = wordCloudPath.result;
     let lastIndex = wordCloudPath.lastIndexOf("/");
     let wordCloudFileName = wordCloudPath.substring(lastIndex);
     cloud_save(wordCloudPath, wordCloudFileName);
 
-    let keyWordEntry = await Keyword.create({
+    const keyss = await Keyword.findOne({
+      where:{
+        keyword: hashtag,
+        userId: req.session.user.id
+      }
+    })
+    
+    let keyWordEntry;
+   
+ if(keyss){
+  let nstatuses = statuses.concat(keyss.fullStream)
+  let npostsWithSentiment = postsWithSentiment.concat(keyss.postsWithSentiment)  
+  let ndashboardJson = JsonAdder(dashboardData,keyss.dashboardJson)
+  let nhashTagArray = hashTagArray.concat(keyss.hashTagArray)
+  keyss.wpath = "/public/wordclouds/" + wordCloudFileName
+  keyss.fullStream = nstatuses
+  keyss.postsWithSentiment = npostsWithSentiment
+  keyss.dashboardJson = ndashboardJson
+  keyss.hashTagArray = nhashTagArray
+  
+  keyss.save().then(()=>{
+    console.log("updated")
+  }).catch(err=>{
+    console.log(err);
+  })
+  
+  req.session.keyword = { id: keyss.id, name: keyss.keyword };
+    return res.redirect("/posts");
+}
+
+else{
+     keyWordEntry = await Keyword.create({
       keyword: hashtag,
       userId: req.session.user.id,
       wpath: "/public/wordclouds/" + wordCloudFileName,
       fullStream: statuses,
       postsWithSentiment: postsWithSentiment,
       dashboardJson: dashboardData,
-      dateJson: dateJson,
       hashtagArray:hashTagArray,
-      wtext:stringForWordCloud,
     });
-
     req.session.keyword = { id: keyWordEntry.id, name: keyWordEntry.keyword };
     return res.redirect("/posts");
+  }
+
+    
   } catch (err) {
     res.send(err);
   }
+}
+else{
+  return res.redirect("/recents")
+}
 };

@@ -31,7 +31,7 @@
                 <div class="col-md-3">
                   <div class="infobox engage">
                     <span class="icon"><img src="images/icons/engagment.png" alt=""></span>
-                    <p><strong><%= stats.engagement || 0 %></strong>Enagagement</p>
+                    <p><strong><%= stats.engagement || 0 %></strong>Engagement</p>
                   </div>
                 </div>
               </div>
@@ -84,7 +84,7 @@
                               <li>
                                   <div class="userimg"><img class="img-fluid" src=<%= elem.profile_image_url%>> <span class="fromdata"><i class="fa fa-twitter"></i></span></div>
                                   <div class="userdes">
-                                    <h3><a href=<%=elem.profile_link %>><%= elem.user_name; %></a> <span><%=elem.location %></span><span class="tweetdata"><%= elem.followers_count %>fc</span></h3>
+                                    <h3><a href=<%=elem.profile_link %>><%= elem.user_name; %></a> <span><%=elem.location %></span><span class="tweetdata"><%= elem.followers_count %></span></h3>
                                     <p><%=  elem.description; %></p>
                                   </div>
                                 </li>
@@ -203,7 +203,7 @@ var layoutStr =
       var i, n,
        chartData = [],
        data = <%-JSON.stringify(location_array)%>;
-       console.log(data)
+       //console.log(data)
       for(i = 0, n = data.length ; i < n ; i += 1){
        chartData.push({
         text : data[i][0],
@@ -216,7 +216,7 @@ var layoutStr =
        var i, n,
        chartData = [],
        data = <%-JSON.stringify(hashes)%>;
-       console.log(data)
+       //console.log(data)
       for(i = 0, n = data.length ; i < n ; i += 1){
        chartData.push({
         text : data[i][0],
@@ -228,8 +228,9 @@ var layoutStr =
    
     </script>
     
-<script>
-    var data1 =  <%- JSON.stringify(feedb1) %>;
+ <script>
+  var data1 = <%-JSON.stringify(feedb1)%>;
+    // var data1 =  <%- JSON.stringify(feedb1) %>;
     data1 = data1.reverse();
 </script>
 <script>
@@ -312,25 +313,26 @@ $(document).ready(function(e) {
 
 <script>
   var ctx = document.getElementById('myChart').getContext('2d');
-function convert(str) {
-  var date = new Date(str),
-    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-    day = ("0" + date.getDate()).slice(-2);
-  return [date.getFullYear(), mnth, day].join("-");
-}
+// function convert(str) {
+//   var date = new Date(str),
+//     mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+//     day = ("0" + date.getDate()).slice(-2);
+//   return [date.getFullYear(), mnth, day].join("-");
+// }
   var time_Array=[]
     var tweets = []
     var retweets = []
     var favs = []
     
     if(data1.length=="1"){
-      for(var i =0;i<data1.length;i++){
-      time_Array.push(convert((new Date( data1[i][1], (data1[i][2] -1), data1[i][3]))))
-      tweets.push(data1[i][4])
-      retweets.push(data1[i][5])
-      favs.push(data1[i][7])  
-    }
-    console.log(time_Array)
+      data1.forEach(element => {
+        console.log(element.date)
+      time_Array.push(element.date)
+      tweets.push(element.totalTweets)
+      retweets.push(element.retweet_count)
+      favs.push(element.favorite_count)  
+    })
+    console.log(tweets)
     var myChart = new Chart(ctx, {
   type: 'line',
   data: {
@@ -380,12 +382,14 @@ function convert(str) {
 });}
 
 else{
-  for(var i =0;i<data1.length;i++){
-      time_Array.push(convert((new Date( data1[i][1], (data1[i][2] -1), data1[i][3]))))
-      tweets.push(data1[i][4])
-      retweets.push(data1[i][5])
-      favs.push(data1[i][7])  
-    } 
+  
+    data1.forEach(element => {
+      time_Array.push(element.date)
+      tweets.push(element.totalTweets)
+      retweets.push(element.retweet_count)
+      favs.push(element.favorite_count)  
+    })
+
   var myChart = new Chart(ctx, {
   type: 'line',
   data: {
@@ -474,7 +478,7 @@ else{
           if(d.getUTCDay()==1)
           {
           var key = 'Mon';
-          console.log(d.getUTCHours());
+          //console.log(d.getUTCHours());
           
           if(d.getUTCHours() >0 && d.getUTCHours()<6){
                 mon_time_1 = mon_time_1+1;                    
@@ -675,7 +679,7 @@ else{
            chart.draw(data, options);
            google.visualization.events.addListener(chart, 'select', function() {
     var row = chart.getSelection()[0].row;
-    console.log(row)
+    //console.log(row)
     window.open('/posts'); //This will open Google in a new window.
   });
          }

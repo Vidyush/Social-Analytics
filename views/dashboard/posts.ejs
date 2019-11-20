@@ -11,8 +11,13 @@
           <%- include('../_includes/dashboardNav') %>
           <div class="col-12">
             <h3>Posts</h3>
+            <input type="text" id="search-tweet" placeholder="Search Tweets">
+                  <input type="text" id="search-User" placeholder="Search Users">
+                  <input type="text" id="search-Location" placeholder="Search Locations">
               <div class="card withheading">
+                  
                 <div class="dtablebox">
+                    
                     <table id="example" class="display nowrap cell-border" style="width:100%">
                         <thead>
                             <tr>
@@ -36,9 +41,9 @@
                                 <td><a target="_blank" href=<%=elem.profile_link %>><%= elem.user_name %> </a> </td>
                                 <td> <%= elem.retweet_count %> </td>
                                 <td> <%= elem.favorite_count %> </td>
-                                <td><% if(elem.score>0){%><img src="/images/icons/sentiment_positive.png"><%}
-                                    else if(elem.score==0){%><img src="/images/icons/sentiment_neutral.png"><%}
-                                    else{%><img src="/images/icons/sentiment_negative.png"><%}%></td>
+                                <td><% if(elem.score>0){%>Postive<%}
+                                    else if(elem.score==0){%>Negative<%}
+                                    else{%>Neutral<%}%></td>
                                 <td> <%= elem.location %> </td>
                         
                             </tr>
@@ -66,28 +71,59 @@
 <script>
   $(document).ready(function() {
     // Setup - add a text input to each footer cell
-    $('#example thead tr').clone(true).appendTo( '#example thead' );
-    $('#example thead tr:eq(1) th').each( function (i) {
-        var title = $(this).text();
-        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
- 
-        $( 'input', this ).on( 'keyup change', function () {
-            if ( table.column(i).search() !== this.value ) {
-                table
-                    .column(i)
-                    .search( this.value )
-                    .draw();
-            }
-        } );
-    } );
- 
+    $('#search-tweet').on('change', function(){
+    
+    table
+    .column(2)
+    .search(this.value)
+    .draw();
+
+  });
+  $('#search-User').on('change', function(){
+    
+    table
+    .column(3)
+    .search(this.value)
+    .draw();
+
+  });
+  $('#search-Location').on('change', function(){
+    
+    table
+    .column(7)
+    .search(this.value)
+    .draw();
+
+  });
     var table = $('#example').DataTable( {
         orderCellsTop: true,
+        bSort: true,
         fixedHeader: true,
-        order: [[ 4, "desc" ]]
+        order: [[ 4, "desc" ]],
         //searching: false
-    } );
-} );
+        responsive: true,
+    initComplete: function () {
+        this.api().columns(6).every( function () {
+        var column = this;
+        $('#dataTables-example .head .head_hide').html('');
+
+        var select = $('<select id="formfilter" class="filterdropdown"><option value="">'+$(column.header()).text()+'</option></select>')
+            .appendTo( $(column.header()).empty())
+            .on( 'change', function () {
+                var val = $.fn.dataTable.util.escapeRegex(
+                    $(this).val()
+                );
+                column
+                    .search( val ? '^'+val+'$' : '', true, false )
+                    .draw();
+            });
+
+        column.data().unique().sort().each( function ( d, j ) {
+            select.append( '<option value="'+d+'">'+d+'</option>' )
+        });
+    });
+}})
+});
 
 </script> 
 
