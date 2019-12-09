@@ -15,6 +15,8 @@
                       <thead>
                         <tr>
                           <th>User Name</th>
+                          <th>Followers</th>
+                          <th>Location</th>
                           <th>Information</th>
                         </tr>
                       </thead>
@@ -22,6 +24,8 @@
                           <% for(let i=0; i< usr_array.length; i++){ %>
                         <tr>
                           <td><%= usr_array[i].user_name %></td>
+                          <td><%= usr_array[i].followers_count %></td>
+                          <td><%= usr_array[i].location %></td>
                           <td>
                           <a data-id=<%=i%> class="viewModel opendialoge" >View</a>
                         </td> 
@@ -55,7 +59,7 @@
 </tr>
 <tr>
   <td>View Post</td>
-  <td><a target="blank" href="%%post_link%%">View</a></td>
+  <td><a href="%%post_link%%">View</a></td>
 </tr>
 
 </template>
@@ -88,6 +92,10 @@
         <td>View Profile</td>
         <td><a target="blank" href ="https://twitter.com/%%screen_name%%">View</a></td>
       </tr>
+      <tr>
+          <td>Bio</td>
+          <td>%%description%%</td>
+        </tr>
         <tr>
             <td>Posts</td>
             <td>%%total_posts%%</td>
@@ -97,6 +105,14 @@
               <td>Avg Eng</td>
               <td>%%avg_eng%%</td>
             </tr>
+            <tr>
+                <td>Followers</td>
+                <td>%%followers_count%%</td>
+              </tr>
+              <tr>
+                  <td>Impressions</td>
+                  <td>%%followers_count%%</td>
+                </tr>                  
     </tbody>
   </table>
 
@@ -128,15 +144,11 @@
   </p>
 </div>
 <script>
-
    let influencersData = <%- JSON.stringify(influencersData) %>
-
 $(document).ready(function() {  
-
   $(".viewModel").click(function(e){
     let id= $(this).data('id');
     let modelData = influencersData[id];
-
     var postTableTemplateString = $("#postTableTemplate").html();
     var postsString = "";
     for(let j=0; j<modelData.posts.length; j++ ){
@@ -144,22 +156,14 @@ $(document).ready(function() {
      thisString=  thisString.replace("%%post_title%%",modelData.posts[j].text).replace("%%post_date%%",modelData.posts[j].date).replace("%%post_engagement%%",modelData.posts[j].engagement).replace("%%post_link%%",modelData.posts[j].url);
       postsString  = postsString+ thisString;
     }
-
     var modelContent = $("#customModel").html();
-
     // replacing string with data
     modelContent = modelContent.replace("%%profile_image_url%%", modelData.profile_image_url).replace("%%user_name%%", modelData.user_name).replace("%%total_posts%%", modelData.posts.length).replace("%%screen_name%%", modelData.screen_name).replace("%%description%%", modelData.description).replace("%%total_posts%%", modelData.total_posts).replace("%%avg_eng%%", ( modelData.totalEngagement / modelData.posts.length)).replace("%%followers_count%%", modelData.followers_count).replace("%%followers_count%%", modelData.followers_count);
-
 // console.log(modelContent)
     modelContent = modelContent.replace("<tr><td>%%post_table%%</td></tr>", postsString);
 // console.log(modelContent)
-
-
-
     $("#modelContainer").html(modelContent);
 });
-
-
     $('#example').DataTable( {  
       "scrollX": true,
       "order":[[1,"desc"]],

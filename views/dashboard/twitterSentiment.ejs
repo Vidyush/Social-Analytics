@@ -1,0 +1,67 @@
+<%- include('../_includes/head') %>
+
+<div class="dashboard-page">
+        <%- include('../_includes/dashboardNavMini') %>
+
+        <div class="dashboard">
+                <div class="search-section">
+                    <div class="container-fluid deshheader">
+                       <%- include('../_includes/dashboardNav') %>
+                       <div class="col-12">
+                        <div class="row d-flex">
+                            <div class="col-md-6">
+                              <h3 class="mrtp30">Sentiment</h3>
+                              <div class="card withheading">
+                                <div id="chart" style="width:500px; max-width: 100%; height:300px;"></div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <h3 class="mrtp30">Sentiment Status</h3>
+                              <div class="card withheading">
+                                <div class="dash-counter">
+                                    <ul style="text-align:center">
+                         
+                                            <li style="text-align:center;"><img src="images/Positive-face.png" class="img-fluid" alt=""><span class="caption">Positive <strong><%= (typeof(feedback1) !== undefined)? parseFloat(feedback1) : undefined  %>%</strong></span></li>	<!--width="<%=(typeof(feedback3) !== undefined)? parseFloat(feedback3) : undefined  %>%"-->	
+                                            <li style="text-align:center;"><img src="images/Negative-face.png" class="img-fluid" alt=""><span class="caption">Negative <strong><%=(typeof(feedback2) !== undefined)? parseFloat(feedback2) : undefined  %>%</strong></span></li>				
+                                            <li style="text-align:center;"><img src="images/neutral-face.png" class="img-fluid" alt=""><span class="caption">Neutral <strong><%=(typeof(feedback3) !== undefined)? parseFloat(feedback3) : undefined  %>%</strong></span></li>				
+                                                        
+                                    </ul>
+                            </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+  </div>
+</div>
+<div class="dash-footer">
+  <p class="dash-copyright">
+      <script>
+          var d = new Date();
+          var dy = d.getFullYear();
+          document.write(dy);
+      </script> Social Analysis. All Rights Reserved.
+  </p>
+</div>
+<script>
+google.charts.load('current', {'packages':['corechart']});
+   google.charts.setOnLoadCallback(drawChart);
+   function drawChart() {
+     var data = google.visualization.arrayToDataTable([
+       ['Sentiment', 'Value'],
+       ['Positive',   <%= (typeof(feedback1) !== undefined)? parseFloat(feedback1) : undefined  %>],
+       ['Negative', <%= (typeof(feedback2) !== undefined)? parseFloat(feedback2) : undefined  %>],
+       ['Neutral', <%= (typeof(feedback3) !== undefined)? parseFloat(feedback3) : undefined  %>]
+      
+     ]);
+     var options = {
+       title: 'Sentiment',
+       is3D:true,
+       
+     };
+     var chart = new google.visualization.PieChart(document.getElementById('chart'));
+     chart.draw(data, options);
+   }
+</script>
+
+<%- include('../_includes/noFooter') %>

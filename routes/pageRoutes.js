@@ -12,20 +12,20 @@ router.get("/pricing", pageController.pricingPage);
 router.use(authAccessonly);
 // dashboard routes
 router.get("/myplan",dashboardController.myPlan)
-router.get("/dashboard/:id?", dashboardController.getDashboards);
+router.get(["/dashboard/:id?/:media?","/twitterDashboard/:id?/:media?"], dashboardController.getDashboards);
 router.get("/search", dashboardController.getSearchPage);
 router.post("/search", dashboardController.getSearchPage);
 router.post("/analyze", analyticsController.analyseTwitterData);
 router.get("/auth/logout", authController.getLogout);
-router.get("/posts/:id?", dashboardController.getPosts);
-router.get("/influencers/:id?", dashboardController.getInfluencers);
+router.get(["/posts/:id?/:media?","/twitterPosts/:id?/:media?"], dashboardController.getPosts);
+router.get(["/influencers/:id?/:media?","/twitterInfluencers/:id?/:media?"], dashboardController.getInfluencers);
 router.get(
-  ["/sentiment/:id?", "/recentSentiment/:id"],
+  ["/sentiment/:id?/:media?", "/twitterSentiment/:id?/:media?"],
 
   dashboardController.getSentiment
 );
 router.get(
-  ["/buzzwords/:id?", "/recentBuzzwords/:id"],
+  ["/buzzwords/:id?/:media?", "/twitterBuzzwords/:id?/:media?"],
 
   dashboardController.getBuzzwords
 );

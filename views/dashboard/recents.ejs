@@ -18,6 +18,7 @@
                       <th>Tweets</th>
                       <th>Retweets</th>
                       <th>Engagement</th>
+                      <th>Media</th>
                       <th>Details</th>
                       <!-- <th>Sentiment</th>
                       <th>Buzzwords</th> -->
@@ -28,10 +29,14 @@
                     <tr>
                       
                       <td><%= recent.keyword %></td>
-                      <td><%= recent.dashboardJson.total_tweets%></td>
-                      <td><%= recent.dashboardJson.total_retweets %></td>
+                      <td><% if(recent.media=="Insta"){%><%= recent.dashboardJson.total_posts%><%}
+                        else{%><%= recent.dashboardJson.total_tweets%><%}%></td>
+                      <td><% if(recent.media=="Insta"){%><%= recent.dashboardJson.total_likes%><%}
+                        else{%><%= recent.dashboardJson.total_retweets%><%}%></td>
                       <td><%= recent.dashboardJson.engagement %></td>
-                      <td><a href="/dashboard/<%=recent.id%>">View</a></td>
+                      <td><%= recent.media%></td>
+                      <td><% if(recent.media=="Insta"){%><a href="/posts/<%=recent.id%>/<%=recent.media%>">View</a><%}
+                          else{%><a href="/twitterposts/<%=recent.id%>/<%=recent.media%>">View</a><%}%></td>
                       <!-- <td><a class="openrecentpopup" data-toggle="modal" data-target="#myModal" onclick="showLoader('/dashboard/<%=recent.id%>');">VIEW</a></td> -->
                       <!-- <td><a class="openrecentpopup" data-toggle="modal" data-target="#myModal" onclick="showLoader('/recentSentiment/<%=recent.id%>');">VIEW</a></td>
                       <td><a class="openrecentpopup" data-toggle="modal" data-target="#myModal" onclick="showLoader('/recentBuzzwords/<%=recent.id%>');">VIEW</a></td> -->

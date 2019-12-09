@@ -16,6 +16,8 @@ const User = sequelize.define('users', {
     profilePic: Sequelize.STRING(255),
     joiningDate: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },
     deletedAt: Sequelize.DATE,
+  createdAt : Sequelize.DATE,
+  deletedAt : Sequelize.DATE
 })
 
 

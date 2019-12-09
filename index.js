@@ -5,6 +5,7 @@ const flash = require("connect-flash");
 const session = require("express-session");
 const sequelize = require("./config/db");
 const robots = require("express-robots-txt");
+// import cron from "node-cron";
 
 //------------vivek added cashfree------------//
 // const config    = require('./public/cashfree/config.json');
@@ -167,6 +168,12 @@ app.use(paymentRoutes);
 // //------------vivek added cashfree------------//
 
 // home route
+//__________________CRON______________________//
+// cron.schedule("* * * * *", () => {
+//   console.log(`Updated`);
+//   fetchingData();
+// });
+
 app.get("/", (req, res) => {
   return res.render("index/index");
 });

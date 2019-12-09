@@ -11,9 +11,9 @@
           <%- include('../_includes/dashboardNav') %>
           <div class="col-12">
             <h3>Posts</h3>
-            <input type="text" id="search-tweet" placeholder="Search Captions">
+            <input type="text" id="search-tweet" placeholder="Search Tweets">
                   <input type="text" id="search-User" placeholder="Search Users">
-                  
+                  <input type="text" id="search-Location" placeholder="Search Locations">
               <div class="card withheading">
                   
                 <div class="dtablebox">
@@ -23,36 +23,41 @@
                             <tr>
                                 <th>Date</th>
                                 <th>Photo</th>
-                                <th>Caption</th>
+                                <th>Tweet</th>
                                 <th>User</th>
-                                <th>Likes</th>
+                                <th>Retweet</th>
+                                <th>Favourite</th>
                                 <th>Sentiment</th>
+                                <th>Location</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <% posts.forEach(elem => {%>
-                             <tr>
+                            <% posts.forEach(elem => { %>
+                        
+                            <tr>
                                 <td> <%= elem.date; %> </td>
                                 <td><img src=<%= elem.profile_image_url%>></td>
-                                <td style="word-break: break-all;"><a target="_blank" href="<%=elem.url%>"><%= elem.text %></a> </td>
-                                <td><a target="_blank" href="<%=elem.profile_link%>"><%= elem.screen_name %> </a> </td>
-                                <td> <%= elem.likes_count %> </td>
+                                <td><a target="_blank" href=<%=elem.url %>><%= elem.text %></a> </td>
+                                <td><a target="_blank" href=<%=elem.profile_link %>><%= elem.user_name %> </a> </td>
+                                <td> <%= elem.retweet_count %> </td>
+                                <td> <%= elem.favorite_count %> </td>
                                 <td><% if(elem.score>0){%>Postive<%}
-                                    else if(elem.score==0){%>Neutral<%}
-                                    else{%>Negative<%}%></td>
-                            </tr>
-                             
+                                    else if(elem.score==0){%>Negative<%}
+                                    else{%>Neutral<%}%></td>
+                                <td> <%= elem.location %> </td>
                         
-                        <% }) %>
-                      </tbody>
+                            </tr>
+                        
+                        
+                             <% }) %>
+                        </tbody>
                 </table>
-                
               </div>
             </div>
             </div>
   </div>
 </div>
-  </div>
+
 
 <div class="dash-footer">
   <p class="dash-copyright">
@@ -63,7 +68,6 @@
       </script> Social Analysis. All Rights Reserved.
   </p>
 </div>
-</div>
 <script>
   $(document).ready(function() {
     // Setup - add a text input to each footer cell
@@ -73,7 +77,6 @@
     .column(2)
     .search(this.value)
     .draw();
-
   });
   $('#search-User').on('keyup', function(){
     
@@ -81,9 +84,14 @@
     .column(3)
     .search(this.value)
     .draw();
-
   });
-  
+  $('#search-Location').on('keyup', function(){
+    
+    table
+    .column(7)
+    .search(this.value)
+    .draw();
+  });
     var table = $('#example').DataTable( {
         orderCellsTop: true,
         bSort: true,
@@ -92,10 +100,9 @@
         //searching: false
         responsive: true,
     initComplete: function () {
-        this.api().columns(5).every( function () {
+        this.api().columns(6).every( function () {
         var column = this;
         $('#dataTables-example .head .head_hide').html('');
-
         var select = $('<select id="formfilter" class="filterdropdown"><option value="">'+$(column.header()).text()+'</option></select>')
             .appendTo( $(column.header()).empty())
             .on( 'change', function () {
@@ -106,14 +113,12 @@
                     .search( val ? '^'+val+'$' : '', true, false )
                     .draw();
             });
-
         column.data().unique().sort().each( function ( d, j ) {
             select.append( '<option value="'+d+'">'+d+'</option>' )
         });
     });
 }})
 });
-
 </script> 
 
 <%- include('../_includes/noFooter') %>

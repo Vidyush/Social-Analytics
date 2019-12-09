@@ -5,17 +5,52 @@ const Transaction = require("../models/transaction");
 const { getKeywordData } = require("../utils/ModelUtils");
 const config = require("../config/constants");
 
-function Values(arr1){
+function instaValues(arr1){
   var checkdate = [];
   var fnldata = [];
   for(var i=0;i<arr1.length;i++){
-      var datem = new Date(arr1[i].created_at);
+      var datem = new Date(arr1[i].date);
+      console.log(datem)
       var d = datem.getDate();
       var m = datem.getMonth() + 1;
       var y = datem.getFullYear();
   
       var fnldate = y+'-'+m+'-'+d;
+      if(checkdate.includes(fnldate)){
+        var index = checkdate.indexOf(fnldate);
+        fnldata[index].totalTweets++;
+        fnldata[index].retweet_count += arr1[i].likes_count;
+        fnldata[index].favorite_count += arr1[i].comments_count;
+    }else{
+        checkdate[i] = fnldate;
+        fnldata[i] = {"date":fnldate,"totalTweets":1,"retweet_count":arr1[i].likes_count,"favorite_count":arr1[i].comments_count};
+    }
+      // if(checkdate.includes(fnldate)){
+      //     var index = checkdate.indexOf(fnldate);
+      //     fnldata[index].totalTweets++;
+      //     fnldata[index].retweet_count += arr1[i].retweet_count;
+      //     fnldata[index].favorite_count += arr1[i].favorite_count;
+      // }else{
+      //     checkdate[i] = fnldate;
+      //     fnldata[i] = {"date":fnldate,"totalTweets":1,"retweet_count":arr1[i].retweet_count,"favorite_count":arr1[i].favorite_count};
+      // }
+  }
+  fnldata = fnldata.filter(function(){return true;});
+  return(fnldata);
+}
+
+function twitterValues(arr1){
+  var checkdate = [];
+  var fnldata = [];
+  for(var i=0;i<arr1.length;i++){
+      var datem = new Date(arr1[i].dateUTC);
+      console.log(datem)
+      var d = datem.getDate();
+      var m = datem.getMonth() + 1;
+      var y = datem.getFullYear();
   
+      var fnldate = y+'-'+m+'-'+d;
+      
       if(checkdate.includes(fnldate)){
           var index = checkdate.indexOf(fnldate);
           fnldata[index].totalTweets++;
@@ -65,7 +100,8 @@ function count_source(source, d) {
   return score_array;
 }
 
-function parseAndFormat(s) {
+function parseAndFormat(ss) {
+  var s = new Date(ss).toUTCString;
 
   // Helper
   function z(n){return (n<10? "0":'') + n;}
@@ -100,15 +136,64 @@ var d = new Date(s)
 }
 
 module.exports.getDashboards = async (req, res) => {
-  // return res.json({session :req.session, id: req.params.id });
+
+ 
   let keywordData = await getKeywordData(req, res, [
     "id",
     "keyword",
     "dashboardJson",
     "postsWithSentiment",
     "wpath",
-    "hashtagArray","fullStream"
+    "hashtagArray","fullStream","media"
   ]);
+  if(keywordData.media=="Insta"){
+  if (!keywordData) return res.redirect("/search");
+  let influencers = _.uniqBy(keywordData.postsWithSentiment, "user_name");
+  influencers = _.filter(influencers, person => person.followers_count >=config.influencerLimit || person.verified === true);
+  let uni_posts =  _.orderBy(_.uniqBy(keywordData.postsWithSentiment, "text"),["likes_count"],['desc'])
+  //let alllocations = [];
+  let unique_users = Object.keys(_.countBy(_.uniqBy(keywordData.postsWithSentiment, "user_name"), "user_id")).length;
+  let Dates = [];
+  let DatesUtc = []
+  let source = keywordData.postsWithSentiment;
+  source.forEach(element => {
+    DatesUtc.push(element.date)
+    Dates.push(parseAndFormat(element.date));
+    //alllocations.push(element.location)
+  });
+  // let uniqLocations = alllocations.reduce((acc, val) => {
+  //   acc[val] = acc[val] === undefined ? 1 : acc[val] += 1;
+  //   return acc;
+  // }, {});
+  // let location_array = [["location", "value"]];
+  // for (var i in uniqLocations) {
+  //   location_array.push([i, uniqLocations[i]]);
+  // }
+  //console.log(location_array)
+
+  // let devices = count_source(source, "device");
+  arr1 = instaValues(keywordData.postsWithSentiment);
+  console.log(arr1)
+  
+  if (!keywordData) return res.redirect("/search");
+  let hashes = counter(keywordData.hashtagArray)
+  // return
+  return res.render("dashboard/dashboard", {
+    hashtag: keywordData.keyword,
+    stats: keywordData.dashboardJson,
+    influencers: influencers,
+    unique_posts : uni_posts,
+    user_count: unique_users,
+    feedb1: arr1,
+    //devices_score: devices,
+    Dates,
+    path: keywordData.wpath,
+    //location_array,
+    //hashes,
+    DatesUtc
+  });
+}
+else{
 
   if (!keywordData) return res.redirect("/search");
   let influencers = _.orderBy(_.uniqBy(keywordData.postsWithSentiment, "user_name"),["followers_count"],['desc'])
@@ -135,13 +220,13 @@ module.exports.getDashboards = async (req, res) => {
   //console.log(location_array)
 
   let devices = count_source(source, "device");
-  arr1 = Values(keywordData.fullStream);
+  arr1 = twitterValues(keywordData.postsWithSentiment);
   console.log(arr1)
   
   if (!keywordData) return res.redirect("/search");
   let hashes = counter(keywordData.hashtagArray)
   // return
-  return res.render("dashboard/dashboard", {
+  return res.render("dashboard/twitterDashboard", {
     hashtag: keywordData.keyword,
     stats: keywordData.dashboardJson,
     influencers: influencers,
@@ -155,6 +240,7 @@ module.exports.getDashboards = async (req, res) => {
     hashes,
     DatesUtc
   });
+}
 };
 
 /*
@@ -204,8 +290,9 @@ module.exports.getBuzzwords = async (req, res) => {
       "id",
       "wpath",
       "keyword",
-      "hashtagArray"
+      "hashtagArray","media"
     ]);
+    if(keywordData.media=="Insta"){
     if (!keywordData) return res.redirect("/search");
     let hashes = counter(keywordData.hashtagArray)
     return res.render("dashboard/buzzwords", {
@@ -213,6 +300,16 @@ module.exports.getBuzzwords = async (req, res) => {
       hashes,
       path: keywordData.wpath
     });
+  }
+  else{
+    if (!keywordData) return res.redirect("/search");
+    let hashes = counter(keywordData.hashtagArray)
+    return res.render("dashboard/twitterBuzzwords", {
+      hashtag: req.session.hashtag,
+      hashes,
+      path: keywordData.wpath
+    });
+  }
   
 };
 
@@ -223,11 +320,14 @@ module.exports.getBuzzwords = async (req, res) => {
 
 module.exports.getPosts = async (req, res) => {
   // to key keyword data
+  
   let keywordData = await getKeywordData(req, res, [
     "id",
     "postsWithSentiment",
-    "keyword"
+    "keyword","media"
   ]);
+  if(keywordData.media=="Insta"){
+ 
   if (!keywordData) return res.redirect("/search");
 
   let posts =  _.uniqBy(keywordData.postsWithSentiment, "text");
@@ -237,6 +337,19 @@ module.exports.getPosts = async (req, res) => {
     id: keywordData.id,
     posts
   });
+}
+else{
+  if (!keywordData) return res.redirect("/search");
+
+  let posts =  _.uniqBy(keywordData.postsWithSentiment, "text");
+
+  return res.status(200).render("dashboard/twitterPosts", {
+    hashtag: req.session.hashtag,
+    id: keywordData.id,
+    posts
+  });
+
+}
 }
 
 /*
@@ -248,12 +361,49 @@ module.exports.getInfluencers = async (req, res) => {
   let keywordData = await getKeywordData(req, res, [
     "id",
     "postsWithSentiment",
-    "keyword"
+    "keyword","media"
   ]);
+  if(keywordData.media=="Insta"){
   if (!keywordData) return res.redirect("/search");
 
   let influencers = _.uniqBy(keywordData.postsWithSentiment, "user_name");
   influencers = _.filter(influencers, person => person.followers_count >=config.influencerLimit || person.verified === true);
+  
+  
+  let posts = keywordData.postsWithSentiment;
+
+  let influencersData = {};
+  for (let i = 0; i < influencers.length; i++) {
+    influencersData[i] = influencers[i];
+    let userPosts = posts.filter(item => {
+      return item.user_id === influencers[i].user_id;
+    });
+    let totalEngagement = 0;
+    influencersData[i].posts = userPosts.map(i => {
+      totalEngagement += i.retweet_count + i.followers_count;
+      return {
+        text: i.text,
+        date: i.date,
+        engagement: i.likes_count + i.comments_count,
+        url :i.url ,
+      };
+    });
+
+    influencersData[i].totalEngagement = totalEngagement;
+  }
+  return res.render("dashboard/influencers", {
+    hashtag: req.session.hashtag,
+    usr_array: influencers,
+    posts,
+    influencersData
+  });
+}
+else{
+  if (!keywordData) return res.redirect("/search");
+
+  let influencers = _.uniqBy(keywordData.postsWithSentiment, "user_name");
+  // let influencers = _.orderBy(_.uniqBy(keywordData.postsWithSentiment, "user_name"),["followers_count"],['desc'])
+  influencers = _.filter(influencers, person => (person.followers_count >=config.influencerLimit || person.verified === true));
   
   
   let posts = keywordData.postsWithSentiment;
@@ -277,13 +427,15 @@ module.exports.getInfluencers = async (req, res) => {
 
     influencersData[i].totalEngagement = totalEngagement;
   }
-  return res.render("dashboard/influencers", {
+  return res.render("dashboard/twitterInfluencers", {
     hashtag: req.session.hashtag,
     usr_array: influencers,
     posts,
     influencersData
   });
-};
+
+}
+}
 
 /*
  ** Sentiment page
@@ -294,8 +446,9 @@ module.exports.getSentiment = async (req, res) => {
   let keywordData = await getKeywordData(req, res, [
     "id",
     "dashboardJson",
-    "keyword"
+    "keyword","media"
   ]);
+  if(keywordData.media=="Insta"){
   if (!keywordData) return res.redirect("/search");
 
   return res.status(200).render("dashboard/sentiment", {
@@ -304,6 +457,17 @@ module.exports.getSentiment = async (req, res) => {
     feedback2: keywordData.dashboardJson.negative_score_percentage,
     feedback3: keywordData.dashboardJson.neutral_score_percentage
   });
+}
+else{
+  if (!keywordData) return res.redirect("/search");
+
+  return res.status(200).render("dashboard/twitterSentiment", {
+    hashtag: req.session.hashtag,
+    feedback1: keywordData.dashboardJson.positive_score_percent,
+    feedback2: keywordData.dashboardJson.negative_score_percentage,
+    feedback3: keywordData.dashboardJson.neutral_score_percentage
+  });
+}
 };
 
 module.exports.myPlan = (req,res)=>{
@@ -312,7 +476,7 @@ return res.render("dashboard/myplan")
 }
 module.exports.getRecents = async (req, res) => {
   let recent = await Keyword.findAll({
-    attributes: ["keyword", "dashboardJson", "id"], // to get only selected columns
+    attributes: ["keyword", "dashboardJson", "id","media"], // to get only selected columns
     where: { UserId: req.session.user.id }
   });
   res.render("dashboard/recents", {

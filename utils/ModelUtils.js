@@ -4,10 +4,15 @@ module.exports.getKeywordData = function(req, res, attributes = []) {
   return new Promise(async (resolve, reject) => {
     let id = null;
     let { user } = req.session;
+    let media = null;
     // to find selected searched response
-    if (req.params.id) id = req.params.id;
+    if (req.params.id && req.params.media){ 
+      id = req.params.id
+      media = req.params.media
+    }
     // to find keyword as per id
-    else if (req.session.keyword.id) id = req.session.keyword.id;
+    else if (req.session.keyword.id) id = req.session.keyword.id
+     
 
     let keywordData;
 
@@ -19,8 +24,8 @@ module.exports.getKeywordData = function(req, res, attributes = []) {
       });
 
       if (keywordData) {
-        req.session.keyword = { id: keywordData.id, name: keywordData.keyword };
-        res.locals.keyword = { id: keywordData.id, name: keywordData.keyword };
+        req.session.keyword = { id: keywordData.id, name: keywordData.keyword ,media:keywordData.media};
+        res.locals.keyword = { id: keywordData.id, name: keywordData.keyword ,media:keywordData.media};
       }
     } else {
       keywordData = await Keyword.findByPk(id, {
@@ -30,7 +35,8 @@ module.exports.getKeywordData = function(req, res, attributes = []) {
       if (req.params.id) {
         req.session.keyword = {
           id: keywordData.id,
-          name: keywordData.keyword
+          name: keywordData.keyword,
+          media: keywordData.media
         };
         res.locals.keyword = req.session.keyword;
       }

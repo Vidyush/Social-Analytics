@@ -1,0 +1,77 @@
+<%- include('../_includes/head') %>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.bundle.js"></script>
+
+
+<div class="dashboard-page">
+    <%- include('../_includes/dashboardNavMini') %>
+
+    <div class="dashboard">
+        <div class="search-section">
+            <div class="container-fluid deshheader">
+               <%- include('../_includes/dashboardNav') %>
+            </div>
+            <div class="col-12">
+    <div class="row d-flex">
+        <div class="col-md-6">
+          <h3 class="mrtp30">World Cloud</h3>
+          <div class="card withheading">
+              <img class="img-fluid" id="wc" src=<%=path%> alt="wordcloud">
+          </div>
+        </div>
+        <div class="col-md-6">
+            <h3 class="mrtp30">Associated Hashtags</h3>
+            <div class="card withheading">
+                    <div id="hashChart1" style="width:100%; height:500px;" ></div>
+            </div>
+          </div>
+      </div>
+  </div>
+  </div>
+</div>
+<script>
+ var chartVars = "KoolOnLoadCallFunction=chartReadyHandler";
+KoolChart.create("chart", "hashChart1", chartVars, "100%", "100%");
+function chartReadyHandler(id) {
+  document.getElementById(id).setLayout(layoutStr);
+  document.getElementById(id).setData(makeData1());
+}
+var layoutStr =
+  '<KoolChart backgroundColor="#FFFFFF"  borderStyle="none" fontFamily="Noto Sans">'
+   +'<WordCloudChart showDataTips="true">'
+    +'<series>'
+     +'<WordCloudSeries textField="text" weightField="weight">'
+      +'<showDataEffect>'
+       +'<SeriesInterpolate duration="1000"/>'
+      +'</showDataEffect>'
+      +'<fills>'
+       +'<SolidColor color="#5586a4"/>'
+       +'<SolidColor color="#40b2e6"/>'
+       +'<SolidColor color="#ffa123"/>'
+       +'<SolidColor color="#595c7b"/>'
+       +'<SolidColor color="#ef8075"/>'
+       +'<SolidColor color="#f8ba03"/>'
+       +'<SolidColor color="#03b79a"/>'
+       +'<SolidColor color="#a5d4e6"/>'
+       +'<SolidColor color="#b79d7c"/>'
+       +'<SolidColor color="#9e589e"/>'
+      +'</fills>'
+     +'</WordCloudSeries>'
+    +'</series>'
+   +'</WordCloudChart>'
+  +'</KoolChart>';
+ function makeData1(){
+       var i, n,
+       chartData = [],
+       data = <%-JSON.stringify(hashes)%>;
+       console.log(data)
+      for(i = 0, n = data.length ; i < n ; i += 1){
+       chartData.push({
+        text : data[i][0],
+        weight : data[i][1]
+       });
+      }
+      return chartData;
+ };
+</script>
+<%- include('../_includes/noFooter') %>
