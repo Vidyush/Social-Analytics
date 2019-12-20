@@ -12,25 +12,22 @@ router.get("/pricing", pageController.pricingPage);
 router.use(authAccessonly);
 // dashboard routes
 router.get("/myplan",dashboardController.myPlan)
-router.get(["/dashboard/:id?/:media?","/twitterDashboard/:id?/:media?"], dashboardController.getDashboards);
+router.get(["/dashboard/:key?/:media?"], dashboardController.getDashboards);
+router.post(["/dashboard/:key?/:media?"], dashboardController.getDashboards);
 router.get("/search", dashboardController.getSearchPage);
 router.post("/search", dashboardController.getSearchPage);
 router.post("/analyze", analyticsController.analyseTwitterData);
 router.get("/auth/logout", authController.getLogout);
-router.get(["/posts/:id?/:media?","/twitterPosts/:id?/:media?"], dashboardController.getPosts);
-router.get(["/influencers/:id?/:media?","/twitterInfluencers/:id?/:media?"], dashboardController.getInfluencers);
-router.get(
-  ["/sentiment/:id?/:media?", "/twitterSentiment/:id?/:media?"],
-
-  dashboardController.getSentiment
-);
-router.get(
-  ["/buzzwords/:id?/:media?", "/twitterBuzzwords/:id?/:media?"],
-
-  dashboardController.getBuzzwords
-);
+router.get(["/posts/:key?/:media?"], dashboardController.getPosts);
+router.post(["/posts/:key?/:media?"], dashboardController.getPosts);
+router.get(["/influencers/:key?/:media?"], dashboardController.getInfluencers);
+router.post(["/influencers/:key?/:media?"], dashboardController.getInfluencers);
+router.get(  ["/sentiment/:key?/:media?"],  dashboardController.getSentiment);
+router.post(  ["/sentiment/:key?/:media?"],  dashboardController.getSentiment);
+router.get(  ["/buzzwords/:key?/:media?"],  dashboardController.getBuzzwords);
+router.post(  ["/buzzwords/:key?/:media?"],  dashboardController.getBuzzwords);
 router.get("/recents", dashboardController.getRecents);
-router.get("/onlyrecent", dashboardController.getonlyRecents);
+router.get("/deleterecord/:key?",dashboardController.deleteRecord);
 router.get("/auth/profile/:id", authController.profile);
 router.get("/auth/edituser/:id", authController.editForm);
 router.post("/update/:id", authController.update);

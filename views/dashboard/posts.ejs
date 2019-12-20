@@ -33,7 +33,7 @@
                             <% posts.forEach(elem => {%>
                              <tr>
                                 <td> <%= elem.date; %> </td>
-                                <td><img src=<%= elem.profile_image_url%>></td>
+                                <td><img src=<%= elem.display_url%> width="48" height="48" ></td>
                                 <td style="word-break: break-all;"><a target="_blank" href="<%=elem.url%>"><%= elem.text %></a> </td>
                                 <td><a target="_blank" href="<%=elem.profile_link%>"><%= elem.screen_name %> </a> </td>
                                 <td> <%= elem.likes_count %> </td>

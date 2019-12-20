@@ -2124,6 +2124,21 @@ table.dataTable.display tbody tr.odd:hover {
       font-size: 11px;
       text-align: center;
   }
+
+  .toppostslist li .userimg .fromdataInsta{
+    position: absolute;
+    width: 16px;
+    height: 18px;
+    border-radius: 50%;
+    top: -5px; 
+    right: -5px;
+    background: #f4f4f4;
+    padding:2px;
+    color:#3f729b;
+    font-size: 11px;
+    text-align: center;
+}
+
   .toppostslist li .userdes{
       display: inline-block;
       width: calc(100% - 65px);

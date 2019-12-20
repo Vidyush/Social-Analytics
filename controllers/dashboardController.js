@@ -3,7 +3,8 @@ const Keyword = require("../models/keyword");
 const _ = require("lodash");
 const Transaction = require("../models/transaction");
 const { getKeywordData } = require("../utils/ModelUtils");
-const config = require("../config/constants");
+const con = require("../config/constants");
+const sequelize = require("sequelize");
 
 function instaValues(arr1){
   var checkdate = [];
@@ -44,7 +45,7 @@ function twitterValues(arr1){
   var fnldata = [];
   for(var i=0;i<arr1.length;i++){
       var datem = new Date(arr1[i].dateUTC);
-      console.log(datem)
+      // console.log(datem)
       var d = datem.getDate();
       var m = datem.getMonth() + 1;
       var y = datem.getFullYear();
@@ -65,14 +66,26 @@ function twitterValues(arr1){
   return(fnldata);
 }
 
+// function counter(a){
+//   let uniqLocations = a.  reduce((acc, val) => {
+//       acc[val] = acc[val] === undefined ? 1 : acc[val] += 1;
+//       return acc;
+//     }, {});
+//     let location_array = [["location", "value"]];
+//     for (var i in uniqLocations) {
+//       location_array.push([i, uniqLocations[i]]);
+//     }
+//   return location_array
+//   }
+
 function counter(a){
   let uniqLocations = a.  reduce((acc, val) => {
       acc[val] = acc[val] === undefined ? 1 : acc[val] += 1;
       return acc;
     }, {});
-    let location_array = [["location", "value"]];
+    let location_array = [];
     for (var i in uniqLocations) {
-      location_array.push([i, uniqLocations[i]]);
+      location_array.push({text: i,size:uniqLocations[i]});
     }
   return location_array
   }
@@ -135,9 +148,9 @@ var d = new Date(s)
   return dt;
 }
 
+
 module.exports.getDashboards = async (req, res) => {
 
- 
   let keywordData = await getKeywordData(req, res, [
     "id",
     "keyword",
@@ -149,18 +162,17 @@ module.exports.getDashboards = async (req, res) => {
   if(keywordData.media=="Insta"){
   if (!keywordData) return res.redirect("/search");
   let influencers = _.uniqBy(keywordData.postsWithSentiment, "user_name");
-  influencers = _.filter(influencers, person => person.followers_count >=config.influencerLimit || person.verified === true);
+  influencers = _.filter(influencers, person => person.followers_count >=con.config.influencerLimit || person.verified === true);
   let uni_posts =  _.orderBy(_.uniqBy(keywordData.postsWithSentiment, "text"),["likes_count"],['desc'])
   //let alllocations = [];
   let unique_users = Object.keys(_.countBy(_.uniqBy(keywordData.postsWithSentiment, "user_name"), "user_id")).length;
-  let Dates = [];
   let DatesUtc = []
   let source = keywordData.postsWithSentiment;
   source.forEach(element => {
     DatesUtc.push(element.date)
-    Dates.push(parseAndFormat(element.date));
     //alllocations.push(element.location)
   });
+ 
   // let uniqLocations = alllocations.reduce((acc, val) => {
   //   acc[val] = acc[val] === undefined ? 1 : acc[val] += 1;
   //   return acc;
@@ -173,34 +185,33 @@ module.exports.getDashboards = async (req, res) => {
 
   // let devices = count_source(source, "device");
   arr1 = instaValues(keywordData.postsWithSentiment);
-  console.log(arr1)
+
   
   if (!keywordData) return res.redirect("/search");
   let hashes = counter(keywordData.hashtagArray)
   // return
   return res.render("dashboard/dashboard", {
     hashtag: keywordData.keyword,
+    media:keywordData.media,
     stats: keywordData.dashboardJson,
     influencers: influencers,
     unique_posts : uni_posts,
     user_count: unique_users,
     feedb1: arr1,
     //devices_score: devices,
-    Dates,
     path: keywordData.wpath,
     //location_array,
     //hashes,
-    DatesUtc
+    DatesUtc,hashes
   });
 }
 else{
-
   if (!keywordData) return res.redirect("/search");
   let influencers = _.orderBy(_.uniqBy(keywordData.postsWithSentiment, "user_name"),["followers_count"],['desc'])
+  influencers = _.filter(influencers, person => person.followers_count >=con.config.influencerLimit || person.verified === true);
   let uni_posts =  _.orderBy(_.uniqBy(keywordData.postsWithSentiment, "text"),["retweet_count"],['desc'])
   let alllocations = [];
-  let unique_users = Object.keys(_.countBy(influencers, "user_id"))
-    .length;
+  let unique_users = Object.keys(_.countBy(_.uniqBy(keywordData.postsWithSentiment, "user_name"), "user_id")).length;
   let Dates = [];
   let DatesUtc = []
   let source = keywordData.postsWithSentiment;
@@ -221,7 +232,7 @@ else{
 
   let devices = count_source(source, "device");
   arr1 = twitterValues(keywordData.postsWithSentiment);
-  console.log(arr1)
+ 
   
   if (!keywordData) return res.redirect("/search");
   let hashes = counter(keywordData.hashtagArray)
@@ -238,7 +249,8 @@ else{
     path: keywordData.wpath,
     location_array,
     hashes,
-    DatesUtc
+    DatesUtc,
+    media:keywordData.media,
   });
 }
 };
@@ -298,7 +310,8 @@ module.exports.getBuzzwords = async (req, res) => {
     return res.render("dashboard/buzzwords", {
       hashtag: req.session.hashtag,
       hashes,
-      path: keywordData.wpath
+      path: keywordData.wpath,
+      media:keywordData.media,
     });
   }
   else{
@@ -307,7 +320,8 @@ module.exports.getBuzzwords = async (req, res) => {
     return res.render("dashboard/twitterBuzzwords", {
       hashtag: req.session.hashtag,
       hashes,
-      path: keywordData.wpath
+      path: keywordData.wpath,
+      media:keywordData.media,
     });
   }
   
@@ -335,7 +349,8 @@ module.exports.getPosts = async (req, res) => {
   return res.status(200).render("dashboard/posts", {
     hashtag: req.session.hashtag,
     id: keywordData.id,
-    posts
+    posts,
+    media:keywordData.media,
   });
 }
 else{
@@ -346,7 +361,8 @@ else{
   return res.status(200).render("dashboard/twitterPosts", {
     hashtag: req.session.hashtag,
     id: keywordData.id,
-    posts
+    posts,
+    media:keywordData.media,
   });
 
 }
@@ -367,7 +383,7 @@ module.exports.getInfluencers = async (req, res) => {
   if (!keywordData) return res.redirect("/search");
 
   let influencers = _.uniqBy(keywordData.postsWithSentiment, "user_name");
-  influencers = _.filter(influencers, person => person.followers_count >=config.influencerLimit || person.verified === true);
+  influencers = _.filter(influencers, person => person.followers_count >=con.config.influencerLimit || person.verified === true);
   
   
   let posts = keywordData.postsWithSentiment;
@@ -395,17 +411,16 @@ module.exports.getInfluencers = async (req, res) => {
     hashtag: req.session.hashtag,
     usr_array: influencers,
     posts,
-    influencersData
+    influencersData,
+    media:keywordData.media,
   });
 }
 else{
   if (!keywordData) return res.redirect("/search");
 
-  let influencers = _.uniqBy(keywordData.postsWithSentiment, "user_name");
-  // let influencers = _.orderBy(_.uniqBy(keywordData.postsWithSentiment, "user_name"),["followers_count"],['desc'])
-  influencers = _.filter(influencers, person => (person.followers_count >=config.influencerLimit || person.verified === true));
-  
-  
+  //let influencers = _.uniqBy(keywordData.postsWithSentiment, "user_name");
+  let influencers = _.orderBy(_.uniqBy(keywordData.postsWithSentiment, "user_name"),["followers_count"],['desc'])
+  influencers = _.filter(influencers, person => (person.followers_count >=con.config.influencerLimit || person.verified === true));
   let posts = keywordData.postsWithSentiment;
 
   let influencersData = {};
@@ -431,7 +446,8 @@ else{
     hashtag: req.session.hashtag,
     usr_array: influencers,
     posts,
-    influencersData
+    influencersData,
+    media:keywordData.media,
   });
 
 }
@@ -455,7 +471,8 @@ module.exports.getSentiment = async (req, res) => {
     hashtag: req.session.hashtag,
     feedback1: keywordData.dashboardJson.positive_score_percent,
     feedback2: keywordData.dashboardJson.negative_score_percentage,
-    feedback3: keywordData.dashboardJson.neutral_score_percentage
+    feedback3: keywordData.dashboardJson.neutral_score_percentage,
+    media:keywordData.media,
   });
 }
 else{
@@ -465,7 +482,8 @@ else{
     hashtag: req.session.hashtag,
     feedback1: keywordData.dashboardJson.positive_score_percent,
     feedback2: keywordData.dashboardJson.negative_score_percentage,
-    feedback3: keywordData.dashboardJson.neutral_score_percentage
+    feedback3: keywordData.dashboardJson.neutral_score_percentage,
+    media:keywordData.media,
   });
 }
 };
@@ -476,22 +494,32 @@ return res.render("dashboard/myplan")
 }
 module.exports.getRecents = async (req, res) => {
   let recent = await Keyword.findAll({
-    attributes: ["keyword", "dashboardJson", "id","media"], // to get only selected columns
-    where: { UserId: req.session.user.id }
+    attributes: [[sequelize.fn('DISTINCT', sequelize.col("keyword")), 'keyword']], // to get only selected columns
+    where: { UserId: req.session.user.id },
+    raw:true
   });
   res.render("dashboard/recents", {
     hashtag: req.session.hashtag,
-    recents: recent
+    recents: recent,
   });
 };
 
-module.exports.getonlyRecents = async (req, res) => {
+module.exports.deleteRecord = async(req,res)=>{
+  Keyword.destroy({
+    where: {UserId :req.session.user.id,keyword:req.params.key
+    }
+}).then(async function(){ // rowDeleted will return number of rows deleted
   let recent = await Keyword.findAll({
-    attributes: ["keyword", "dashboardJson", "id"], // to get only selected columns
-    where: { UserId: req.session.user.id }
+    attributes: [[sequelize.fn('DISTINCT', sequelize.col("keyword")), 'keyword']], // to get only selected columns
+    where: { UserId: req.session.user.id },
+    raw:true
   });
-
-  res.render("dashboard/onlyrecent", {
-    recents: recent
+  res.render("dashboard/recents", {
+    hashtag: req.session.hashtag,
+    recents: recent,
   });
-};
+   }
+, function(err){
+    console.log(err); 
+});
+}

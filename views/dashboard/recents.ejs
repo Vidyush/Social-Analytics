@@ -5,9 +5,8 @@
  
   <div class="dashboard">
     <div class="search-section">
-      <div class="container-fluid deshheader">
-          <%- include('../_includes/dashboardNav') %>
           <div class="col-12">
+            <br>
             <h3>Recent Searches</h3>
             <div class="card withheading">
               <div class="dtablebox">
@@ -15,32 +14,21 @@
                   <thead>
                     <tr>
                       <th>Hashtag</th>
-                      <th>Tweets</th>
-                      <th>Retweets</th>
-                      <th>Engagement</th>
-                      <th>Media</th>
-                      <th>Details</th>
-                      <!-- <th>Sentiment</th>
-                      <th>Buzzwords</th> -->
+                      <th>Instagram</th>
+                      <th>Twitter</th>
+                      <th>Delete</th>
+                     
                       </tr>
                   </thead>
                   <tbody>
                           <%  recents.length && recents.forEach(recent=>{ %>
                     <tr>
                       
-                      <td><%= recent.keyword %></td>
-                      <td><% if(recent.media=="Insta"){%><%= recent.dashboardJson.total_posts%><%}
-                        else{%><%= recent.dashboardJson.total_tweets%><%}%></td>
-                      <td><% if(recent.media=="Insta"){%><%= recent.dashboardJson.total_likes%><%}
-                        else{%><%= recent.dashboardJson.total_retweets%><%}%></td>
-                      <td><%= recent.dashboardJson.engagement %></td>
-                      <td><%= recent.media%></td>
-                      <td><% if(recent.media=="Insta"){%><a href="/posts/<%=recent.id%>/<%=recent.media%>">View</a><%}
-                          else{%><a href="/twitterposts/<%=recent.id%>/<%=recent.media%>">View</a><%}%></td>
-                      <!-- <td><a class="openrecentpopup" data-toggle="modal" data-target="#myModal" onclick="showLoader('/dashboard/<%=recent.id%>');">VIEW</a></td> -->
-                      <!-- <td><a class="openrecentpopup" data-toggle="modal" data-target="#myModal" onclick="showLoader('/recentSentiment/<%=recent.id%>');">VIEW</a></td>
-                      <td><a class="openrecentpopup" data-toggle="modal" data-target="#myModal" onclick="showLoader('/recentBuzzwords/<%=recent.id%>');">VIEW</a></td> -->
-                      <% }) %> 
+                      <td>#<%= recent.keyword %></td>
+                      <td><a href="/dashboard/<%=recent.keyword%>/Insta">View</a></td>
+                        <td><a href="/dashboard/<%=recent.keyword %>/Twitter">View</a></td>
+                        <td><a href="/deleterecord/<%=recent.keyword %>">Delete</a></td>
+                       <% }) %> 
                     </tr>
                     
                     
@@ -48,6 +36,9 @@
                 </table>
               </div>
             </div>
+            
+            <h3>To add a new hashtag to search list <a href="/search">Click Here</a></h3>
+            <h3>You can add atmax 5 hashtag to search list. Please delete one from the 5 hashtags to search a new hashtag.</h3>
             </div>
     
 </div>

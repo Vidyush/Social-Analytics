@@ -3,15 +3,21 @@
 </div>
  <div class="row">
    <div style="width:80%;">
-               <form action="/analyze" id="analyze" class="search-form" method="POST">
+               <form id="analyze" class="search-form" method="POST">
               <div class="search">
-                <input type="text" id="hashtag" name="hashtag" value="<%= keyword.name %>" required>
+                <input type="text" id="hashtag" name="hashtag" value="<%= keyword.name %>" required readonly>
               </div>
               <div class="filter site">
-                  <a href="" class="opentool"><img class="filter-icon" src="/images/twitter.png" alt=""> Twitter</a>
+                
+                  <select name="media" id="media" class="form-control mediaCls">
+                    <option value="Twitter">Twitter</option>
+                    <option value="Insta">Instagram</option>
+                   
+                  </select>
+              
               </div>   
               <div class="btn-search">
-                <button type="submit" onclick="showLoader(this);">Search</button>
+                <button type="submit">Filter</button>
               </div>
             </form>
           </div>
@@ -37,6 +43,16 @@
       }
       });
       }
+      $('#media').val('<%-media%>');
+      $('.mediaCls').on('change',function(){
+        let media = $(this).val(); 
+        let pathname = window.location.pathname;
+        pathname = pathname.split("/");
+        let hashtag = $('#hashtag').val();
+        let formAction = '/'+pathname[1]+'/' + hashtag + '/' +media;
+        $('#analyze').attr('action', formAction);
+    
+      })
       </script>
                           
                   

@@ -22,14 +22,11 @@
         <input type="text" id="hashtag" name="hashtag" placeholder="Enter a #hashtag, @mention or keyword" required>
       </div>
       <div class="filter site">
-          <a class="opentool"><img class="filter-icon" src="/images/twitter.png" alt=""> Twitter</a>
-          
-          <div class="filter-dropdown tooldropdown">
-              <a class="opentool"><img class="filter-icon" src="/images/twitter.png" alt=""> Twitter</a>
-              <a class="opentool"><img class="filter-icon" src="/images/insta.png" alt=""> Instagram</a>
-            <!-- <a href="#"><img class="filter-icon" src="/images/twitter.png" alt=""> Twitter</a>
-            <!-- <a href="#"><img class="filter-icon" src="/images/linkedin.png" alt=""> Linkedin</a> -->
-          </div>
+        <select name="media" id="media" class="form-control mediaCls">
+          <option value="Twitter">Twitter</option>
+          <option value="Insta">Instagram</option>
+         
+        </select>
       </div>
       <!-- <div class="filter">
           <a href="#" class="openfilter"><img class="filter-icon" src="/images/filter.png" alt=""> Filter</a>
@@ -64,59 +61,7 @@ function showLoader(obj){
   }
 });
 }
-$(document).ready(function(e) {
-	
-	$({ Counter1: 0 }).animate({
-  Counter1: $('.countposts').text()
-}, {
-  duration: 2000,
-  easing: 'swing',
-  step: function() {
-    $('.countposts').text(Math.ceil(this.Counter1));
-  }
-});
-	$({ Counter2: 0 }).animate({
-  Counter2: $('.countreach').text()
-}, {
-  duration: 2000,
-  easing: 'swing',
-  step: function() {
-    $('.countreach').text(Math.ceil(this.Counter2));
-  }
-});
-	$({ Counter3: 0 }).animate({
-  Counter3: $('.countusers').text()
-}, {
-  duration: 2000,
-  easing: 'swing',
-  step: function() {
-    $('.countusers').text(Math.ceil(this.Counter3));
-  }
-});
-	
-            var ctweet = $('.counttweet').text();
-            //$(this).css('-webkit-transform', 'rotate(' + now + 'deg)');
-            $('.counttweet').prop('Counter', 0).animate({
-                Counter: ctweet
-            }, {
-                duration: 2000,
-                easing: 'linear',
-                step: function(ctweet) {
-                    $('.counttweet').text(Math.round(ctweet * 100) / 100);
-                }
-            });
-            var cretweet = $('.countretweet').text();
-            //$(this).css('-webkit-transform', 'rotate(' + now + 'deg)');
-            $('.countretweet').prop('Counter', 0).animate({
-                Counter: cretweet
-            }, {
-                duration: 2000,
-                easing: 'linear',
-                step: function(cretweet) {
-                    $('.countretweet').text(Math.round(cretweet * 100) / 100);
-                }
-            });
-});
+
 </script>
 
 <%- include('../_includes/noFooter') %>

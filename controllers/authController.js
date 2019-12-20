@@ -7,6 +7,7 @@ const moment = require("moment");
 const bcrypt = require("bcrypt");
 const multer = require("multer");
 const Keyword = require("../models/keyword");
+const _ = require("lodash");
 
 //console.log('print in authcontroller');
 
@@ -149,16 +150,19 @@ module.exports.postLogin = async (req, res) => {
       name: user.name.split(" ")[0]
     };
 
-    req.session.keyword = {};
-
-    // // now redirecting to dashboard with last searched record
-    // let lastSearchedId = await Keyword.findOne({
-    //   attributes: ['id'],
-    //   where: {
-    //     order: [ [ 'createdAt', 'DESC' ]]
-    //   }
-    // })
-    return res.redirect("/posts");
+    req.session.keyword = {}
+    // now redirecting to dashboard with last searched record
+    let lastSearchedId = await Keyword.findOne({
+      attributes: ['id'],
+        order: [ [ 'createdAt', 'DESC' ]],
+        raw:true
+      })
+    if(_.isEmpty(lastSearchedId)){
+      res.redirect("/search");}
+      else{
+        res.redirect("/recents")
+      }
+  
   } else {
     data.errors = "Email/Password is incorrect.";
     return res.render("auth/login", data);
